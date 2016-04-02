@@ -1,0 +1,34 @@
+title: Fotsies Technology Blog
+baseurl: http://fgimian.github.io/
+languageCode: en-us
+MetaDataFormat: yaml
+theme: beautifulhugo
+
+# Pygments Syntax Highlighting
+# TODO: this still needs work
+PygmentsCodeFences: true
+PygmentsStyle: solarizeddark
+PygmentsUseClasses: false
+PygmentsOptions: linenos=true
+
+# Disqus commenting integration
+disqusShortname: fgimian
+
+# Number of blog posts displayed in each page
+paginate: 5
+
+# Set post URL path to match that of Octopress
+permalinks:
+  post: /blog/:year/:month/:day/:title/
+
+params:
+  # Set my little round logo photo
+  logo: images/fotis.jpg
+
+# Author information and links
+Author:
+  name: Fotis Gimian
+  github: fgimian
+  twitter: fgimian
+  linkedin: in/fotis-gimian-a5420053
+  stackoverflow: 1905666/fotis-gimian
