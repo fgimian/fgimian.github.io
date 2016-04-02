@@ -13,7 +13,7 @@ in my mind that there are heaps that I've missed, but we have to start
 somewhere.  I'll try to keep revising this article as I come across more great
 libraries.
 
-## Web Development ##
+## Web Development
 
 * [Flask](https://pypi.python.org/pypi/Flask): My web framework of choice right
   now.  Don't be fooled by the word "micro", this bad boy can do everything
@@ -44,7 +44,7 @@ libraries.
   Also worth checking out are [gevent](https://pypi.python.org/pypi/gevent)
   and [uWSGI](https://pypi.python.org/pypi/uWSGI).
 
-## Web Interaction ##
+## Web Interaction
 
 * [Selenium](https://pypi.python.org/pypi/selenium): A library that allows
   you to automate interaction with websites.  I highly recommend the
@@ -62,7 +62,7 @@ libraries.
   make requests to websites and retrieve responses.  Great for interacting with
   APIs and similar.
 
-## Automation ##
+## Automation
 
 * [Ansible](https://pypi.python.org/pypi/ansible): An absolutely awesome build
   automation tool which compares favourably to Puppet in many important areas.
@@ -77,7 +77,7 @@ libraries.
 * [BuildBot](https://pypi.python.org/pypi/buildbot): A build automation system
   similar to Jenkins.
 
-## Testing Tools ##
+## Testing Tools
 
 * [Coverage.py](https://pypi.python.org/pypi/coverage): Allows you to examine
   what lines of your code are missing unit tests.  This blew my mind the first
@@ -99,7 +99,7 @@ libraries.
 * [pyshould](https://pypi.python.org/pypi/pyshould): Very similar to sure but
   can also be extended with custom assertions.
 
-## Miscellaneous ##
+## Miscellaneous
 
 * [Flake8](https://pypi.python.org/pypi/flake8): A great tool which combines
   PEP8 and PyFlakes to help validate your code.  I use this religiously.

@@ -11,7 +11,7 @@ procedure below should get you through unscathed.
 
 First, install the Ruby build dependencies provided by SLES:
 
-``` bash
+```bash
 sudo zypper -n install gcc
 sudo zypper -n install sqlite-devel gdbm-devel zlib-devel openssl-devel ncurses-devel readline-devel
 sudo zypper -n install tk-devel tcl-devel xorg-x11-devel
@@ -20,7 +20,7 @@ sudo zypper -n install bison
 
 Build bash 4.2 (required by the RVM installer):
 
-``` bash
+```bash
 wget http://ftp.gnu.org/gnu/bash/bash-4.2.tar.gz
 tar xvfz bash-4.2.tar.gz
 cd bash-4.2/
@@ -33,7 +33,7 @@ rm -rfv bash-4.2/
 
 Build [LibYAML](http://pyyaml.org/wiki/LibYAML) (required to build Ruby):
 
-``` bash
+```bash
 wget http://pyyaml.org/download/libyaml/yaml-0.1.4.tar.gz
 tar xvfz yaml-0.1.4.tar.gz
 cd yaml-0.1.4/
@@ -47,7 +47,7 @@ rm -rfv yaml-0.1.4/
 
 Build [libffi](http://sourceware.org/libffi/) (required to build Ruby):
 
-``` bash
+```bash
 wget ftp://sourceware.org/pub/libffi/libffi-3.0.13.tar.gz
 tar xvfz libffi-3.0.13.tar.gz
 cd libffi-3.0.13/
@@ -63,7 +63,7 @@ rm -rfv libffi-3.0.13/
 
 Install the required certs to avoid curl complaining during the RVM install:
 
-``` bash
+```bash
 sudo mv -iv /usr/share/curl/curl-ca-bundle.crt /usr/share/curl/curl-ca-bundle.crt.bak
 wget http://curl.haxx.se/ca/cacert.pem
 sudo bash -c 'cat cacert.pem /usr/share/curl/curl-ca-bundle.crt.bak > /usr/share/curl/curl-ca-bundle.crt'
@@ -72,7 +72,7 @@ rm -v cacert.pem
 
 Now, install RVM (ensuring that only the SLES default ~/.profile is used):
 
-``` bash
+```bash
 curl -L get.rvm.io | bash -s stable
 cat ~/.bash_profile >> ~/.profile
 rm -v ~/.bash_profile
@@ -81,27 +81,27 @@ source ~/.profile
 
 Disable RVM OS library package management (RVM doesn't support SLES):
 
-``` bash
+```bash
 rvm autolibs 0
 ```
 
 Now build and install Ruby using RVM:
 
-``` bash
+```bash
 rvm install 1.9.3
 rvm install 2.0.0
 ```
 
 You may use whichever version you please:
 
-``` bash
+```bash
 rvm use 1.9.3
 ```
 
 And finally, install Rails if you like (you must explicitly install rdoc first
 to avoid the "File not found: lib" error after Rails installs):
 
-``` bash
+```bash
 gem install rdoc
 gem install rails
 ```

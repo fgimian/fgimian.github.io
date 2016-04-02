@@ -25,33 +25,33 @@ If you're using **CentOS**, install all build dependencies as follows:
 
 Firstly, ensure you install EPEL if you're on CentOS 5.x:
 
-``` bash
+```bash
 curl -O http://mirror.iprimus.com.au/epel/5/i386/epel-release-5-4.noarch.rpm
 rpm -Uvh epel-release-5-4.noarch.rpm
 ```
 
 Now install the build dependencies:
 
-``` bash
+```bash
 sudo yum install git gcc zlib-devel bzip2-devel readline-devel sqlite-devel openssl-devel
 ```
 
 If you're using **Ubuntu Server**, install all build dependencies like this:
 
-``` bash
+```bash
 sudo apt-get install curl git-core gcc make zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev libssl-dev
 ```
 
 Now install pyenv as a regular user:
 
-``` bash
+```bash
 curl -L https://raw.github.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
 ```
 
 Once installation completes, you'll be presented with some code that should be
 added to your **~/.bashrc** file:
 
-``` bash
+```bash
 export PYENV_ROOT="${HOME}/.pyenv"
 
 if [ -d "${PYENV_ROOT}" ]; then
@@ -65,13 +65,13 @@ to have these additions loaded.
 
 On **CentOS**:
 
-``` bash
+```bash
 source ~/.bash_profile
 ```
 
 On **Ubuntu Server**:
 
-``` bash
+```bash
 source ~/.profile
 ```
 
@@ -80,25 +80,25 @@ when typing commands to help auto-complete them.
 
 To list all available Python versions, use:
 
-``` bash
+```bash
 pyenv install -l
 ```
 
 To install a Python version, use:
 
-``` bash
+```bash
 pyenv install <version>
 ```
 
 e.g.
 
-``` bash
+```bash
 pyenv install 2.7.6
 ```
 
 To list the installed Python versions, use:
 
-``` bash
+```bash
 pyenv versions
 ```
 
@@ -107,26 +107,26 @@ added.
 
 To set the global Python version used for your account, use:
 
-``` bash
+```bash
 pyenv global <version>
 ```
 
 Creating virtualenvs is also easy and extremely well integrated into pyenv:
 
-``` bash
+```bash
 pyenv virtualenv <name>
 ```
 
 You may activate and de-activate virtualenvs using:
 
-``` bash
+```bash
 pyenv activate <name>
 pyenv deactivate
 ```
 
 To see all the virtualenvs you have created, you may use:
 
-``` bash
+```bash
 pyenv virtualenvs
 ```
 
@@ -135,7 +135,7 @@ always uses a virtualenv called **project123**.  While in the root of the
 project directory, you may set the appropriate Python environment that should
 always be used while in the project directory.
 
-``` bash
+```bash
 pyenv local <virtualenv or version>
 ```
 
@@ -146,21 +146,21 @@ your repository.
 
 At any time, you may view the Python environment being used:
 
-``` bash
+```bash
 pyenv version
 ```
 
 Finally, you can remove a Python version or virtualenv using the uninstall
 commend:
 
-``` bash
+```bash
 pyenv uninstall <virtualenv or version>
 ```
 
 Let's walk through an entire example using my
 [Flaskage](https://github.com/fgimian/flaskage) project.
 
-``` bash
+```bash
 pyenv install 2.7.6
 pyenv global 2.7.6
 pyenv virtualenv flaskage

@@ -13,14 +13,14 @@ Flask application.
 
 We'll create a temporary build directory to put things in:
 
-``` bash
+```bash
 mkdir ~/build
 cd ~/build
 ```
 
 First, start by building and installing Python on the system:
 
-``` bash
+```bash
 curl -O http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz
 tar xvfz Python-2.7.6.tgz
 cd Python-2.7.6
@@ -33,7 +33,7 @@ cd ..
 And now, for the sake of having binaries like lessc and coffee available,
 we'll also install Node.js:
 
-``` bash
+```bash
 curl -O http://nodejs.org/dist/v0.10.25/node-v0.10.25-linux-x64.tar.gz
 mkdir ~/nodejs
 tar xvfz node-v0.10.25-linux-x64.tar.gz -C ~/nodejs --strip 1
@@ -43,7 +43,7 @@ Let's now make our new Python and Node.js bin directories the default on the
 system.  Just ensure that the PATH variable is set as follows in
 **~/.bash_profile**:
 
-``` bash
+```bash
 # User specific environment and startup programs
 export PATH=$HOME/bin:$HOME/python/bin:$HOME/nodejs/bin:$PATH
 ```
@@ -51,7 +51,7 @@ export PATH=$HOME/bin:$HOME/python/bin:$HOME/nodejs/bin:$PATH
 Source the file again and ensure that the system is using our new python binary
 and can also find our node binary too:
 
-``` bash
+```bash
 source ~/.bash_profile
 which python
 which node
@@ -59,7 +59,7 @@ which node
 
 Now we'll install pip and virtualenv:
 
-``` bash
+```bash
 curl -sSL http://peak.telecommunity.com/dist/ez_setup.py | python
 easy_install pip
 pip install virtualenv
@@ -67,7 +67,7 @@ pip install virtualenv
 
 Let's create a new virtualenv for our application (Flaskage in this case):
 
-``` bash
+```bash
 mkdir ~/.virtualenv/
 virtualenv ~/.virtualenv/flaskage
 source ~/.virtualenv/flaskage/bin/activate
@@ -75,7 +75,7 @@ source ~/.virtualenv/flaskage/bin/activate
 
 We're now done with our build directory, so let's clean it up:
 
-``` bash
+```bash
 cd ~
 rm -rfv build/
 ```
@@ -83,13 +83,13 @@ rm -rfv build/
 I discovered some dramas when cloning via git:// URLs on Hostmonster and
 therefore I suggest you force Git to use HTTPS instead:
 
-``` bash
+```bash
 git config --global url."https://".insteadOf git://
 ```
 
 Ok, we're now ready to clone Flaskage and install all required dependencies:
 
-``` bash
+```bash
 git clone https://github.com/fgimian/flaskage.git
 cd flaskage/
 pip install -r requirements.txt
@@ -99,7 +99,7 @@ bower install
 
 We'll also need **flup** to serve the site via FCGI:
 
-``` bash
+```bash
 pip install flup
 ```
 
@@ -112,7 +112,7 @@ wish your website to be served.  If you want the website served starting at /
 on your domain, then simply change into public_html, but in my case, I'll serve
 the website from /flaskage (e.g. http://www.mydomain.com/flaskage).
 
-``` bash
+```bash
 cd ~/public_html/
 mkdir flaskage
 cd flaskage/
@@ -121,7 +121,7 @@ cd flaskage/
 In this directory, create an FCGI script (I called mine **flaskage.fcgi**) as
 follows:
 
-``` python
+```python
 #!/home/fots/.virtualenv/flaskage/bin/python
 import sys
 
@@ -149,7 +149,7 @@ things you should modify are as follows:
 Ensure you make the FCGI script executable and test that it returns the
 homepage of your application:
 
-``` bash
+```bash
 chmod +x flaskage.fcgi
 ./flaskage.fcgi
 ```

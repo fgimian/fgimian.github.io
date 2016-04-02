@@ -3,16 +3,16 @@ title: A Simple PlistBuddy Tutorial
 date: 2015-06-27T20:41:00+10:00
 ---
 
-Good ol' plist files.  They are at the core of OS X for storing application 
+Good ol' plist files.  They are at the core of OS X for storing application
 settings and they work really well.
 
 If you have ever automated part of your OS X build or changed some cool hidden
-feature, you have probably used the **defaults** command to do so.  The 
+feature, you have probably used the **defaults** command to do so.  The
 defaults command is great and is still recommended for simple things, but if
-you want to edit complex plist structures like arrays, dicts and nested 
+you want to edit complex plist structures like arrays, dicts and nested
 structures, you'll inevitably come across PlistBuddy.
 
-The tool is extremely simple to use and powerful, but due to the lack of 
+The tool is extremely simple to use and powerful, but due to the lack of
 tutorials and guides, I thought I'd write one in my own words.
 
 Start by installing rlwrap to get readline support:
@@ -226,15 +226,15 @@ to provide PlistBuddy the full path name to the file (unlike the defaults
 command):
 
 ```
-➔ /usr/libexec/PlistBuddy -c "Print :magnification" ~/Library/Preferences/com.apple.dock.plist 
+➔ /usr/libexec/PlistBuddy -c "Print :magnification" ~/Library/Preferences/com.apple.dock.plist
 true
-➔ /usr/libexec/PlistBuddy -c "Set :magnification bool false" ~/Library/Preferences/com.apple.dock.plist 
-➔ /usr/libexec/PlistBuddy -c "Print :magnification" ~/Library/Preferences/com.apple.dock.plist 
+➔ /usr/libexec/PlistBuddy -c "Set :magnification bool false" ~/Library/Preferences/com.apple.dock.plist
+➔ /usr/libexec/PlistBuddy -c "Print :magnification" ~/Library/Preferences/com.apple.dock.plist
 false
 ```
 
-Oh and a little tip (after you stretched for that shift key on each command). 
-The commands (i.e. Print, Set, Add and so on) are case insensitive, so you can 
+Oh and a little tip (after you stretched for that shift key on each command).
+The commands (i.e. Print, Set, Add and so on) are case insensitive, so you can
 just type them in lowercase.
 
 Hope this helps someone out there.  Have a good one! :)

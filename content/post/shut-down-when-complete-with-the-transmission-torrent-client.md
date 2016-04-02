@@ -17,7 +17,7 @@ Now, create a virtualenv and install **transmissionrpc**:
 (Naturally, you'll need to install virtualenv first.  I did this using a
 Homebrew install of Python and then simply running pip install virtualenv).
 
-``` bash
+```bash
 cd ~
 virtualenv .transmission_env
 source .transmission_env/bin/activate
@@ -36,7 +36,7 @@ vi "Shut Down"
 
 Script Contents (update the first line with your username):
 
-``` python
+```python
 #!/Users/fots/.transmission_env/bin/python
 
 import subprocess

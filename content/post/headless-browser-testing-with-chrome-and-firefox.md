@@ -17,7 +17,7 @@ using a regular PC and upload it to your server.
 
 Install Chrome as follows:
 
-``` bash
+```bash
 sudo apt-get install xdg-utils
 sudo dpkg -i google-chrome-stable_current_amd64.deb
 ```
@@ -28,22 +28,22 @@ Download this on a regular PC and upload the zip file to your server.
 
 Now extract it to /usr/bin and set appropriate permissions:
 
-``` bash
+```bash
 sudo unzip chromedriver_linux64.zip -d /usr/bin/
 sudo chmod 755 /usr/bin/chromedriver
 ```
 
 Next up, we'll install Firefox:
 
-``` bash
+```bash
 sudo apt-get install firefox
 ```
 
 To make use of a regular browser in Selenium sessions, we need to install the
 [X Virtual Framebuffer](http://en.wikipedia.org/wiki/Xvfb) and related fonts:
 
-``` bash
-sudo apt-get install xvfb x11-xkb-utils 
+```bash
+sudo apt-get install xvfb x11-xkb-utils
 sudo apt-get install xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic
 ```
 
@@ -51,7 +51,7 @@ Now that everything's installed, you may start up a virtual display.  Each
 virtual display has a number.  I'll use display number 99 below to setup our
 example display.
 
-``` bash
+```bash
 Xvfb :99 &
 export DISPLAY=:99
 ```
@@ -61,13 +61,13 @@ is with the use of [xvfbwrapper](https://github.com/cgoldberg/xvfbwrapper).
 
 Install it as follows in your virtualenv:
 
-``` bash
+```bash
 pip install xvfbwrapper
 ```
 
 And here's some sample code to get you started:
 
-``` python
+```python
 from xvfbwrapper import Xvfb
 
 def main():

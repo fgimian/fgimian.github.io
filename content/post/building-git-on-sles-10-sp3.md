@@ -14,7 +14,7 @@ Python 2.7 as per
 Build Git as follows (ensuring that you explicitly set the Python path with the
 configure command):
 
-``` bash
+```bash
 wget https://git-core.googlecode.com/files/git-1.8.2.3.tar.gz
 tar xvfz git-1.8.2.3.tar.gz
 cd git-1.8.2.3/

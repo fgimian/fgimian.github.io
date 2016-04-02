@@ -6,7 +6,7 @@ date: 2012-12-08T19:47:00+11:00
 Setting up virtual environments for Python is always a great way to keep your
 projects and their related Python packages independent.
 
-## Virtualenv ##
+## Virtualenv
 
 [Virtualenv](http://www.virtualenv.org) is the de-facto standard choice for
 Python environments.  It's capable of creating independent Python module
@@ -16,14 +16,14 @@ get to a solution for that with pythonbrew later.
 
 To install virtualenv, simply use pip:
 
-``` bash
+```bash
 sudo pip install virtualenv
 ```
 
 If you would like bash completion, you can use the script created by Eugene
 Kalinin:
 
-``` bash
+```bash
 git clone git://github.com/ekalinin/virtualenv-bash-completion.git
 sudo cp ./virtualenv-bash-completion/virtualenv /etc/bash_completion.d/
 source ~/bashrc
@@ -34,7 +34,7 @@ root or an ordinary user on the system.
 
 Create an environment as follows:
 
-``` bash
+```bash
 virtualenv python-env
 ```
 
@@ -44,7 +44,7 @@ You now have a local instance of Python which can be found at
 You may then go ahead and install packages in the current directory by using
 the virtualenv's pip executable.
 
-``` bash
+```bash
 ./python-env/bin/pip install Flask
 ```
 
@@ -56,13 +56,13 @@ virtualenv has a cool little activate script which will alter your entire
 working environment so that you can use all tools as you would if they were
 installed on the system.
 
-``` bash
+```bash
 source ./python-env/bin/activate
 ```
 
 You may now use the tools as per usual:
 
-``` bash
+```bash
 (python-env)fots@fotsies-ubprecise-01:~$ which python
 /home/fots/python-env/bin/python
 (python-env)fots@fotsies-ubprecise-01:~$ which pip
@@ -71,14 +71,14 @@ You may now use the tools as per usual:
 
 To return to your normal environment, simply type deactivate:
 
-``` bash
+```bash
 deactivate
 ```
 
 I suggest adding the following to the end of your .bashrc to help simplify
 activation of virtualenvs:
 
-``` bash
+```bash
 # Switch to a Python virtual environment
 activate()
 {
@@ -88,11 +88,11 @@ activate()
 
 You may now type the following to activate a virtual environment for Python:
 
-``` bash
+```bash
 activate ./python-env
 ```
 
-## Pythonbrew Installation & Usage ##
+## Pythonbrew Installation & Usage
 
 [Pythonbrew](https://github.com/utahta/pythonbrew) takes virtualenv a lot
 further, allowing for installation of various Python versions and management
@@ -100,7 +100,7 @@ more akin to the amazing RVM for Ruby.
 
 Install pythonbrew as follows:
 
-``` bash
+```bash
 curl -kL http://xrl.us/pythonbrewinstall | bash
 echo "[[ -s $HOME/.pythonbrew/etc/bashrc ]] && source $HOME/.pythonbrew/etc/bashrc" >> ~/.bashrc
 source ~/.bashrc
@@ -108,83 +108,83 @@ source ~/.bashrc
 
 Since pythonbrew will build Python from source, we need to be prepared:
 
-``` bash
+```bash
 sudo apt-get install build-essential zlib1g-dev
 ```
 
 Installing Python versions may be done as follows:
 
-``` bash
+```bash
 pybrew install 2.7.3
 ```
 
 It's a good idea to switch on verbose mode if you want to see what's going on:
 
-``` bash
+```bash
 pybrew install --verbose 2.7.2
 ```
 
 To view the newest Python version for each sub-version and get an idea what you
 can install:
 
-``` bash
+```bash
 pybrew list -k
 ```
 
 Permanently switch to a Python version as follows:
 
-``` bash
+```bash
 pybrew switch 2.7.2
 ```
 
 Or temporarily switch to a Python version in the current session:
 
-``` bash
+```bash
 pybrew use 2.7.3
 ```
 
 Jump back to the system's Python version by using:
 
-``` bash
+```bash
 pybrew off
 ```
 
 You may also view all installed Python versions:
 
-``` bash
+```bash
 pybrew list
 ```
 
 Uninstall a version of Python as follows:
 
-``` bash
+```bash
 pybrew uninstall 2.7.2
 ```
 
 To upgrade pythonbrew to the newest version:
 
-``` bash
+```bash
 pybrew update
 ```
 
 You may run your Python script against all installed versions of Python using:
 
-``` bash
+```bash
 pybrew py -v test.py
 ```
 
-## Pythonbrew Environments Using Virtualenv ##
+## Pythonbrew Environments Using Virtualenv
 
 Pythonbrew can now use virtualenv to create environments.  Install virtualenv
 for pythonbrew as follows:
 
-``` bash
+```bash
 pybrew venv init
 ```
 
 Creating a project:
 
-``` bash
+```bash
 pybrew venv create proj
 ```
 
@@ -194,32 +194,32 @@ and one against 3.2.3 if you like.
 
 List your projects
 
-``` bash
+```bash
 pybrew venv list
 ```
 
 To switch to a project, type:
 
-``` bash
+```bash
 pybrew venv use proj
 ```
 
 To de-activate the environment:
 
-``` bash
+```bash
 deactivate
 ```
 
 To delete an environment:
 
-``` bash
+```bash
 pybrew venv delete proj
 ```
 
 You may install packages using pip which is available independently for each
 environment automatically.
 
-## Pythonbrew Shortcomings ##
+## Pythonbrew Shortcomings
 
 Pythonbrew has so much potential and could easily be as good as RVM, but there
 are a few problems:

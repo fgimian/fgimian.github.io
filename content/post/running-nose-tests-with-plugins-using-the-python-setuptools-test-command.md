@@ -9,7 +9,7 @@ the author is
 [deprecating the use of nose.collector](https://code.google.com/p/python-nose/issues/detail?id=219)
 which was used when running the **test** setuptools command:
 
-``` bash
+```bash
 python setup.py test
 ```
 
@@ -25,7 +25,7 @@ several problems:
 * The only way to ensure that nose is installed is using the **setup_requires**
   directive
 
-``` python
+```python
 setup(
     ...
     setup_requires=[
@@ -48,7 +48,7 @@ based on
 
 In **setup.py**:
 
-``` python
+```python
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
 
@@ -84,7 +84,7 @@ and also correctly detects plugins in setup.cfg.
 Here's the setup.cfg for my [Painter](https://github.com/fgimian/painter)
 project which I tested with:
 
-``` cfg
+```cfg
 [nosetests]
 detailed-errors=1
 with-coverage=1

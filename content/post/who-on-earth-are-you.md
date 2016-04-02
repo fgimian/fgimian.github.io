@@ -25,7 +25,7 @@ trance music on the side which has always been a passion of mine.
 
 In summary:
 
-``` python
+```python
 if reading('fotsies_technology_blog'):
     print blab_about('coding')
     print blab_about('software')

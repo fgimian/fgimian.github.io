@@ -12,18 +12,18 @@ I recently decided to start using a Samba share instead.  In case you're
 unaware, Samba allows Linux distros to create Windows shares which allow one to
 directly access the Unix filesystem in Windows.
 
-## Installing & Configuring Samba or Your Ubuntu VM ##
+## Installing & Configuring Samba or Your Ubuntu VM
 
 To begin, install Samba on your VM:
 
-``` bash
+```bash
 sudo apt-get install samba
 ```
 
 Now you'll just have to add a few lines to the Samba configuration file
 **/etc/samba/smb.conf** to make everything work:
 
-``` cfg
+```cfg
 [global]
    ...
 # The following property ensures that existing files do not have their
@@ -46,27 +46,27 @@ Now you'll just have to add a few lines to the Samba configuration file
 The last step to get everything working is to add a Samba user and password
 identical to your Linux user account:
 
-``` bash
+```bash
 sudo smbpasswd fots
 ```
 
 On some operating systems, you may need to explicitly create the account as
 follows:
 
-``` bash
+```bash
 sudo smbpasswd -a fots
 ```
 
 And then restart Samba so that the config can be re-read:
 
-``` bash
+```bash
 sudo service smbd restart
 ```
 
 Your Windows host should now have access to the share via the following UNC
 path **\\\\\\\<ip-address>\fots** (e.g. **\\\\\\192.168.172.101\fots**).
 
-## Setting up the Share on your Windows host ##
+## Setting up the Share on your Windows host
 
 I suggest mounting the share to a drive letter so that Sublime Text can add it
 as part of a project.

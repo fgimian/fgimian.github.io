@@ -3,10 +3,10 @@ title: Selecting a Solid Code Editor
 date: 2015-06-06T20:09:00+10:00
 ---
 
-Hello guys, hope everyone is doing well.  I'll start this post by admitting 
-that I absolutely love Sublime Text and already own a license for it.  But, 
-I'm a curious lad who likes to try new things and therefore I couldn't help 
-being interested in trying out the slew of new open source and also payware 
+Hello guys, hope everyone is doing well.  I'll start this post by admitting
+that I absolutely love Sublime Text and already own a license for it.  But,
+I'm a curious lad who likes to try new things and therefore I couldn't help
+being interested in trying out the slew of new open source and also payware
 editors which are popping up.
 
 As you also can tell, I primarily develop in Python but do a lot of frontend
@@ -14,19 +14,19 @@ work too, so CSS and Javascript are of interest.  In addition, there's a little
 C, Bash, PHP and Perl thrown in for good measure (mostly for legacy reasons ...
 I absolutely despise Perl).
 
-I'll be evaluating the current versions of [GitHub's Atom](https://atom.io/), 
+I'll be evaluating the current versions of [GitHub's Atom](https://atom.io/),
 [Adobe's Brackets](http://brackets.io/),
 [Microsoft's Code](https://code.visualstudio.com/) and
-[JetBrains' PyCharm](https://www.jetbrains.com/pycharm/) against the features 
+[JetBrains' PyCharm](https://www.jetbrains.com/pycharm/) against the features
 that I've come to love in [Sublime Text](http://www.sublimetext.com/).
 
-Please note that this post will continue to be updated as time goes on and 
-features are added to the various editors.  I'm happy to be corrected if I 
+Please note that this post will continue to be updated as time goes on and
+features are added to the various editors.  I'm happy to be corrected if I
 have missed anything here as I don't yet know all the other editors intimately.
 
-## Features to be Evaluated ##
+## Features to be Evaluated
 
-### Text Manipulation ###
+### Text Manipulation
 
 * **Multiple Cursors**: The ability to type on multiple lines and also select
   instances of a search term and place multiple cursors there
@@ -42,7 +42,7 @@ have missed anything here as I don't yet know all the other editors intimately.
 * **Replace**: Regular expression support and good highlighting of search terms
   as you type
 
-### General Editing & IDE Features ###
+### General Editing & IDE Features
 
 * **Appearance**: An appealing visual design
 * **Autocomplete (vars)**: Ability to autocomplete existing variables
@@ -72,16 +72,16 @@ have missed anything here as I don't yet know all the other editors intimately.
   where spacing is critical and for other languages purely for clean coding
 * **Rulers**: I like to stick with PEP8 standards and generally stick to
   lines of a certain length to avoid long lines
-* **Git Change Indicator**: Ability to see what lines in a file have been 
+* **Git Change Indicator**: Ability to see what lines in a file have been
   modified since the last commit
 
-### Web Development ###
+### Web Development
 
 * **Emmet**: We all know and love Emmet for HTML editing so it's a must
-* **CSS Colours**: A colour picker for CSS colours and the ability to see the 
+* **CSS Colours**: A colour picker for CSS colours and the ability to see the
   colour chosen at a glance
 
-### Miscellaneous Features ###
+### Miscellaneous Features
 
 * **Cross-platform**: We've come to expect that editors will work across
   Windows, OSX and Linux these days
@@ -94,7 +94,7 @@ have missed anything here as I don't yet know all the other editors intimately.
   on now
 * **Zooming**: Quick and easy zooming in and out with Ctrl+scrollwheel
 
-## Feature Comparison ##
+## Feature Comparison
 
 Legend:
 
@@ -151,7 +151,7 @@ Miscellaneous Features   Sublime   PyCharm    Atom    Brackets    Code
 * Zooming                   √         √         √         √√        x
 ```
 
-### Sublime Text ###
+### Sublime Text
 
 ![](/img/selecting-a-solid-code-editor/sublime-text.png)
 
@@ -180,7 +180,7 @@ The following features are limited or missing:
   [SublimeCodeIntel package](https://packagecontrol.io/packages/SublimeCodeIntel)
   so I don't consider that a good choice at this stage.
 * **Refactoring**: You may use *Expand Selection to Word* to rename variables
-  (be sure to do this without a selection).  Unfortunately, I'm not currently 
+  (be sure to do this without a selection).  Unfortunately, I'm not currently
   aware of how one could rename a variable for all files in the project.
 * **CSS Colours**: Although there are packages available such as
   [Color Highlighter](https://packagecontrol.io/packages/Color%20Highlighter)
@@ -193,7 +193,7 @@ It's easy to see why Sublime Text is so popular, it's an amazing editor.  It
 mainly lacks in the area of IDE features like full autocompletion for
 libraries and refactoring.
 
-### PyCharm ###
+### PyCharm
 
 ![](/img/selecting-a-solid-code-editor/pycharm.png)
 
@@ -224,7 +224,7 @@ The following features are limited or missing:
   long startup time.  You will need a moderately powerful machine to run
   and use this IDE.
 
-### Atom ###
+### Atom
 
 ![](/img/selecting-a-solid-code-editor/atom.png)
 
@@ -238,7 +238,7 @@ The following features require packages:
 * **Minimap**: Available via the
   [minimap package](https://atom.io/packages/minimap).
 * **Emmet**: Available via the [Emmet package](https://atom.io/packages/emmet).
-* **CSS Colours**: Available via the 
+* **CSS Colours**: Available via the
   [Color Picker extension](https://atom.io/packages/color-picker)
   and the
   [Atom Color Highlight extension](https://atom.io/packages/atom-color-highlight).
@@ -273,7 +273,7 @@ ending support and has various other relatively minor usability problems.  The
 performance problems while in Settings and lack of line endings for me are the
 biggest issues with the editor at the moment.
 
-### Brackets ###
+### Brackets
 
 ![](/img/selecting-a-solid-code-editor/brackets.png)
 
@@ -369,8 +369,8 @@ if name == 'Fotis':
   but it forces you to save the file before updated Git indicators are shown.
 * **Performance**: I'm sorry to say that Brackets felt very slow, even on my
   specced out system.  File switching is painfully slow when the minimap,
-  ruler and indent guide extensions are activated (but rather good without 
-  them).  The editor takes a little to start up.  The entire editor feels slow 
+  ruler and indent guide extensions are activated (but rather good without
+  them).  The editor takes a little to start up.  The entire editor feels slow
   in general compared to the rest.
 * **Scratch Pads**: Sadly, Brackets doesn't offer this feature, you must always
   save files when exiting the application.
@@ -381,7 +381,7 @@ contributed many extensions which improve the editor.  However, with the
 exception of the excellent IDE-style features provided for CSS, Javascript and
 HTML, Brackets generally falls short as an editor.
 
-### Code ###
+### Code
 
 ![](/img/selecting-a-solid-code-editor/code.png)
 
@@ -430,7 +430,7 @@ The following features are limited or missing:
 * **Other**: Code doesn't allow you to use a single key to select *Save*,
   *Cancel* or *Don't Save* when closing a file.
 
-## Conclusion ##
+## Conclusion
 
 Overall, we have many great choices here.  Personally, I feel that Brackets
 probably fell shortest of the bunch when considering it's been around for a

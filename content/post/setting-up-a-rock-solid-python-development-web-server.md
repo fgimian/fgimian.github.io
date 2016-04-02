@@ -28,7 +28,7 @@ The requirements I have for a development server are as follows:
 
 So let's get into it.
 
-## CherryPy ##
+## CherryPy
 
 [CherryPy](http://www.cherrypy.org/)'s web server is very well regarded and was
 one of the first I looked at.  My main criticism of CherryPy was its
@@ -38,13 +38,13 @@ use the Paste library for logging.
 
 Installation of CherryPy is super easy:
 
-``` bash
+```bash
 pip install cherrypy paste
 ```
 
 And here's the Flask script:
 
-``` python
+```python
 #!/usr/bin/env python
 
 from flask import Flask
@@ -86,7 +86,7 @@ if __name__ == "__main__":
 With a bit of extra effort, we can customise the access logging from Paste to
 be consistent with CherryPy if desired:
 
-``` python
+```python
 #!/usr/bin/env python
 
 import time
@@ -172,21 +172,21 @@ if __name__ == "__main__":
     run_server()
 ```
 
-## Gevent ##
+## Gevent
 
 [http://www.gevent.org/](Gevent) appears to be one of the fastest WSGI web
 servers out there and provides all the features we are after too!
 
 Installing Gevent is a bit more of a pain due to the libevent dependency:
 
-``` bash
+```bash
 sudo apt-get install build-essential python-dev libevent-dev
 pip install gevent
 ```
 
 And here's the Flask script:
 
-``` python
+```python
 #!/usr/bin/env python
 
 from flask import Flask
@@ -214,7 +214,7 @@ if __name__ == "__main__":
     run_server()
 ```
 
-## Gunicorn ##
+## Gunicorn
 
 [Gunicorn](http://gunicorn.org/) is a production-ready web server for Python.
 I must commend the designer of the site who shows that even Python-related
@@ -224,7 +224,7 @@ functionality is not natively included.
 
 Installing Gunicorn is painless:
 
-``` bash
+```bash
 pip install gunicorn
 ```
 
@@ -236,14 +236,14 @@ trigger a restart of Gunicorn.
 These tools rely on several C libraries, so there's a bit more to it than just
 using pip:
 
-``` bash
+```bash
 sudo apt-get install build-essential python-dev libyaml-dev
 pip install supervisor watchdog
 ```
 
 The supervisor configuration is as follows:
 
-``` ini
+```ini
 [supervisord]
 logfile=test.log
 loglevel=debug
@@ -261,7 +261,7 @@ command=watchmedo shell-command --patterns="*.py;*.html;*.css;*.js" --recursive 
 
 The Python script stays super clean and simple which is nice:
 
-``` python
+```python
 #!/usr/bin/env python
 
 from flask import Flask
@@ -277,7 +277,7 @@ def hello():
 
 We can now launch the web server using supervisor as follows:
 
-``` bash
+```bash
 supervisord -c test.conf
 ```
 
@@ -286,7 +286,7 @@ to the added complexity involved.  Another point worth noting is that
 **print statements to stdout do not appear on the console with Gunicorn**,
 unlike the rest of the web servers tested here.
 
-## Rocket ##
+## Rocket
 
 [Rocket](https://launchpad.net/rocket) is a newer pure Python WSGI web server
 which is also production ready.  I thought it would be worth giving it a try
@@ -294,13 +294,13 @@ too.
 
 Installing Rocket is very simple
 
-``` bash
+```bash
 pip install rocket
 ```
 
 And here's the Flask script:
 
-``` python
+```python
 #!/usr/bin/env python
 
 import logging
@@ -340,17 +340,17 @@ deployments, so it doesn't include an auto-restart feature.
 
 To restart it, you may send a **SIGUSR1** to the pid:
 
-``` bash
+```bash
 kill -SIGUSR1 <pid>
 ```
 
 You may shutdown the process using **SIGTERM**:
 
-``` bash
+```bash
 kill -SIGTERM <pid>
 ```
 
-## Tornado ##
+## Tornado
 
 [Tornado](http://www.tornadoweb.org/) appears to be well respected too and has
 no C dependencies.
@@ -361,13 +361,13 @@ to work with Tornado 3.x when I have a spare moment.
 
 Installing Tornado is as easy as CherryPy:
 
-``` bash
+```bash
 pip install tornado==2.4
 ```
 
 And here's the Flask script:
 
-``` python
+```python
 #!/usr/bin/env python
 
 from flask import Flask
@@ -408,12 +408,12 @@ if __name__ == "__main__":
     run_server()
 ```
 
-## Further WSGI Debugging with Werkzeug ##
+## Further WSGI Debugging with Werkzeug
 
 Flask's Werkzeug has an awesome debugging module which you will lose access to
 when not using the default web server.  But don't fear, we can add it back in!
 
-``` python
+```python
 ...
 from werkzeug.debug import DebuggedApplication
 ...
@@ -427,7 +427,7 @@ def run_server():
 Now simply ensure that you pass **app_debug** into sebsequent functions instead
 of **app** as we did above.
 
-## Further WSGI Logging with wsgilog ##
+## Further WSGI Logging with wsgilog
 
 An additional module you can plug in into your application is
 [wsgilog](http://pypi.python.org/pypi/wsgilog/) which provides further logging
@@ -435,13 +435,13 @@ options for capturing output of WSGI applications.
 
 Installation goes something like this:
 
-``` bash
+```bash
 pip install wsgilog
 ```
 
 You may use it as follows:
 
-``` python
+```python
 ...
 import wsgilog
 
@@ -456,7 +456,7 @@ app_logged_wsgi = wsgilog.WsgiLog(app, tohtml=True, tofile='wsgi.log',
 Now when initialising the web server, pass in **app_logged_wsgi** instead of
 **app**.
 
-## Final Words ##
+## Final Words
 
 To summarise, the following web servers failed to meet one or more criteria
 above:

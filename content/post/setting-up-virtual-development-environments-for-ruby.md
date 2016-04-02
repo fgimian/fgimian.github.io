@@ -14,11 +14,11 @@ for you and contains a very complete virtual environment experience with bash
 completion and even automatic switching of environments based on the project
 directory you are in.
 
-## RVM Installation & Usage ##
+## RVM Installation & Usage
 
 You may install RVM, the latest Ruby and rubygems as follows:
 
-``` bash
+```bash
 curl -L https://get.rvm.io | bash -s stable --ruby
 ```
 
@@ -26,48 +26,48 @@ This may be installed an root (to /usr/local/rvm) or as a user (to ~/.rvm)
 
 Now enable bash completion as follows:
 
-``` bash
+```bash
 echo "[[ -r $rvm_path/scripts/completion ]] && source $rvm_path/scripts/completion" >> ~/.bashrc
 source ~/.bashrc
 ```
 
 You may uninstall RVM at any time using the command:
 
-``` bash
+```bash
 rvm implode
 ```
 
 View the Ruby version and any other installed versions as follows:
 
-``` bash
+```bash
 rvm list
 ```
 
 To install an older Ruby version, simply run install:
 
-``` bash
+```bash
 rvm install 1.8.7
 ```
 
 You may now use the version:
 
-``` bash
+```bash
 rvm use 1.8.7
 ```
 
 You may check what version you are on at any time by simply using:
 
-``` bash
+```bash
 rvm use
 ```
 
 To upgrade RVM to the latest version at any time, simply use:
 
-``` bash
+```bash
 rvm get stable
 ```
 
-## RVM Environments ##
+## RVM Environments
 
 Environments are created against specific Ruby versions.  So for example, one
 could have two environments called "project1" as long as they are created
@@ -76,7 +76,7 @@ against a different version of Ruby.
 To create a virtual environment and install some gems (Ruby modules) in it,
 switch to the Ruby version you are interested in and create a gemset:
 
-``` bash
+```bash
 rvm use 1.9.3
 rvm gemset create project1
 ```
@@ -84,7 +84,7 @@ rvm gemset create project1
 You may switch to the new gemset using any of the following commands (take
 your pick):
 
-``` bash
+```bash
 rvm gemset use project1
 rvm @project1
 rvm 1.9.3@project1
@@ -92,13 +92,13 @@ rvm 1.9.3@project1
 
 And naturally, you may install gems in that gemset as follows:
 
-``` bash
+```bash
 gem install redcarpet
 ```
 
 To list all created gemsets (environments), use:
 
-``` bash
+```bash
 rvm gemset list
 ```
 
@@ -108,7 +108,7 @@ project:
 
 e.g.
 
-``` bash
+```bash
 rvm use 1.9.3
 rvm gemset use project1
 ```

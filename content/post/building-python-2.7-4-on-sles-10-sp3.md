@@ -9,7 +9,7 @@ procedure may also work on other versions of SLES and OpenSUSE too.
 
 First, install the Python build dependencies:
 
-``` bash
+```bash
 sudo zypper -n install gcc
 sudo zypper -n install sqlite-devel gdbm-devel zlib-devel openssl-devel ncurses-devel readline-devel
 sudo zypper -n install tk-devel tcl-devel xorg-x11-devel
@@ -17,7 +17,7 @@ sudo zypper -n install tk-devel tcl-devel xorg-x11-devel
 
 Download and extract Python:
 
-``` bash
+```bash
 wget http://www.python.org/ftp/python/2.7.4/Python-2.7.4.tgz
 tar xvfz Python-2.7.4.tgz
 cd Python-2.7.4/
@@ -25,14 +25,14 @@ cd Python-2.7.4/
 
 Patch the sqlite module to work correctly with the sqlite libraries on SLES:
 
-``` bash
+```bash
 sed -i 's/sqlite3_int64/sqlite_int64/' ./Modules/_sqlite/*
 ```
 
 Build Python with shared libraries (shared libraries ensure that Python works
 correctly with libraries like [rubypython](http://rubypython.rubyforge.org/)):
 
-``` bash
+```bash
 ./configure --enable-shared
 make
 ```
@@ -49,20 +49,20 @@ To find the necessary bits, look in setup.py in detect_modules() for the module'
 
 Finally, install Python to **/usr/local**:
 
-``` bash
+```bash
 sudo make install
 ```
 
 Update the available libraries in the OS (so that the newly created libpython
 is available):
 
-``` bash
+```bash
 sudo /sbin/ldconfig -v
 ```
 
 Clean up:
 
-``` bash
+```bash
 cd ..
 rm -rfv Python-2.7.4
 ```
@@ -70,7 +70,7 @@ rm -rfv Python-2.7.4
 Install easy install (I could only get this working reliably by switching to
 root):
 
-``` bash
+```bash
 sudo su -
 wget http://peak.telecommunity.com/dist/ez_setup.py
 python ez_setup.py
@@ -79,14 +79,14 @@ rm -v ez_setup.py
 
 Now install pip and distribute:
 
-``` bash
+```bash
 easy_install pip
 pip install distribute
 ```
 
 Drop out of root:
 
-``` bash
+```bash
 exit
 ```
 

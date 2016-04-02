@@ -16,19 +16,19 @@ understand it from the official documentation.
 In this post, I'm going to focus on regular functions.  We'll take a look at
 mocking classes and their related properties some time in the future.
 
-## Mocking Functions Using Decorators ##
+## Mocking Functions Using Decorators
 
 Let's start with the **os.urandom** function.  We'll begin by writing a mock
 function that will act similarly to urandom:
 
-``` python
+```python
 def simple_urandom(length):
     return 'f' * length
 ```
 
 OK, so now let's use it!
 
-``` python
+```python
 import unittest
 import os
 import mock
@@ -57,7 +57,7 @@ OK, but what if we imported the urandom function using a from statement?
 Well this is a special case where you can use **\_\_main\_\_** to mock the
 function:
 
-``` python
+```python
 import unittest
 from os import urandom
 import mock
@@ -77,7 +77,7 @@ Great stuff!  But in many cases, we would be importing a function from a module
 that calls urandom directly using a from import.  For example, let's say we had
 this function in a module called **fots**:
 
-``` python
+```python
 from os import urandom
 
 
@@ -87,7 +87,7 @@ def abc_urandom(length):
 
 In this case, we can mock the urandom function in the fots module like this:
 
-``` python
+```python
 import unittest
 import mock
 
@@ -106,16 +106,16 @@ occur.
 If you would like to perform a much simpler mock and just replace the return
 value of the function with a simple expression, you may do this:
 
-``` python
+```python
 @mock.patch('os.urandom', return_value='pumpkins')
 ```
 
-## Mocking Functions Using Context Managers ##
+## Mocking Functions Using Context Managers
 
 For more granular control over when mocking should take place within a test
 case, you may use a with statement instead of a decorator as shown below.
 
-``` python
+```python
 with mock.patch('os.urandom', return_value='pumpkins') as abc_urandom_function:
     assert abc_urandom(5) == 'abcpumpkins'
 ```
@@ -124,7 +124,7 @@ As you can see, the syntax really doesn't change all that much and once again
 you'll have the function available within the with statement's scope for
 manipulation.
 
-## Using the Mocked Function During Tests ##
+## Using the Mocked Function During Tests
 
 As mentioned above, using the decorator or context manager provides access to
 the mocked function via an additional variable.
@@ -132,7 +132,7 @@ the mocked function via an additional variable.
 Firstly, we can change the mock function on the fly throughout the test like
 this:
 
-``` python
+```python
 import unittest
 import mock
 import os
@@ -155,7 +155,7 @@ We can also determine if the mock function was called and how many times it was
 called.  These particular statistics can be reset using the **reset_mock**
 function.  Please see an example below:
 
-``` python
+```python
 import unittest
 import mock
 import os
@@ -184,7 +184,7 @@ class TestRandom(unittest.TestCase):
 You may even determine exactly what parameters the mocked function was called
 with:
 
-``` python
+```python
 import unittest
 import mock
 import os
@@ -216,7 +216,7 @@ class TestRandom(unittest.TestCase):
 
 Pretty cool huh?
 
-## Conclusion ##
+## Conclusion
 
 It's easy to see how awesome this library is and why it's now part of the
 standard library.  Its implementation is also very Pythonic and elegant.
