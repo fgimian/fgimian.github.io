@@ -178,7 +178,7 @@ pre {
 
 /* Footer strip */
 footer {
-  background: #000;
+  background: #1a1a1a;
   border-top: 1px #222 solid;
 }
 
@@ -228,9 +228,9 @@ header.header-post .post-heading h1 {
 
 .pager li a:hover,
 .pager li a:focus {
-  color: #FFF;
-  background: #0085a1;
-  border: 1px solid #0085a1;
+  color: #fff;
+  background: #0065a1;
+  border: 1px solid #006581;
 }
 
 /* --- Tables --- */
