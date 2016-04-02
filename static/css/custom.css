@@ -15,17 +15,23 @@ p {
 
 /* Links in posts */
 p a {
-  color: #008AFF;
+  color: #555;
 }
 
 /* Heading weight and spacing */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: normal;
   margin-bottom: 20px;
 }
 
 /* Make main headings brighter */
-h1, h2.post-title {
+h1,
+h2.post-title {
   color: #ccc;
 }
 
@@ -72,7 +78,8 @@ img::-moz-selection {
 }
 
 /* Code blocks and inline code */
-pre, code {
+pre,
+code {
   background: #002b36;
   color: #93a1a1;
   font-size: 16px;
@@ -162,7 +169,7 @@ footer {
 
 /* Footer links */
 footer a {
-  color: #505050;
+  color: #555;
 }
 
 /* --- Post preview --- */
@@ -174,7 +181,7 @@ footer a {
 
 /* Post preview links (e.g. Read More) */
 .post-preview a {
-  color: #404040;
+  color: #555;
 }
 
 .post-preview a:focus,
