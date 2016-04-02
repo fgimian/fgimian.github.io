@@ -106,15 +106,16 @@ pre {
   padding: 5px 10px 5px 10px;
 }
 
+/* TODO: repair this without destroying responsive design */
 /* Make posts wider */
-.col-lg-offset-2 {
-  margin-left: 160px;
-  margin-right: 160px;
-}
+// .col-lg-offset-2 {
+//   margin-left: 160px;
+//   margin-right: 160px;
+// }
 
-.col-lg-8 {
-  width: 850px;
-}
+// .col-lg-8 {
+//   width: 850px;
+// }
 
 /* --- Navbar --- */
 
@@ -213,8 +214,22 @@ footer a {
 /* --- Post and page layout --- */
 
 /* Push down posts a little to ensure no overlap with the larger avatar */
-header.header-post .post-heading h1 {
+header.header-post .post-heading h1,
+header.header-page .page-heading h1 {
   padding-top: 35px;
+}
+
+/* Shorten the height of page headings to align text with the same
+   height of the date on post headings */
+header.header-page .page-heading {
+  height: 70px;
+}
+
+/* Set the font size for the title on pages to be the same as posts */
+@media only screen and (min-width: 768px) {
+  header.header-page .page-heading h1 {
+    font-size: 50px;
+  }
 }
 
 /* --- Pager --- */

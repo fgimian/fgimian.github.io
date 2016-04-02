@@ -35,3 +35,13 @@ Author:
   twitter: fgimian
   linkedin: in/fotis-gimian-a5420053
   stackoverflow: 1905666/fotis-gimian
+
+# Navbar menu
+menu:
+  main:
+    - name: Blog
+      url: /
+      weight: 1
+    - name: About Me
+      url: /page/about/
+      weight: 2
