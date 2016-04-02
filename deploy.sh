@@ -32,3 +32,11 @@ git commit -m "Site updated at $(date -u "+%Y-%m-%d %H:%M:%S") UTC"
 echo
 echo "Deploying code to the master branch"
 git push --force origin master
+
+# Clean up the deploy directory
+echo
+echo "Cleaning up deploy directory"
+rm -rf "$deploy_dir"
+
+# Display a success message
+echo "Deployment complete"
