@@ -1,5 +1,5 @@
 ---
-title: Headless Browser Testing with Chrome & Firefox
+title: Headless Browser Testing with Chrome and Firefox
 date: 2014-04-06T21:38:00+10:00
 ---
 

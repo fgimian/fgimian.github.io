@@ -1,5 +1,5 @@
 ---
-title: Software Selections for both Windows & OSX
+title: Software Selections for both Windows and OSX
 date: 2013-02-18T20:29:00+11:00
 ---
 
