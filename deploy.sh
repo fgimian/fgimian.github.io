@@ -25,7 +25,7 @@ echo
 echo "Creating a new Git repository and adding content"
 git init
 git remote add origin "$git_remote"
-git checkout --orphan gh-pages
+git checkout --orphan master
 git add .
 git commit -m "Site updated at $(date -u "+%Y-%m-%d %H:%M:%S") UTC"
 
