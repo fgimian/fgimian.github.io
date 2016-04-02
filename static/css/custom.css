@@ -80,15 +80,30 @@ img::-moz-selection {
 /* Code blocks and inline code */
 pre,
 code {
-  background: #002b36;
-  color: #93a1a1;
   font-size: 16px;
 }
 
 pre {
   border: 0;
-  padding: 15px;
   line-height: 1.5 !important;
+}
+
+/* Spacing if code black line numbers are not enabled */
+.highlight pre {
+  padding: 12px 17px 12px 17px;
+}
+
+/* Spacing if code block line numbers are enabled */
+.highlighttable {
+  margin-bottom: 10px;
+}
+
+.highlighttable .linenos {
+  padding: 0;
+}
+
+.highlighttable pre {
+  padding: 5px 10px 5px 10px;
 }
 
 /* Make posts wider */

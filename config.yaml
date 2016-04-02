@@ -4,12 +4,15 @@ languageCode: en-us
 MetaDataFormat: yaml
 theme: beautifulhugo
 
-# Pygments Syntax Highlighting
-# TODO: this still needs work
+# Pygments code block support
 PygmentsCodeFences: true
-PygmentsStyle: solarizeddark
-PygmentsUseClasses: false
-PygmentsOptions: linenos=true
+
+# Enable the use of CSS classes so we can keep the Solarized theme in
+# this repository (see /static/css/solarized-dark.css)
+PygmentsUseClasses: true
+
+# Enable line numbers in code blocks
+# PygmentsOptions: linenos=true
 
 # Disqus commenting integration
 disqusShortname: fgimian
