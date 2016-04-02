@@ -15,7 +15,7 @@ p {
 
 /* Links in posts */
 p a {
-  color: #555;
+  color: #117711;
 }
 
 /* Heading weight and spacing */
@@ -37,12 +37,13 @@ h2.post-title {
 
 /* General links (including those in post previews) */
 a {
-  color: #555;
+  color: #117711;
 }
 
 a:hover,
 a:focus {
   color: #0085a1;
+  text-decoration: none;
 }
 
 /* Block quotes */
@@ -53,7 +54,7 @@ blockquote {
 
 /* Horizontal rule in single page mode */
 hr.small {
-  border-color: #444;
+  border-color: #555;
 }
 
 /* Selected text and images */
@@ -139,6 +140,12 @@ pre {
   color: #0085a1;
 }
 
+/* Align the left and right padding of the navbar */
+.navbar-custom .container-fluid {
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
 /* Make the avatar image a little bigger */
 @media only screen and (min-width: 768px) {
   .navbar-custom .avatar-container {
@@ -169,35 +176,30 @@ pre {
   }
 }
 
-/* Align the left and right padding of the navbar */
-.container-fluid {
-  padding-left: 25px;
-  padding-right: 25px;
-}
-
 /* --- Footer --- */
 
 /* Footer strip */
 footer {
-  background: #1a1a1a;
+  background: #111;
   border-top: 1px #222 solid;
 }
 
 /* Footer links */
 footer a {
-  color: #555;
+  color: #117711;
 }
 
 /* --- Post preview --- */
 
 /* Post preview line separators */
 .post-preview {
-  border-bottom: 1px solid #444;
+  border-bottom: 1px solid #555;
 }
 
 /* Post preview links (e.g. Read More) */
 .post-preview a {
-  color: #555;
+  color: #117711;
+  font-weight: normal !important;
 }
 
 .post-preview a:focus,
@@ -272,5 +274,5 @@ table tr:nth-child(2n) {
 table tr,
 table tr th,
 table tr td {
-  border: 1px solid #444;
+  border: 1px solid #555;
 }
