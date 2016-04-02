@@ -44,7 +44,7 @@ left panel under External, click **Erase** and set the options as follows
 **Format**: MS-DOS (FAT)  
 **Scheme**: Master Boot Record
 
-![](/images/installing-windows-10-on-a-mac-without-bootcamp/disk-utility-erase-disk.png)
+![](/img/installing-windows-10-on-a-mac-without-bootcamp/disk-utility-erase-disk.png)
 
 ## Turning Your USB Stick into a Windows Installer ##
 
@@ -55,7 +55,7 @@ click **OK**:
 **Type**: USB Drive  
 **Drive**: Your USB drive (you should only see one entry here)
 
-![](/images/installing-windows-10-on-a-mac-without-bootcamp/unetbootin.png)
+![](/img/installing-windows-10-on-a-mac-without-bootcamp/unetbootin.png)
 
 If you see more than one drive listed, you may confirm which is your USB drive 
 by opening the **Terminal** and typing:
@@ -94,7 +94,7 @@ click on **Partition**.
 Click the **+** button and create a new partition of your desired size for your
 Windows installation and name it as you wish (I'll call mine "BOOTCAMP").  Ensure that the **Format** is set to **MS-DOS (FAT)** and click on **Apply**.
 
-![](/images/installing-windows-10-on-a-mac-without-bootcamp/disk-utility-partition-disk.png)
+![](/img/installing-windows-10-on-a-mac-without-bootcamp/disk-utility-partition-disk.png)
 
 # Installing Windows #
 
@@ -106,7 +106,7 @@ then restart your Mac while holding down the **option (alt)** key.
 You should now be presented with a list of bootable drives. Select the USB 
 drive (usually titled "EFI Boot") to begin installing Windows.
 
-![](/images/installing-windows-10-on-a-mac-without-bootcamp/boot-select-device.png)
+![](/img/installing-windows-10-on-a-mac-without-bootcamp/boot-select-device.png)
 
 ## Correcting Your Windows Hard Disk Partition ##
 
@@ -114,12 +114,12 @@ When you are asked **Where do you want to install Windows?**, select the
 Windows partition created earlier (which I called "BOOTCAMP") and click
 **Delete**.
 
-![](/images/installing-windows-10-on-a-mac-without-bootcamp/windows-install-partition-delete.png)
+![](/img/installing-windows-10-on-a-mac-without-bootcamp/windows-install-partition-delete.png)
 
 Next, select the chunk of **Unallocated Space** and click on **New** to create 
 a proper Windows NTFS partition.
 
-![](/images/installing-windows-10-on-a-mac-without-bootcamp/windows-install-partition-new.png)
+![](/img/installing-windows-10-on-a-mac-without-bootcamp/windows-install-partition-new.png)
 
 **Note**: OS X only supports creation of FAT filesystems, so this is why we need
 to re-create the partition ourselves during install.
@@ -138,12 +138,12 @@ running AppleBcUpdate.exe from your USB stick).
 You may encounter a known issue whereby the Boot Camp Support Software 
 installer locks up while installing Realtek audio.
 
-![](/images/installing-windows-10-on-a-mac-without-bootcamp/bootcamp-installer-realtek-freeze.png)
+![](/img/installing-windows-10-on-a-mac-without-bootcamp/bootcamp-installer-realtek-freeze.png)
 
 If this occurs, you will need to open **Task Manager** and kill the
 **RealtekSetup.exe** process.
 
-![](/images/installing-windows-10-on-a-mac-without-bootcamp/bootcamp-installer-realtek-end-process.png)
+![](/img/installing-windows-10-on-a-mac-without-bootcamp/bootcamp-installer-realtek-end-process.png)
 
 After the installer has completed, answer **No** when prompted to reboot
 and install the Realtek drivers manually by running
@@ -171,7 +171,7 @@ Special: Left Windows => Special: Left Alt
 Special: Right Alt => Special: Right Windows  
 Special: Right Windows => Special: Right Alt  
 
-![](/images/installing-windows-10-on-a-mac-without-bootcamp/sharpkeys-configuration.png)
+![](/img/installing-windows-10-on-a-mac-without-bootcamp/sharpkeys-configuration.png)
 
 **Note**: for F13, you'll need to select **Press a key** and click F13 on your 
 keyboard.
@@ -181,7 +181,7 @@ keyboard.
 If you wish to flip scrolling direction to match that on OS X, run
 **FlipWheel.exe** and then click on **Flip All**.
 
-![](/images/installing-windows-10-on-a-mac-without-bootcamp/flipwheel-configuration.png)
+![](/img/installing-windows-10-on-a-mac-without-bootcamp/flipwheel-configuration.png)
 
 ## Enabling Scroll Lock on Boot ##
 
@@ -215,7 +215,7 @@ If you decide to remove Windows, you may find that Disk Utility doesn't allow
 you to delete the two partitions that have been created by the Windows 
 installer.
 
-![](/images/installing-windows-10-on-a-mac-without-bootcamp/disk-utility-delete-partitions.png)
+![](/img/installing-windows-10-on-a-mac-without-bootcamp/disk-utility-delete-partitions.png)
 
 This happens due to the fact that the first small partition created is of a 
 type called **Microsoft Reserved** which OS X's Disk Utility doesn't support.
@@ -226,7 +226,7 @@ simply boot from your USB stick as we did before and when you reach the
 "BOOTCAMP" partition and the small 16 MB partition of type **MSR (Reserved)**  
 just above the BOOTCAMP partition.
 
-![](/images/installing-windows-10-on-a-mac-without-bootcamp/windows-install-partition-clean.png)
+![](/img/installing-windows-10-on-a-mac-without-bootcamp/windows-install-partition-clean.png)
 
 Once done, simply quit the installer by clicking the X in the top right corner
 of each Window and reboot back into OS X.

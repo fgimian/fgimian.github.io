@@ -69,7 +69,7 @@ Under **Preferences** / **General**, tick **Quit with active transfers** and
 **Only when transfers are downloading** just below it, or alternatively un-tick
 both these check boxes:
 
-![](/images/shut-down-when-complete-with-the-transmission-torrent-client/transmission-shutdown-setup-1.png)
+![](/img/shut-down-when-complete-with-the-transmission-torrent-client/transmission-shutdown-setup-1.png)
 
 Finally, setup the script to run when downloads complete:
 
@@ -78,6 +78,6 @@ Under **Preferences** / **Transfers** / **Management**, tick
 can't see the Library directory, you may use **Cmd+Shift+G** and enter the path
 **~/Library/Application Support/Transmission/Scripts/** to get there.
 
-![](/images/shut-down-when-complete-with-the-transmission-torrent-client/transmission-shutdown-setup-2.png)
+![](/img/shut-down-when-complete-with-the-transmission-torrent-client/transmission-shutdown-setup-2.png)
 
 Enjoy! :)

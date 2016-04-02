@@ -26,7 +26,7 @@ permalinks:
 
 params:
   # Set my little round logo photo
-  logo: images/fotis.jpg
+  logo: img/fotis.jpg
 
 # Author information and links
 Author:

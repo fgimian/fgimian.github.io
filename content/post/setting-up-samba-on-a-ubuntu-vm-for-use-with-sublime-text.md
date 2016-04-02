@@ -88,6 +88,6 @@ steps below:
 
 And the result? ...
 
-![](/images/setting-up-samba-on-a-ubuntu-vm-for-use-with-sublime-text/sublime-text-samba.png)
+![](/img/setting-up-samba-on-a-ubuntu-vm-for-use-with-sublime-text/sublime-text-samba.png)
 
 YAY! Now we can get some work done with ease :)

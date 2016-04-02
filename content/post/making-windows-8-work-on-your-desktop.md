@@ -40,7 +40,7 @@ and uninstall the rest.  Be sure to leave **Store**, **Internet Explorer** and
    the very left
 2. Set **Show app notifications** to **Off**
 
-![](/images/making-windows-8-work-on-your-desktop/disable-notifications.png)
+![](/img/making-windows-8-work-on-your-desktop/disable-notifications.png)
 
 ## My Fonts Look Big & Weird Man
 
@@ -55,14 +55,14 @@ To revert the DPI back to the normal 100%, follow the steps below:
    larger or smaller**
 2. Set the value to **Smaller - 100%** and click **Apply**
 
-![](/images/making-windows-8-work-on-your-desktop/dpi-normal.png)
+![](/img/making-windows-8-work-on-your-desktop/dpi-normal.png)
 
 ## Make the Modern UI Your New Start Menu
 
 Your Modern UI Start screen should be looking pretty empty and neat now, so
 it's time to start making it useful.
 
-![](/images/making-windows-8-work-on-your-desktop/start-menu-system-favourites.png)
+![](/img/making-windows-8-work-on-your-desktop/start-menu-system-favourites.png)
 
 * **Computer**: Open Explorer using **Start + E**, right click on **Computer**
   in the left panel and click on **Pin to Start**
@@ -116,7 +116,7 @@ Here are some others I know many people will want on their Start screen:
 Another handy feature in Windows 8 is the **Win + X** shortcut which can also
 be accessed by right-clicking on the bottom left of the screen.
 
-![](/images/making-windows-8-work-on-your-desktop/right-click-start-menu.png)
+![](/img/making-windows-8-work-on-your-desktop/right-click-start-menu.png)
 
 This gives you access to some commonly used power user shortcuts.
 
@@ -145,7 +145,7 @@ any third party applications.
 
 Here's a sample of many of my grouped applications:
 
-![](/images/making-windows-8-work-on-your-desktop/start-menu-group-display.png)
+![](/img/making-windows-8-work-on-your-desktop/start-menu-group-display.png)
 
 Placing your shortcuts in groups is a simple matter of drag & drop.
 

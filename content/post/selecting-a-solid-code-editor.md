@@ -153,7 +153,7 @@ Miscellaneous Features   Sublime   PyCharm    Atom    Brackets    Code
 
 ### Sublime Text ###
 
-![](/images/selecting-a-solid-code-editor/sublime-text.png)
+![](/img/selecting-a-solid-code-editor/sublime-text.png)
 
 The following features require extensions:
 
@@ -195,7 +195,7 @@ libraries and refactoring.
 
 ### PyCharm ###
 
-![](/images/selecting-a-solid-code-editor/pycharm.png)
+![](/img/selecting-a-solid-code-editor/pycharm.png)
 
 The following features require plugins:
 
@@ -226,7 +226,7 @@ The following features are limited or missing:
 
 ### Atom ###
 
-![](/images/selecting-a-solid-code-editor/atom.png)
+![](/img/selecting-a-solid-code-editor/atom.png)
 
 The following features require packages:
 
@@ -275,7 +275,7 @@ biggest issues with the editor at the moment.
 
 ### Brackets ###
 
-![](/images/selecting-a-solid-code-editor/brackets.png)
+![](/img/selecting-a-solid-code-editor/brackets.png)
 
 The following features require extensions:
 
@@ -383,7 +383,7 @@ HTML, Brackets generally falls short as an editor.
 
 ### Code ###
 
-![](/images/selecting-a-solid-code-editor/code.png)
+![](/img/selecting-a-solid-code-editor/code.png)
 
 The following features are limited or missing:
 
