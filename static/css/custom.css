@@ -123,16 +123,16 @@ pre::-webkit-scrollbar-thumb:horizontal,
   padding: 5px 10px 5px 10px;
 }
 
-/* TODO: repair this without destroying responsive design */
-/* Make posts wider */
-// .col-lg-offset-2 {
-//   margin-left: 160px;
-//   margin-right: 160px;
-// }
+/* Make posts wider on large screens */
+@media (min-width: 1200px) {
+  .col-lg-8 {
+    width: 75%;
+  }
 
-// .col-lg-8 {
-//   width: 850px;
-// }
+  .col-lg-offset-2 {
+    margin-left: 12.5%;
+  }
+}
 
 /* --- Navbar --- */
 
