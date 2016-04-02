@@ -89,6 +89,18 @@ pre {
   line-height: 1.5 !important;
 }
 
+/* Code block scroll bar */
+pre::-webkit-scrollbar,
+.highlight::-webkit-scrollbar {
+  height: 0.5em;
+}
+
+pre::-webkit-scrollbar-thumb:horizontal,
+.highlight::-webkit-scrollbar-thumb:horizontal {
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+
 /* Spacing if code black line numbers are not enabled */
 .highlight pre {
   padding: 12px 17px 12px 17px;

@@ -1,8 +1,19 @@
-/* General Code Blocks */
+/* General code blocks */
 pre,
 code {
   background: #002b36;
   color: #93a1a1;
+}
+
+/* Code block scroll bar */
+pre::-webkit-scrollbar,
+.highlight::-webkit-scrollbar {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+pre::-webkit-scrollbar-thumb:horizontal,
+.highlight::-webkit-scrollbar-thumb:horizontal {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* Line Numbers */
