@@ -18,7 +18,7 @@ echo
 echo "Building Hugo site"
 hugo -d "$deploy_dir"
 
-# Initialise the deploy directory as
+# Initialise the deploy directory as a Git repository and add content
 cd "$deploy_dir"
 
 echo
@@ -30,5 +30,5 @@ git add .
 git commit -m "Site updated at $(date -u "+%Y-%m-%d %H:%M:%S") UTC"
 
 echo
-echo "Deploying code to the gh-pages branch"
-git push --force origin gh-pages
+echo "Deploying code to the master branch"
+git push --force origin master
