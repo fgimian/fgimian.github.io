@@ -37,7 +37,7 @@ h2.post-title {
 
 /* General links (including those in post previews) */
 a {
-  color: #008AFF;
+  color: #555;
 }
 
 a:hover,
@@ -193,6 +193,13 @@ footer a {
 .post-preview .post-meta,
 .post-heading .post-meta {
   color: #808080;
+}
+
+/* --- Post and page layout --- */
+
+/* Push down posts a little to ensure no overlap with the larger avatar */
+header.header-post .post-heading h1 {
+  padding-top: 35px;
 }
 
 /* --- Pager --- */
