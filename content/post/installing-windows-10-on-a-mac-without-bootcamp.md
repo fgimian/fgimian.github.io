@@ -40,8 +40,8 @@ Attach your USB stick and start **Disk Utility**, select your USB drive in the
 left panel under External, click **Erase** and set the options as follows
 (exactly) and click **Erase**:
 
-**Name**: FAT32 
-**Format**: MS-DOS (FAT) 
+**Name**: FAT32  
+**Format**: MS-DOS (FAT)  
 **Scheme**: Master Boot Record
 
 ![](/img/installing-windows-10-on-a-mac-without-bootcamp/disk-utility-erase-disk.png)
@@ -51,8 +51,8 @@ left panel under External, click **Erase** and set the options as follows
 Open **unetbootin**, enter your password, set the options as follows and
 click **OK**:
 
-**Diskimage**: checked, set to **ISO** and browse to your Windows 10 ISO 
-**Type**: USB Drive 
+**Diskimage**: checked, set to **ISO** and browse to your Windows 10 ISO  
+**Type**: USB Drive  
 **Drive**: Your USB drive (you should only see one entry here)
 
 ![](/img/installing-windows-10-on-a-mac-without-bootcamp/unetbootin.png)
@@ -165,11 +165,11 @@ Once complete, reboot Windows.
 Install and run **SharpKeys** and then configure the following mappings to
 correct your Mac keyboard so that it behaves like a regular Windows keyboard:
 
-Function: F13 -> Special: PrtSc 
-Special: Left Alt => Special: Left Windows 
-Special: Left Windows => Special: Left Alt 
-Special: Right Alt => Special: Right Windows 
-Special: Right Windows => Special: Right Alt 
+Function: F13 -> Special: PrtSc  
+Special: Left Alt => Special: Left Windows  
+Special: Left Windows => Special: Left Alt  
+Special: Right Alt => Special: Right Windows  
+Special: Right Windows => Special: Right Alt
 
 ![](/img/installing-windows-10-on-a-mac-without-bootcamp/sharpkeys-configuration.png)
 

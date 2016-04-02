@@ -89,6 +89,10 @@ pre {
   line-height: 1.5 !important;
 }
 
+code {
+  white-space: pre !important;
+}
+
 /* Code block scroll bar */
 pre::-webkit-scrollbar,
 .highlight::-webkit-scrollbar {
