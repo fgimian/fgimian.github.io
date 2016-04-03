@@ -237,6 +237,11 @@ header.header-page .page-heading h1 {
   padding-top: 35px;
 }
 
+/* Push down 404 pages a little (offsetting the 20px margin-top) */
+.main-content .text-center {
+  padding-top: 15px;
+}
+
 /* Shorten the height of page headings to align text with the same
    height of the date on post headings */
 header.header-page .page-heading {
