@@ -25,17 +25,17 @@ several problems:
 * The only way to ensure that nose is installed is using the **setup_requires**
   directive
 
-```python
-setup(
-    ...
-    setup_requires=[
-        'nose',
-        'coverage',
-        'mock'
-    ],
-    ...
-)
-```
+    ```python
+    setup(
+        ...
+        setup_requires=[
+            'nose',
+            'coverage',
+            'mock'
+        ],
+        ...
+    )
+    ```
 
 * Using the setup_requires directive means that every time a user installs your
   package using pip, they must also download all the setup dependencies, which

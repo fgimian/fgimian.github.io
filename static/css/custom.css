@@ -13,6 +13,10 @@ p {
   margin: 20px 0;
 }
 
+li p {
+  margin-top: 0;
+}
+
 /* Links in posts */
 p a {
   color: #117711;
@@ -108,18 +112,23 @@ pre::-webkit-scrollbar-thumb:horizontal,
 /* Spacing if code black line numbers are not enabled */
 .highlight pre {
   padding: 12px 17px 12px 17px;
+  border: 1px solid #494949;
 }
 
 /* Spacing if code block line numbers are enabled */
 .highlighttable {
   margin-bottom: 10px;
+  width: 100%;
 }
 
 .highlighttable .linenos {
   padding: 0;
+  width: 1px;
+  white-space: nowrap;
 }
 
 .highlighttable pre {
+  border: 0;
   padding: 5px 10px 5px 10px;
 }
 
@@ -295,5 +304,5 @@ table tr:nth-child(2n) {
 table tr,
 table tr th,
 table tr td {
-  border: 1px solid #555;
+  border: 1px solid #494949;
 }
