@@ -1,0 +1,68 @@
+#!/bin/bash
+
+case $1 in
+  develop)
+    # Convert SIGINT and SIGTERM to an EXIT signal to avoid duplicate traps
+    trap 'exit' INT TERM
+
+    # Kill all processes in the current process group
+    trap 'kill 0' EXIT
+
+    # Run the hugo server
+    hugo server &
+
+    # Wait for all background processes to complete
+    wait
+    ;;
+  deploy)
+    # Generate a new temporary directory for our deployment
+    deploy_dir=$(mktemp -d -t hugo-deploy)
+    echo "Using deploy directory ${deploy_dir}"
+
+    # Determine the remote origin Git location
+    git_remote=$(git remote get-url --push origin)
+    echo "Determined that Git remote is ${git_remote}"
+
+    # Update git submodules
+    echo "Updating Git submodules"
+    git submodule init
+    git submodule update
+
+    # Build the site in the deploy directory
+    echo
+    echo "Building Hugo site"
+    hugo -d "$deploy_dir"
+
+    # Initialise the deploy directory as a Git repository and add content
+    cd "$deploy_dir" || exit 1
+
+    echo
+    echo "Creating a new Git repository and adding content"
+    git init
+    git remote add origin "$git_remote"
+    git checkout --orphan master
+    git add .
+    git commit -m "Site updated at $(date -u "+%Y-%m-%d %H:%M:%S") UTC"
+
+    echo
+    echo "Deploying code to the master branch"
+    git push --force origin master
+
+    # Clean up the deploy directory
+    echo
+    echo "Cleaning up deploy directory"
+    rm -rf "$deploy_dir"
+
+    # Display a success message
+    echo "Deployment complete"
+    ;;
+  *)
+    echo "Usage: $0 <command>"
+    echo ""
+    echo "available commands are as follows"
+    echo "   develop    Start the development server"
+    echo "   deploy     Build and deploy the codebase to GitHub pages"
+    echo ""
+    exit 1
+    ;;
+esac
