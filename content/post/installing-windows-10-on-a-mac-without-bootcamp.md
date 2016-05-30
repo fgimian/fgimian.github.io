@@ -30,7 +30,8 @@ please proceed at your own risk.
 * A copy of the [Windows 10 ISO](https://www.microsoft.com/en-au/software-download/windows10ISO)
 * A valid Windows 10 license
 * A downloaded copy of [unetbootin](https://unetbootin.github.io/)
-* The latest version of [Boot Camp Support Software 6.0](http://swcdn.apple.com/content/downloads/10/60/031-30899/6u2bha6n3pckjca1j44jw9m28yq72nh6li/AppleBcUpdate.exe) (link courtesy of [this reddit post](https://www.reddit.com/r/apple/comments/3h7zj1/bootcamp_6_download_link/))
+* The latest version of Boot Camp Support Software which you can download using
+my little [Campies](https://github.com/fgimian/campies) script
 
 # Creating a Bootable USB Windows 10 Installer
 
@@ -83,8 +84,8 @@ When this has completed, you may right click on the USB stick in Finder,
 select **Rename "FAT32"** and rename it as you like (I'll call mine
 "WINDOWS 10").
 
-Finally, copy the Boot Camp Support Software (AppleBcUpdate.exe) to the
-Windows 10 USB stick so it's easy to get to after our installation.
+Finally, copy the Boot Camp Support Software archive created using Campies to
+the Windows 10 USB stick so it's easy to get to after our installation.
 
 # Partitioning Your Drive
 
@@ -131,7 +132,7 @@ Allow the installer to complete and boot into Windows.
 ## Installing Boot Camp Support Software
 
 Once Windows is up and running, install the Boot Camp Support software (by
-running AppleBcUpdate.exe from your USB stick).
+extracting the BootCamp driver archive and running **BootCamp/Setup.exe**).
 
 **Note**: The installer takes a little while to show up, so please be patient.
 
