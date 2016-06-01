@@ -1,6 +1,11 @@
 # Fotsies Technology Blog
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/fgimian/gimian.github.io/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/fgimian/fgimian.github.io/blob/master/LICENSE)
+
+![Fotsies Technology Blog](https://raw.githubusercontent.com/fgimian/fgimian.github.io/source/images/fotsies-technology-blog-logo.png)
+
+Artwork courtesy of
+[Open Clip Art Library](https://openclipart.org/detail/97789/nerd)
 
 ## Introduction
 
@@ -39,5 +44,5 @@ And when you're ready to deploy, use:
 ## License
 
 Fotsies Technology Blog is released under the **MIT** license. Please see the
-[LICENSE](https://github.com/fgimian/gimian.github.io/blob/master/LICENSE)
+[LICENSE](https://github.com/fgimian/fgimian.github.io/blob/source/LICENSE)
 file for more details.

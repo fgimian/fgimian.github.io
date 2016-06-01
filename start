@@ -13,7 +13,7 @@ case $1 in
     git submodule update --init
 
     # Run the hugo server
-    hugo server &
+    hugo server -s blog &
 
     # Wait for all background processes to complete
     wait
@@ -34,7 +34,7 @@ case $1 in
     # Build the site in the deploy directory
     echo
     echo "Building Hugo site"
-    hugo -d "$deploy_dir"
+    hugo -s blog -d "$deploy_dir"
 
     # Initialise the deploy directory as a Git repository and add content
     cd "$deploy_dir" || exit 1
