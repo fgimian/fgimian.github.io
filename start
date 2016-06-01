@@ -1,71 +1,87 @@
-#!/bin/bash
+#!/bin/bash -euo pipefail
 
-case $1 in
-  develop)
-    # Convert SIGINT and SIGTERM to an EXIT signal to avoid duplicate traps
-    trap 'exit' INT TERM
+# Setup bash similar to a Makefile (pass environment variables to child
+# processes, stop on failure and set the return code to the last failed
+# command).  You may also add -x so that bash shows all commands as they run.
 
-    # Kill all processes in the current process group
-    trap 'kill 0' EXIT
+develop()
+{
+  # Convert SIGINT and SIGTERM to an EXIT signal to avoid duplicate traps
+  trap 'exit' INT TERM
 
-    # Update git submodules
-    echo "Updating Git submodules"
-    git submodule update --init
+  # Kill all processes in the current process group
+  trap 'kill 0' EXIT
 
-    # Run the hugo server
-    hugo server -s blog &
+  # Update git submodules
+  echo "Updating Git submodules"
+  git submodule update --init
 
-    # Wait for all background processes to complete
-    wait
-    ;;
-  deploy)
-    # Generate a new temporary directory for our deployment
-    deploy_dir=$(mktemp -d -t hugo-deploy)
-    echo "Using deploy directory ${deploy_dir}"
+  # Run the hugo server
+  hugo server -s blog &
 
-    # Determine the remote origin Git location
-    git_remote=$(git remote get-url --push origin)
-    echo "Determined that Git remote is ${git_remote}"
+  # Wait for all background processes to complete
+  wait
+}
 
-    # Update git submodules
-    echo "Updating Git submodules"
-    git submodule update --init
+deploy()
+{
+  # Generate a new temporary directory for our deployment
+  local deploy_dir=$(mktemp -d -t hugo-deploy)
+  echo "Using deploy directory ${deploy_dir}"
 
-    # Build the site in the deploy directory
-    echo
-    echo "Building Hugo site"
-    hugo -s blog -d "$deploy_dir"
+  # Determine the remote origin Git location
+  git_remote=$(git remote get-url --push origin)
+  echo "Determined that Git remote is ${git_remote}"
 
-    # Initialise the deploy directory as a Git repository and add content
-    cd "$deploy_dir" || exit 1
+  # Update git submodules
+  echo "Updating Git submodules"
+  git submodule update --init
 
-    echo
-    echo "Creating a new Git repository and adding content"
-    git init
-    git remote add origin "$git_remote"
-    git checkout --orphan master
-    git add .
-    git commit -m "Site updated at $(date -u "+%Y-%m-%d %H:%M:%S") UTC"
+  # Build the site in the deploy directory
+  echo
+  echo "Building Hugo site"
+  hugo -s blog -d "$deploy_dir"
 
-    echo
-    echo "Deploying code to the master branch"
-    git push --force origin master
+  # Initialise the deploy directory as a Git repository and add content
+  cd "$deploy_dir" || exit 1
 
-    # Clean up the deploy directory
-    echo
-    echo "Cleaning up deploy directory"
-    rm -rf "$deploy_dir"
+  echo
+  echo "Creating a new Git repository and adding content"
+  git init
+  git remote add origin "$git_remote"
+  git checkout --orphan master
+  git add .
+  git commit -m "Site updated at $(date -u "+%Y-%m-%d %H:%M:%S") UTC"
 
-    # Display a success message
-    echo "Deployment complete"
-    ;;
-  *)
-    echo "Usage: $0 <command>"
-    echo ""
-    echo "available commands are as follows"
-    echo "   develop    Start the development server"
-    echo "   deploy     Build and deploy the codebase to GitHub pages"
-    echo ""
-    exit 1
-    ;;
-esac
+  echo
+  echo "Deploying code to the master branch"
+  git push --force origin master
+
+  # Clean up the deploy directory
+  echo
+  echo "Cleaning up deploy directory"
+  rm -rf "$deploy_dir"
+
+  # Display a success message
+  echo "Deployment complete"
+}
+
+if [ $# -ge 1 ] && declare -f "$1" > /dev/null
+then
+  $1
+else
+  if [ $# -ge 1 ]
+  then
+    echo "$0: '$1' is not a supported command"
+  else
+    echo "usage: $0 <command>"
+  fi
+  echo "
+    available commands are as follows
+       develop    Start the development server
+       deploy     Build and deploy the codebase to GitHub pages
+
+    Please pop over to http://fgimian.github.io/ when you've deployed new
+    posts to check them out." | sed -E "s/ {4}//"
+  exit 1
+fi
