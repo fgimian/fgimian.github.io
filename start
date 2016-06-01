@@ -42,7 +42,7 @@ deploy()
   rm -rf "$deploy_dir"
 }
 
-if [[ $0 == "$BASH_SOURCE" ]]
+if [[ $0 == "${BASH_SOURCE[0]}" ]]
 then
   # Check that the command requested has been defined
   if [ $# -ge 1 ] && declare -f "$1" > /dev/null
