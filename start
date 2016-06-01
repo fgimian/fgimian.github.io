@@ -8,6 +8,10 @@ case $1 in
     # Kill all processes in the current process group
     trap 'kill 0' EXIT
 
+    # Update git submodules
+    echo "Updating Git submodules"
+    git submodule update --init
+
     # Run the hugo server
     hugo server &
 
@@ -25,8 +29,7 @@ case $1 in
 
     # Update git submodules
     echo "Updating Git submodules"
-    git submodule init
-    git submodule update
+    git submodule update --init
 
     # Build the site in the deploy directory
     echo
