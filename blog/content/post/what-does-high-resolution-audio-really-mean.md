@@ -5,7 +5,7 @@ date: 2016-06-13T11:00:38+10:00
 
 There's a lot of misinformation out there right now relating to so-called
 **high resolution audio**.  Many large companies are now marketing audio
-products with this term, including audio systems, phones, headphonesa and
+products with this term, including audio systems, phones, headphones and
 speakers.
 
 But what is high resolution audio exactly?  Is it audio that's provided at
@@ -114,8 +114,8 @@ program's loudness and the recent
 recommendation for music and streaming also provides a very good
 standard for music loudness.
 
-People and mastering engineers are more openly talking about the loudness war
-and have even started a petition called
+Listeners and mastering engineers are more openly talking about the loudness
+war and have even started a petition called
 [Bring Peace to the Loudness War](https://www.change.org/p/music-streaming-services-bring-peace-to-the-loudness-war).
 
 ## What About Higher Bit Depths & Sample Rates?
@@ -140,8 +140,8 @@ true with a few important caveats:
   upsampling to process audio at double the sample rate and then convert
   it back down again.
 
-    As such, poorly designed DSP algorithms (which there are many) which
-    aren't upsampled do sound inferior at lower sample rates.
+    As such, poorly designed DSP and synthesis algorithms (which there are
+    many) that aren't upsampled do sound inferior at lower sample rates.
 
 * **Downsampling**: Recording at a higher sample rate requires you to
   downsample when producing a 16-bit / 44.1 kHz version for CD and most digital
@@ -154,8 +154,8 @@ true with a few important caveats:
     There is [an entire site](http://src.infinitewave.ca/) dedicated to
     testing sample converters and not all are made equal.
 
-* **Dithering**: Recording at a higher bitrate requires you to dither the
-audio when converting to a lower bitrate.
+* **Dithering**: Recording at a higher bit depth requires you to dither the
+audio when converting to a lower bit depth.
 
     Although not quite as troublesome as sample rate conversion, dithering
     algorithms and variables such as noise shaping can play a role in the
@@ -201,8 +201,9 @@ To me, high resolution audio is first and foremost audio that has not been
 mastered using dynamics compressors, peak limiters or clippers.  It is music
 that has been well written, produced, mixed and mastered.
 
-An audio system or phone is high resolution if it offers a clean and flat
-representation of the source with no noticeable noise.
+I believe that an audio system or phone is high resolution if it offers a
+clean and flat frequency response when reproducing the source with no
+noticeable noise.
 
 Unless a pair of headphones or speakers contain a DAC built in, their claim to
 be **high resolution** is quite confusing.
