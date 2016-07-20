@@ -24,14 +24,25 @@ helped you out :)
 destroy your partitions and data.  I accept no responsibility for such loss so
 please proceed at your own risk.
 
+**Update (2016-07-20)**: I have updated this post with further improvements
+relating to downloading of Boot Camp drivers and ensuring that a Hybrid MBR is
+not used (which would cause issues when installing Windows).
+
 # What You Will Need
 
 * An 8 GB or larger USB stick
 * A copy of the [Windows 10 ISO](https://www.microsoft.com/en-au/software-download/windows10ISO)
 * A valid Windows 10 license
 * A downloaded copy of [unetbootin](https://unetbootin.github.io/)
-* The latest version of Boot Camp Support Software which you can download using
-my little [Campies](https://github.com/fgimian/campies) script
+
+# Downloading Boot Camp Drivers
+
+1. Start **Boot Camp Assistant**
+2. Select **Action** / **Download Windows Support Software**
+3. Choose your **Dowloads** directory, enter your password and then click
+   **Save**
+
+This will be the only step that we will use Boot Camp Assistant for.
 
 # Creating a Bootable USB Windows 10 Installer
 
@@ -62,11 +73,10 @@ If you see more than one drive listed, you may confirm which is your USB drive
 by opening the **Terminal** and typing:
 
 ```bash
-diskutil list
+diskutil list FAT32
 ```
 
-You'll see your USB drive as part of the output and it should look something
-like this:
+You'll see your USB drive in the output and it should look something like this:
 
 ```
 /dev/disk2 (external, physical):
@@ -84,7 +94,7 @@ When this has completed, you may right click on the USB stick in Finder,
 select **Rename "FAT32"** and rename it as you like (I'll call mine
 "WINDOWS 10").
 
-Finally, copy the Boot Camp Support Software archive created using Campies to
+Finally, copy the **WindowsSupport** in your Downloads directory to
 the Windows 10 USB stick so it's easy to get to after our installation.
 
 # Partitioning Your Drive
@@ -97,9 +107,71 @@ Windows installation and name it as you wish (I'll call mine "BOOTCAMP").  Ensur
 
 ![](/img/installing-windows-10-on-a-mac-without-bootcamp/disk-utility-partition-disk.png)
 
+# Ensuring that a Hybrid MBR is not used
+
+Huge thanks to Rod's post from the superuser post titled
+[Windows detects GPT disk as MBR in EFI boot](http://superuser.com/questions/508026/windows-detects-gpt-disk-as-mbr-in-efi-boot).
+
+Once you add a FAT32 partition with either Boot Camp Assistant or Disk Utility,
+your disk is converted into a hybrid GPT / MBR disk which is actually not
+supported by newer versions of Windows.  In this step, we revert this
+additional change made by Disk Utility by switching back to a pure GPT
+partition table.
+
+1. Dowload the latest version of
+   [GPT fdisk](https://sourceforge.net/projects/gptfdisk/files/gptfdisk/)
+   by browsing to the version, then **gdisk-binaries** and clicking the file
+   with the ***.pkg** extension (e.g. gdisk-1.0.1.pkg).
+2. Install GPT fdisk by running the installer you downloaded
+3. Open a Terminal and check the state of your MBR
+
+    ```bash
+    sudo gdisk /dev/disk0
+    ```
+
+    If your MBR partition is set to **hybrid**, please continue with step 4,
+    otherwise if it is set to **protective**, you may skip the rest of this
+    section.  Simply type **q** and hit **return** to exit GPT fdisk.
+
+4. Type **p** to view the existing partition table and verify you're working
+   on the correct disk
+5. Type **x** to enter the expert menu
+6. Type **n** to create a fresh protective MBR
+7. Type **w** to save your changes and confirm the change when asked
+9. Type **q** to exit GPT fdisk
+9. Run GPT fdisk to show your disk layout:
+
+    ```bash
+    sudo gdisk -l /dev/disk0
+    ```
+
+    Your partition table should look something like this:
+
+    ```bash
+    GPT fdisk (gdisk) version 1.0.1
+
+    Warning: Devices opened with shared lock will not have their
+    partition table automatically reloaded!
+    Partition table scan:
+      MBR: protective
+      BSD: not present
+      APM: not present
+      GPT: present
+
+    Found valid GPT with protective MBR; using GPT.
+    ```
+
 # Installing Windows
 
-## Booting from the USB Stick
+## Disconnecting All Devices From USB Ports
+
+This step is critical as I have had rather serious problems during Windows
+installation when certain external drives are connected.
+
+Unplug everything from your Mac except your keyboard (if wired) and your
+bootable Windows USB stick (which we prepared earlier).
+
+## Booting From the USB Stick
 
 Ensure that the USB stick containing the Windows installer is inserted and
 then restart your Mac while holding down the **option (alt)** key.
@@ -131,8 +203,8 @@ Allow the installer to complete and boot into Windows.
 
 ## Installing Boot Camp Support Software
 
-Once Windows is up and running, install the Boot Camp Support software (by
-extracting the BootCamp driver archive and running **BootCamp/Setup.exe**).
+Once Windows is up and running, install the Boot Camp Support software running
+**WindowsSupport/BootCamp/Setup.exe** on your USB stick.
 
 **Note**: The installer takes a little while to show up, so please be patient.
 
