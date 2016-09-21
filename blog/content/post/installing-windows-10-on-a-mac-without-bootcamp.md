@@ -171,6 +171,12 @@ installation when certain external drives are connected.
 Unplug everything from your Mac except your keyboard (if wired) and your
 bootable Windows USB stick (which we prepared earlier).
 
+If your Mac contains multiple physical drives, you will need to disconnect
+all disks except the one which you intend to install Windows on or you may
+encounter the following error:
+
+> Windows could not prepare the computer to boot into the next phase of installation. To install Windows, restart the installation.
+
 ## Booting From the USB Stick
 
 Ensure that the USB stick containing the Windows installer is inserted and
