@@ -38,11 +38,14 @@ The structure of Launchpad data is as follows:
 │   ├── Page 1
 │   │   ├── App 1
 │   │   ├── App 2
-│   │   ├── Folder 1 Root
-│   │   │   └── Folder 1
-│   │   │       ├── App 3
-│   │   │       └── App 4
-│   │   └── App 5
+│   │   ├── Folder Root
+│   │   │   │── Folder Page 1
+│   │   │   │   │── App 3
+│   │   │   │   └── App 4
+│   │   │   └── Folder Page 2
+│   │   │       ├── App 5
+│   │   │       └── App 6
+│   │   └── App 7
 │   ├── Page 2
 │   └── ...
 └── Dashboard (Widgets) Root
@@ -50,11 +53,14 @@ The structure of Launchpad data is as follows:
     ├── Page 1
     │   ├── Widget 1
     │   ├── Widget 2
-    │   ├── Folder 1 Root
-    │   │   └── Folder 1
-    │   │       ├── Widget 3
-    │   │       └── Widget 4
-    │   └── Widget 5
+    │   ├── Folder Root
+    │   │   │── Folder Page 1
+    │   │   │   │── Widget 3
+    │   │   │   └── Widget 4
+    │   │   └── Folder Page 1
+    │   │       ├── Widget 5
+    │   │       └── Widget 6
+    │   └── Widget 7
     ├── Page 2
     └── ...
 ```
@@ -64,7 +70,7 @@ The structure of Launchpad data is as follows:
 The **dbinfo** table provides the root id for each type of Launchpad data.
 
 * **launchpad_root** is the root id for the main Launchpad apps pages
-* **dashboard_root** is the root id for the Dashboard widget pagess  
+* **dashboard_root** is the root id for the Dashboard widget pages  
   (accessible by clicking the + icon in Dashboard)
 * **launchpad_version_root**: is the root id for Launchpad version metadata  
   (this is of least importance to us)
@@ -169,7 +175,7 @@ The types are as follows:
 * **groups table**
     + **1**: root
     + **2**: folder root
-    + **3**: page or folder
+    + **3**: page or folder page
 * **apps table**
     + **4**: app
 * **downloading_apps table**:
@@ -226,7 +232,9 @@ rowid    uuid                                   type    parent_id  ordering
 ```
 
 Here, we have the holding page first, and 3 pages with ids of 128, 134 and 135 
-respectively.
+respectively.  Please also note that unlike apps and widgets, the ordering of
+the actual page content starts at 1 due to the holding page occupying ordering
+of 0.
 
 Similarly, let's check out root id 3 (Dashboard) and all pages having it as
 as a parent_id:
@@ -262,7 +270,7 @@ Here, the folder root has an id of 129 and is present on the page with an id
 of 128 (i.e. page 1).  As seen earlier when examining the groups table,
 the folder name is contained on the folder root object.
 
-The contents of the folder has an id of 130.
+The first page of the folder has an id of 130.
 
 Now let's check out the item relating to one of our apps 1Password, which had
 an id of 9 as seen above in the apps table:
