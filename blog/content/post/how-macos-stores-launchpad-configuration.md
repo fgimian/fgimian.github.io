@@ -288,6 +288,28 @@ So this item has a parent_id of 134 (which is on 2).  The ordering is set to 0
 which implies that it is the first item on page 2 (which indeed is the case
 when examining Launchpad).
 
+Another bigger query you can run to see all items and their associations
+is as follows:
+
+```sql
+.width 10 10 10 10 30 30 30
+SELECT items.rowid AS id, items.parent_id, items.ordering, items.type,
+       apps.title AS app_title,
+       widgets.title AS widget_title,
+       groups.title AS group_title
+FROM items
+LEFT JOIN apps ON apps.item_id = items.rowid
+LEFT JOIN widgets ON widgets.item_id = items.rowid
+LEFT JOIN groups ON groups.item_id = items.rowid
+WHERE items.uuid NOT IN ('ROOTPAGE', 'HOLDINGPAGE',
+                         'ROOTPAGE_DB', 'HOLDINGPAGE_DB',
+                         'ROOTPAGE_VERS', 'HOLDINGPAGE_VERS')
+ORDER BY items.parent_id, items.ordering;
+```
+
+This will show you each item along with the related app, widget or group
+title.  The item type indicates which field will contain a title.
+
 ## Triggers
 
 The SQLite database contains various triggers which set the ordering of
