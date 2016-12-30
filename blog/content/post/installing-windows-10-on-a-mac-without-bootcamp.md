@@ -262,7 +262,7 @@ If you wish to flip scrolling direction to match that on OS X, run
 
 ![](/img/installing-windows-10-on-a-mac-without-bootcamp/flipwheel-configuration.png)
 
-## Enabling Scroll Lock on Boot
+## Enabling Num Lock on Boot
 
 Paste the following into a file named **Enable NumLock on Boot.reg** then
 import this into the registry to enable NumLock when Windows boots up
