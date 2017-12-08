@@ -11,7 +11,7 @@ Artwork courtesy of
 
 This repository contains [Hugo](https://gohugo.io/) configuration, themes and
 written posts for my blog which are published to
-[GitHub Pages](http://fgimian.github.io/).
+[GitHub Pages](https://fgimian.github.io/).
 
 ## Quick Start
 
