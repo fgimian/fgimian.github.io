@@ -66,7 +66,7 @@ then
          develop    Start the development server
          deploy     Build and deploy the codebase to GitHub pages
 
-      Please pop over to http://fgimian.github.io/ when you've deployed new
+      Please pop over to https://fgimian.github.io/ when you've deployed new
       posts to check them out." | sed -E "s/ {6}//"
     exit 1
   fi
