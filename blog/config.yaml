@@ -14,6 +14,9 @@ PygmentsUseClasses: true
 # Enable line numbers in code blocks
 PygmentsOptions: linenos=true
 
+# Ensure that Pygments works correctly with Chroma (see https://gohugo.io/news/0.28-relnotes/)
+pygmentsUseClassic: true
+
 # Disqus commenting integration
 disqusShortname: fgimian
 
