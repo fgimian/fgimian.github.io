@@ -6,7 +6,7 @@ develop()
   git submodule update --init
 
   # Run the hugo server
-  hugo server -s blog
+  hugo server -D -s blog
 }
 
 deploy()
