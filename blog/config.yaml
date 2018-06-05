@@ -1,7 +1,6 @@
 title: Fotsies Technology Blog
 baseurl: https://fgimian.github.io/
 languageCode: en-us
-MetaDataFormat: yaml
 theme: beautifulhugo
 
 # Pygments code block support
