@@ -3,6 +3,8 @@ title: "Why Crystal Is My Next Language"
 date: 2018-06-06T17:09:03+10:00
 ---
 
+**Note**: I've made various corrections and amendments based on various feedback I have received.  Thanks everyone! :)
+
 I have been a heavy user and lover of Python since 2011.  At that time, when a good friend suggested I ditch Perl (eeek) and try Python instead, an entirely new world opened up to me.  A world where readability counted above everything else and an explicit style ruled.
 
 After around 7 years of using Python, I'm just as passionate about it now as I was then.  However, as time goes on, one looks for new adventures and challenges.  The time has come for me to try another language!
@@ -20,7 +22,7 @@ Let me start by noting some of the challenges I've faced with Python:
 Further to this, I'm not sure that I really love the direction that Python is taking in a few areas, particularly around async and typing.
 
 * **Coroutines**: Although highly welcome, the new async functionality in Python feels very user-hostile and difficult to grasp.  Existing code requires a good amount of work before it is made non-blocking too.  I think this situation will improve in time as more libraries become available and as I understand and use the new libraries more though.
-* **Type Annotations (and mypy)**: Honestly, type annotations are welcome ... if they actually did anything in CPython.  The new idea of using type annotations as part of various constructs (e.g. data classes) seems pointless without mainstream support in the main CPython distribution.  In the meantime, mypy is barely mainstream and actually makes scripts run even slower!
+* **Type Annotations (and mypy)**: Honestly, type annotations are welcome ... if they actually did anything in CPython.  The new idea of using type annotations as part of various constructs (e.g. data classes) seems pointless without mainstream support in the main CPython distribution.  In the meantime, mypy is not mainstream just yet but shows great promise as a type validator for Python in the future, particularly with the `--strict` flag enabled.
 
 I should note that I'm still a massive fan and advocate of Python and think it's still one of the best interpreted languages available today; particularly when you take into account its wonderful ecosystem and maturity.
 
@@ -39,14 +41,18 @@ As such, I started looking for a new language with the following features:
 
 The following languages were ruled out:
 
-* **Go**: No keyword arguments, no exceptions, no classes, no generics and awful naming styles all led to me saying no to Go (although perhaps this simplicity is what attracts many to it).  I have actually spent quite some time learning and coding in Go and found it frustrating at best ... C++ is a far better language!  Having Google behind the language has ultimately resulted in its success even though it really takes us back to the days of C...
-* **Elixir**: A fascinating functional language, but lack of OO features and the fact that a single binary distribution is not the target of this language is a bit of a bummer.
+* **Go**: No keyword arguments, no exceptions, no classes, no generics and awful naming styles all led to me saying no to Go (although perhaps this simplicity is what attracts many to it).  I have actually spent quite some time learning and coding in Go and found it frustrating at best.  A language like C++ had made many advancements after C and offered us far greater flexibility yet it feels as though Go is taking us back to the days of C.
+* **Elixir**: A fascinating functional language, but lack of OO features and the fact that a single binary distribution is not the target of this language is a bit of a bummer for my use case.  However, various folks in my team use Elixir as their primary language for all new projects and have found it great in use.  Elixir has a rich and proven legacy and should definitely be considered if a functional language is what you're after.
 * **Rust**: This is an interesting language that I have spent some time attempting to learn.  Really, I just feel that Rust is not aimed at my use case; it is a rather complex language that just doesn't seem to click with me and many others too.
 * **Julia**: This language is really targeted more for scientific computing as opposed my use case.  It also lacks the OO abilities that I'm after.
-* **Nim**: Nim was originally the front-runner as my next language.  Although you can use `lowercase_underscore_notation` for all things (Nim ignores underscores and case in variable names), all libraries and code used `camelCase` conventions which I have grown to dislike.  In general, I also feel the language is rough around the edges in places, considering it has twice the number of issues and half the stars on GitHub compared to the language I chose.
 * **Pony**: A very fascinating language that seems to borrow a lot from Python, however it also borrows some things I dislike (e.g. underscore prefixed variables, lack of symmetry .etc).  I generally didn't feel that Pony aligned with the way I think nor did it have the same traction as other languages making it rather primitive currently.
 
-This really left me with one clear choice; **Crystal**!
+Some languages that I'm really interested in and hope to examine further in the future are:
+
+* **Nim**: Nim was originally the front-runner as my next language and one which I hope to spend more time on in the future.
+* **Swift**: Another popular object-oriented language that definitely deserves attention beyond development of iOS and Mac apps.
+
+But ultimately, I decided to commit to learning **Crystal**!
 
 The reasons are as follows:
 
@@ -55,6 +61,7 @@ The reasons are as follows:
 * The entire standard library is written in Crystal which makes it very easy to read when required
 * It offers a full object-oriented approach similar to Ruby (which includes real protected and private members)
 * Crystal uses static typing but also provides unions (ability to define a variable that can be of multiple types)
+* It offers the ability to develop DSLs similar to Ruby (which is something I've always been interested in)
 * Bindings to C libraries are fully native and written in Crystal (similar to ctypes in Python, only better)
 
 # Caveats
@@ -251,7 +258,7 @@ int main()
 }
 ```
 
-Compiled with `-O` for best performance.
+Compiled with `-O3` for best performance.
 
 ### C++
 
@@ -302,7 +309,7 @@ func main() {
 ```
 Runtime          Time (sec)
 ---------------- ----------
-C 4.2.1               0.748
+C 4.2.1               0.747
 Crystal 0.24.2        0.751
 C++ 4.2.1             0.930
 Go 1.10.2             1.615
