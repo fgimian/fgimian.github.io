@@ -39,7 +39,7 @@ not used (which would cause issues when installing Windows).
 
 1. Start **Boot Camp Assistant**
 2. Select **Action** / **Download Windows Support Software**
-3. Choose your **Dowloads** directory, enter your password and then click
+3. Choose your **Downloads** directory, enter your password and then click
    **Save**
 
 This will be the only step that we will use Boot Camp Assistant for.
