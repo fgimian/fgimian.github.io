@@ -282,7 +282,7 @@ int main()
 }
 ```
 
-Compiled with `-O` for best performance.
+Compiled with `-O3` for best performance.
 
 ### Go
 
