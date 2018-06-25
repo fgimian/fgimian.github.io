@@ -188,7 +188,7 @@ This creates a constructor that will automatically assign the provided parameter
 
 ```python
 class Person:
-    def __init__(name, age=0):
+    def __init__(self, name, age=0):
         self.name = name
         self.age = age
 ```
