@@ -140,7 +140,6 @@ I would need to re-approach this problem by leveraging [reflect](https://golang.
 func SortedMapKeysString(data interface{}) ([]string, error) {
     rv := reflect.ValueOf(data)
 
-    fmt.Println(reflect.TypeOf(rv))
     if rv.Kind() != reflect.Map || rv.Type().Key().Kind() != reflect.String {
         return nil, errors.New("data must be a map with keys as strings")
     }
