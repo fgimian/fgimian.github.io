@@ -3,21 +3,23 @@ title: Revisiting Go
 date: 2018-12-30T06:41:36+11:00
 ---
 
-# Crystal vs Go
-
 Several months ago I wrote about Crystal and its potential, but also spoke about why Go was not a language I was interested in.
 
-In my post, I criticised Go's lack of keyword arguments, default arguments, generics, error handling, lack of classes and strange naming styles.  I also originally asked why anyone would use Go when I felt that C++ was a much better language and that Go was taking us back to the days of C.
+In my post, I originally stated the following:
 
-Understandably, these statements did cause a little controversy when one of the Crystal advocates published the post to Hacker News (which I wasn't anticipating).  That particular blog post was just a dump of ideas I had at the time while trying to find a new language to learn for hobby projects at home.
+> No keyword arguments, no exceptions, no classes, no generics and awful naming styles all led to me saying no to Go (although perhaps this simplicity is what attracts many to it).  I have actually spent quite some time learning and coding in Go and found it frustrating at best ... C++ is a far better language!  Having Google behind the language has ultimately resulted in its success even though it really takes us back to the days of C...
+
+Understandably and rightly so, these statements did cause some controversy when one of the Crystal advocates published the post to Hacker News (which I wasn't anticipating).  I will absolutely admit that I was way too opinionated on the language at that point and will be more mindful when being so critical in the future.  That particular blog post was just a dump of ideas I had at the time while trying to find a new language to learn for hobby projects at home.
 
 Although I spent quite a lot of time on Crystal and am still very fond of it, I had to abandon it for the current time due to its lack of maturity.  I realised that although I could use it for little things here and there at home, I would never be able to use it in production at work until it matures.  The state of libraries is also very touch and go in Crystal and I found myself only trusting that the included standard libraries would be stable and refined.
+
+So it's time to revisit Go and attempt to make sense of my thoughts about the language 6 months ago.  It is also the time to consider that I may have been incorrect about many of my sentiments.
 
 # Current Work Project
 
 ## Maintaining a Large C++ Codebase
 
-Fast forward several months and I've been moved onto a project at work which is primarily developed in C++ and with some minor tooling in Python and one tiny HTTP upload server in Go.  The application primarily works by exposing an API which reads and writes from a PostgreSQL database in addition to running various background tasks that ship data in and out of MQTT topics.  The app also implements a custom communication specification over UDP and TCP for devices to communicate with.
+This begins several months after my post where I've been moved onto a project at work which is primarily developed in C++ and with some minor tooling in Python and one tiny HTTP upload server in Go.  The application primarily works by exposing an API which reads and writes from a PostgreSQL database in addition to running various background tasks that ship data in and out of MQTT topics.  The app also implements a custom communication specification over UDP and TCP for devices to communicate with.
 
 I went through the C++ code in quite a lot of detail to understand the app's functionality and I along with several others in the team agreed that the code would be hard if not impossible to maintain long term.  The developer who wrote the code had really tried to use C++ in areas where it really isn't usually used (e.g. API development) and developed so many libraries himself with few unit tests.  Further to this, the few third party library dependencies were simply copied into the Git repository itself, a common problem seen in C++ projects due to lack of a standardised dependency management system.
 
@@ -429,12 +431,12 @@ Interestingly, Go is about as explicit as a language can get.  This is an area w
 For example, I found a little bug in the Crystal standard library in the following function:
 
 ```crystal
-  def flags : ::File::Flags
-    flags = ::File::Flags::None
-    flags |= ::File::Flags::SetUser if @stat.st_mode.bits_set? LibC::S_ISUID
-    flags |= ::File::Flags::SetGroup if @stat.st_mode.bits_set? LibC::S_ISGID
-    flags |= ::File::Flags::Sticky if @stat.st_mode.bits_set? LibC::S_ISVTX
-  end
+def flags : ::File::Flags
+  flags = ::File::Flags::None
+  flags |= ::File::Flags::SetUser if @stat.st_mode.bits_set? LibC::S_ISUID
+  flags |= ::File::Flags::SetGroup if @stat.st_mode.bits_set? LibC::S_ISGID
+  flags |= ::File::Flags::Sticky if @stat.st_mode.bits_set? LibC::S_ISVTX
+end
 ```
 
 Crystal has inferred return types in functions which caused a problem in the function above.  The function is missing a return statement to return the flags that were created, so instead, it inferred a nil return value.  This would thankfully never happen in Go.
