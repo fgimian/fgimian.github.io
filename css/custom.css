@@ -1,0 +1,313 @@
+/* --- General --- */
+
+/* Main post body */
+body {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  color: #999;
+  background: #001a36;
+}
+
+/* Adjust paragraph spacing */
+p {
+  margin: 20px 0;
+}
+
+li p {
+  margin-top: 0;
+}
+
+/* Links in posts */
+p a {
+  color: #117711;
+}
+
+blockquote {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+/* Heading weight and spacing */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+  margin-bottom: 20px;
+}
+
+/* Make main headings brighter */
+h1,
+h2.post-title {
+  color: #ccc;
+}
+
+/* General links (including those in post previews) */
+a {
+  color: #117711;
+}
+
+a:hover,
+a:focus {
+  color: #0085a1;
+  text-decoration: none;
+}
+
+/* Block quotes */
+blockquote {
+  border-color: #444;
+  color: #808080;
+}
+
+/* Horizontal rule in single page mode */
+hr.small {
+  border-color: #555;
+}
+
+/* Selected text and images */
+::-moz-selection {
+  color: white;
+  background: #0085a1;
+}
+
+::selection {
+  color: white;
+  background: #0085a1;
+}
+
+img::selection {
+  color: white;
+  background: #fff;
+}
+
+img::-moz-selection {
+  color: white;
+  background: #fff;
+}
+
+/* Code blocks and inline code */
+pre,
+code {
+  font-size: 16px;
+}
+
+pre {
+  border: 0;
+  line-height: 1.5 !important;
+}
+
+code {
+  white-space: pre !important;
+}
+
+/* Code block scroll bar */
+pre::-webkit-scrollbar,
+.highlight::-webkit-scrollbar {
+  height: 0.5em;
+}
+
+pre::-webkit-scrollbar-thumb:horizontal,
+.highlight::-webkit-scrollbar-thumb:horizontal {
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+
+/* Spacing if code black line numbers are not enabled */
+.highlight pre {
+  padding: 12px 17px 12px 17px;
+  border: 1px solid #494949;
+}
+
+/* Spacing if code block line numbers are enabled */
+.highlighttable {
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.highlighttable .linenos {
+  padding: 0;
+  width: 1px;
+  white-space: nowrap;
+}
+
+.highlighttable pre {
+  border: 0;
+  padding: 5px 10px 5px 10px;
+}
+
+/* Make posts wider on large screens */
+@media (min-width: 1200px) {
+  .col-lg-8 {
+    width: 75%;
+  }
+
+  .col-lg-offset-2 {
+    margin-left: 12.5%;
+  }
+}
+
+/* --- Navbar --- */
+
+/* Navbar strip */
+.navbar-custom {
+  background: #440;
+  border-bottom: 1px solid #333;
+}
+
+/* Navbar link items and heading */
+.navbar-custom .navbar-brand,
+.navbar-custom .nav li a {
+  font-weight: normal;
+  color: #ccc;
+}
+
+.navbar-custom .navbar-brand:hover,
+.navbar-custom .navbar-brand:focus ,
+.navbar-custom .nav li a:hover,
+.navbar-custom .nav li a:focus {
+  color: #0085a1;
+}
+
+/* Align the left and right padding of the navbar */
+.navbar-custom .container-fluid {
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+/* Make the avatar image a little bigger */
+@media only screen and (min-width: 768px) {
+  .navbar-custom .avatar-container {
+    width: 125px;
+  }
+}
+
+/* Multi-level navigation links */
+/* TODO: what does this do? */
+.navbar-custom .nav .navlinks-container .navlinks-children a {
+  background: #f5f5f;
+}
+
+/* TODO: what does this do? */
+@media only screen and (max-width: 767px) {
+  .navbar-custom .nav .navlinks-container.show-children {
+    background: #eee;
+  }
+}
+
+/* TODO: what does this do? */
+@media only screen and (min-width: 768px) {
+  .navbar-custom .nav .navlinks-container:hover {
+    background: #eee;
+  }
+  .navbar-custom .nav .navlinks-container .navlinks-children a {
+    border: 1px solid #eaeaea;
+  }
+}
+
+/* --- Footer --- */
+
+/* Footer strip */
+footer {
+  background: #111;
+  border-top: 1px #222 solid;
+}
+
+/* Footer links */
+footer a {
+  color: #117711;
+}
+
+/* --- Post preview --- */
+
+/* Post preview line separators */
+.post-preview {
+  border-bottom: 1px solid #555;
+}
+
+/* Post preview links (e.g. Read More) */
+.post-preview a {
+  color: #117711;
+  font-weight: normal !important;
+}
+
+.post-preview a:focus,
+.post-preview a:hover {
+  color: #0085a1;
+}
+
+/* Post preview metadata (e.g. date) */
+.post-preview .post-meta,
+.post-heading .post-meta {
+  color: #808080;
+}
+
+/* --- Post and page layout --- */
+
+/* Push down posts a little to ensure no overlap with the larger avatar */
+header.header-post .post-heading h1,
+header.header-page .page-heading h1 {
+  padding-top: 35px;
+}
+
+/* Push down 404 pages a little (offsetting the 20px margin-top) */
+.main-content .text-center {
+  padding-top: 15px;
+}
+
+/* Shorten the height of page headings to align text with the same
+   height of the date on post headings */
+header.header-page .page-heading {
+  height: 70px;
+}
+
+/* Set the font size for the title on pages to be the same as posts */
+@media only screen and (min-width: 768px) {
+  header.header-page .page-heading h1 {
+    font-size: 50px;
+  }
+}
+
+/* --- Pager --- */
+
+/* Buttons (e.g. PREVIOUS POST, NEXT POST .etc) */
+.pager li a {
+  background: #444;
+  border: 1px solid #444;
+  color: #ccc;
+}
+
+.pager li a:hover,
+.pager li a:focus {
+  color: #fff;
+  background: #0065a1;
+  border: 1px solid #006581;
+}
+
+/* --- Tables --- */
+
+/* Table heading row */
+
+table th {
+  background-color: #204b66;
+  color: #ccc;
+}
+
+/* Table rows (odd and even respectively) */
+
+table tr {
+  background-color: #002b36;
+}
+
+table tr:nth-child(2n) {
+  background-color: #103b46;
+}
+
+/* Table border */
+
+table tr,
+table tr th,
+table tr td {
+  border: 1px solid #494949;
+}

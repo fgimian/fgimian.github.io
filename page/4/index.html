@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Fotsies Technology Blog</title>
+
+  <meta name="author" content="Fotis Gimian" />
+
+  
+
+  <meta name="generator" content="Hugo 0.53" />
+
+  <link rel="alternate" href="https://fgimian.github.io/index.xml" type="application/rss+xml" title="Fotsies Technology Blog">
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/main.css" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/custom.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/solarized-dark.css" />
+
+  <link rel="icon" type="image/png" href="https://fgimian.github.io/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="https://fgimian.github.io/favicon-16x16.png" sizes="16x16" />
+
+  
+  <meta property="og:title" content="Fotsies Technology Blog" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="//" />
+  <meta property="og:image" content="img/fotis.jpg" />
+
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+          <a title="Blog" href="/">Blog</a>
+  	      </li>
+  	    
+      
+        
+          <li>
+          <a title="About" href="/page/about/">About</a>
+  	      </li>
+  	    
+      
+      </ul>
+    </div>
+
+	<div class="avatar-container">
+	  <div class="avatar-img-border">
+      
+          <a title="Fotsies Technology Blog" href="https://fgimian.github.io/">
+              <img class="avatar-img" src="https://fgimian.github.io/img/fotis.jpg" alt="Fotsies Technology Blog" />
+          </a>
+      
+	  </div>
+	</div>
+
+  </div>
+</nav>
+
+
+    <div role="main" class="container main-content">
+
+      <div class="posts-list">
+        
+        
+        <article class="post-preview">
+          <a href="https://fgimian.github.io/blog/2014/04/06/headless-browser-testing-with-chrome-and-firefox/">
+      	  <h2 class="post-title">Headless Browser Testing with Chrome and Firefox</h2>
+      	
+      	    
+          </a>
+
+          <p class="post-meta">
+            Posted on April 6, 2014
+          </p>
+        
+          <div class="post-entry">
+            When utilising Selenium to test web applications, I was always under the impression that PhantomJS was the only option for servers without an X server. I have nothing but good things to say about PhantomJS and have used it successfully for testing in the past. However, while working on some pull requests for splinter recently, I discovered that Chrome and Firefox can also be configured to do the same thing.
+      	  <a href="https://fgimian.github.io/blog/2014/04/06/headless-browser-testing-with-chrome-and-firefox/" class="post-read-more">[Read&nbsp;More]</a>
+          </div>
+        
+         </article>
+        
+        <article class="post-preview">
+          <a href="https://fgimian.github.io/blog/2014/03/04/essential-python-libraries/">
+      	  <h2 class="post-title">Essential Python Libraries</h2>
+      	
+      	    
+          </a>
+
+          <p class="post-meta">
+            Posted on March 4, 2014
+          </p>
+        
+          <div class="post-entry">
+            So in case you haven&rsquo;t noticed &hellip; I&rsquo;m a little (VERY) in love with Python as a programming language. I use it for everything now, from web development, to scripting and everything in between.
+As such, I thought I&rsquo;d put together an article of the many amazing libraries that I think every Python programmer needs to know about. Now there&rsquo;s no doubt in my mind that there are heaps that I&rsquo;ve missed, but we have to start somewhere.
+      	  <a href="https://fgimian.github.io/blog/2014/03/04/essential-python-libraries/" class="post-read-more">[Read&nbsp;More]</a>
+          </div>
+        
+         </article>
+        
+        <article class="post-preview">
+          <a href="https://fgimian.github.io/blog/2014/02/14/serving-a-python-flask-website-on-hostmonster/">
+      	  <h2 class="post-title">Serving a Python Flask Website on Hostmonster</h2>
+      	
+      	    
+          </a>
+
+          <p class="post-meta">
+            Posted on February 14, 2014
+          </p>
+        
+          <div class="post-entry">
+            Hey there folks, it&rsquo;s been a while!
+In this post, I&rsquo;ll be guiding you through setting up Hostmonster (or similar shared hosting providers) to serve a Python Flask web application. I&rsquo;ll be using my new Flaskage template project as the application, but naturally you can adapt this solution to work with any Flask application.
+We&rsquo;ll create a temporary build directory to put things in:
+1 2mkdir ~/build cd ~/build   First, start by building and installing Python on the system:
+      	  <a href="https://fgimian.github.io/blog/2014/02/14/serving-a-python-flask-website-on-hostmonster/" class="post-read-more">[Read&nbsp;More]</a>
+          </div>
+        
+         </article>
+        
+        <article class="post-preview">
+          <a href="https://fgimian.github.io/blog/2013/05/12/building-an-rpm-of-the-latest-openssh-on-sles-10-sp3/">
+      	  <h2 class="post-title">Building an RPM of the Latest OpenSSH on SLES 10 SP3</h2>
+      	
+      	    
+          </a>
+
+          <p class="post-meta">
+            Posted on May 12, 2013
+          </p>
+        
+          <div class="post-entry">
+            Several years ago, we needed a newer version of OpenSSH on a system we were building with SLES 10 to enable jailrooting of user accounts. In this post, we&rsquo;re going to be building an RPM of the latest OpenSSH for SLES 10 SP3 (and similar) servers.
+Install the required packages to build OpenSSH as follows:
+1 2sudo zypper -n install gcc sudo zypper -n install tcpd-devel zlib-devel openssl-devel pam-devel   Grab the current OpenSSH source:
+      	  <a href="https://fgimian.github.io/blog/2013/05/12/building-an-rpm-of-the-latest-openssh-on-sles-10-sp3/" class="post-read-more">[Read&nbsp;More]</a>
+          </div>
+        
+         </article>
+        
+        <article class="post-preview">
+          <a href="https://fgimian.github.io/blog/2013/05/12/building-git-on-sles-10-sp3/">
+      	  <h2 class="post-title">Building Git on SLES 10 SP3</h2>
+      	
+      	    
+          </a>
+
+          <p class="post-meta">
+            Posted on May 12, 2013
+          </p>
+        
+          <div class="post-entry">
+            Let&rsquo;s keep the builds going shall we? This is the last one for today though :) This time, we&rsquo;re going to build the latest version of essential tool Git on SLES 10.
+Important: In order for the steps to work below, you must build and install Python 2.7 as per my earlier post.
+Build Git as follows (ensuring that you explicitly set the Python path with the configure command):
+1 2 3 4 5 6 7 8wget https://git-core.
+      	  <a href="https://fgimian.github.io/blog/2013/05/12/building-git-on-sles-10-sp3/" class="post-read-more">[Read&nbsp;More]</a>
+          </div>
+        
+         </article>
+        
+      </div>
+
+      
+      <ul class="pager main-pager">
+        
+        <li class="previous">
+          <a href="/page/3">&larr; Newer Posts</a>
+        </li>
+        
+        
+        <li class="next">
+          <a href="/page/5">Older Posts &rarr;</a>
+        </li>
+        
+      </ul>
+      
+
+    </div>
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+          
+          <li>
+            <a href="https://github.com/fgimian" title="GitHub">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+          <li>
+            <a href="https://twitter.com/fgimian" title="Twitter">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+		      
+          <li>
+            <a href="https://linkedin.com/in/fotis-gimian-a5420053" title="LinkedIn">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+	    	  
+          <li>
+            <a href="https://stackoverflow.com/users/1905666/fotis-gimian" title="StackOverflow">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+
+    		  <li>
+      			<a href="https://fgimian.github.io/index.xml" title="RSS">
+      			  <span class="fa-stack fa-lg">
+        				<i class="fa fa-circle fa-stack-2x"></i>
+        				<i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+      			  </span>
+      			</a>
+    		  </li>		
+
+        </ul>
+        <p class="copyright text-muted">
+    		  Fotis Gimian
+    		  &nbsp;&bull;&nbsp;
+    		  2018
+    		  
+    		  
+    		  &nbsp;&bull;&nbsp;
+    		  <a href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    		  
+  	    </p>
+  	        
+    		<p class="theme-by text-muted">
+    		  Theme by
+    		  <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    		</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://fgimian.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://fgimian.github.io/js/bootstrap.min.js"></script>
+<script src="https://fgimian.github.io/js/main.js"></script>
+
+
+
+  </body>
+</html>

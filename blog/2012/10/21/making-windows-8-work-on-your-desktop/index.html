@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Making Windows 8 Work on Your Desktop</title>
+
+  <meta name="author" content="Fotis Gimian" />
+
+  
+
+  <meta name="generator" content="Hugo 0.53" />
+
+  <link rel="alternate" href="https://fgimian.github.io/index.xml" type="application/rss+xml" title="Fotsies Technology Blog">
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/main.css" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/custom.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/solarized-dark.css" />
+
+  <link rel="icon" type="image/png" href="https://fgimian.github.io/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="https://fgimian.github.io/favicon-16x16.png" sizes="16x16" />
+
+  
+  <meta property="og:title" content="Making Windows 8 Work on Your Desktop" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="/blog/2012/10/21/making-windows-8-work-on-your-desktop//" />
+  <meta property="og:image" content="img/fotis.jpg" />
+
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+          <a title="Blog" href="/">Blog</a>
+  	      </li>
+  	    
+      
+        
+          <li>
+          <a title="About" href="/page/about/">About</a>
+  	      </li>
+  	    
+      
+      </ul>
+    </div>
+
+	<div class="avatar-container">
+	  <div class="avatar-img-border">
+      
+          <a title="Fotsies Technology Blog" href="https://fgimian.github.io/">
+              <img class="avatar-img" src="https://fgimian.github.io/img/fotis.jpg" alt="Fotsies Technology Blog" />
+          </a>
+      
+	  </div>
+	</div>
+
+  </div>
+</nav>
+
+
+    <div role="main" class="container main-content">
+
+      
+        <header class="header-post">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <div class="post-heading">
+        <h1>Making Windows 8 Work on Your Desktop</h1>
+        
+        <span class="post-meta">Posted on October 21, 2012</span>
+      </div>
+     </div>
+  </div>
+</header>
+
+<article>
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+	  
+
+<p>Well, it&rsquo;s almost here folks!  Windows 8 arrives this Friday and many people
+are nervous.  I was too the first time I used it; in fact, I hated it!  But
+things have changed significantly for me now. I&rsquo;m currently running Windows 8
+Pro RTM (via MSDN) as my main OS and couldn&rsquo;t be happier.  I&rsquo;d go as far as to
+say that I couldn&rsquo;t see myself going back to or missing Windows 7 in the future
+at all.</p>
+
+<p>The biggest issue for most people will be the omission of the traditional
+Start menu and the addition of a completely new and somewhat oddly fitted
+Modern UI which only really makes sense on a tablet.  Even so, I highly suggest
+that you try working with the new UI as I will outline below before looking at
+Start menu add-on software (which we&rsquo;ll touch on too).</p>
+
+<h2 id="what-are-these-tablet-apps-doing-on-my-desktop">What are These Tablet Apps Doing on my Desktop?</h2>
+
+<p>That&rsquo;s a really good question, and it&rsquo;s really obvious that Microsoft are
+force-feeding everyone these apps.  Default file associations push you over
+to Modern UI apps and you are booted into the Modern UI without any currently
+known built-in method of disabling this.</p>
+
+<p>I will be the first to say that I dislike Modern UI apps on a desktop computer.
+Multitasking is severely impaired, the workflow is far too different from
+traditional applications and the mouse gestures suck.</p>
+
+<h3 id="removing-the-modern-ui-apps">Removing the Modern UI Apps</h3>
+
+<p>Right click on each application and click on <strong>Uninstall</strong>.  Be sure you&rsquo;ve
+uninstall everything by hitting <strong>Ctrl + Tab</strong> to view the <strong>Apps</strong> screen,
+and uninstall the rest.  Be sure to leave <strong>Store</strong>, <strong>Internet Explorer</strong> and
+<strong>Desktop</strong> alone as they won&rsquo;t get in your way and could be useful later on.</p>
+
+<h3 id="disable-notifications">Disable Notifications</h3>
+
+<ol>
+<li>Hit <strong>Start + W</strong>, type <strong>notifications</strong> and select <strong>Notifications</strong> on
+the very left</li>
+<li>Set <strong>Show app notifications</strong> to <strong>Off</strong></li>
+</ol>
+
+<p><img src="/img/making-windows-8-work-on-your-desktop/disable-notifications.png" alt="" /></p>
+
+<h2 id="my-fonts-look-big-weird-man">My Fonts Look Big &amp; Weird Man</h2>
+
+<p>It seems that Microsoft is attempting to cater for the higher resolutions
+available by upping the default DPI in Windows 8, though this doesn&rsquo;t exactly
+translate seamlessly to many apps.  It actually leaves Windows looking and
+feeling rather strange.</p>
+
+<p>To revert the DPI back to the normal 100%, follow the steps below:</p>
+
+<ol>
+<li>Hit <strong>Start + W</strong>, type <strong>dpi</strong> and select <strong>Make text and other items
+larger or smaller</strong></li>
+<li>Set the value to <strong>Smaller - 100%</strong> and click <strong>Apply</strong></li>
+</ol>
+
+<p><img src="/img/making-windows-8-work-on-your-desktop/dpi-normal.png" alt="" /></p>
+
+<h2 id="make-the-modern-ui-your-new-start-menu">Make the Modern UI Your New Start Menu</h2>
+
+<p>Your Modern UI Start screen should be looking pretty empty and neat now, so
+it&rsquo;s time to start making it useful.</p>
+
+<p><img src="/img/making-windows-8-work-on-your-desktop/start-menu-system-favourites.png" alt="" /></p>
+
+<ul>
+<li><strong>Computer</strong>: Open Explorer using <strong>Start + E</strong>, right click on <strong>Computer</strong>
+in the left panel and click on <strong>Pin to Start</strong></li>
+<li><strong>Recycle Bin</strong>: Hit <strong>Start + D</strong> to view the desktop, right click on
+<strong>Recycle Bin</strong> and click on <strong>Pin to Start</strong></li>
+<li><strong>Control Panel</strong>: Hit <strong>Start</strong> and search for <strong>control</strong>, right click on
+<strong>Control Panel</strong> and then <strong>Pin to Start</strong></li>
+<li><strong>Screen Resolution</strong>: This is one of my favourite shortcuts which was added
+using instructions at the awesome
+<a href="http://www.sevenforums.com/tutorials/24008-screen-resolution-shortcut-create.html">Seven Forums</a>
+website.  All you&rsquo;ll need to do is download or create the shortcut anywhere
+on your hard disk, then right click and select <strong>Pin to Start</strong>.  You may
+then delete the shortcut from the location you created it.</li>
+<li><strong>Favourite Folders</strong>: Simple browse to these folders in Explorer, right
+click and select <strong>Pin to Start</strong>. Of course, the Dropbox shortcut will be
+created for you when you install the Dropbox application.</li>
+</ul>
+
+<p>To create the <strong>Shut Down</strong> &amp; <strong>Restart</strong> buttons:</p>
+
+<ol>
+<li>Grab some good looking icons for your shortcut.  I really love the
+<a href="http://mazenl77.deviantart.com/gallery/?q=i+like#/d1vcljn">I like buttons 3a</a>
+set by <a href="http://mazenl77.deviantart.com/">MazeNL77</a>.</li>
+<li>We&rsquo;ll need to have the icons in the ICO format, so use a website such as
+<a href="http://converticon.com/">Converticon</a> to convert them to this format.</li>
+<li>Rename the resulting files (if you wish) and place them in <strong>C:\Windows</strong>
+(or similar).</li>
+<li>Create or download Restart and Shut Down shortcuts using a guide such as the
+ones at the Seven Forums.  Here are the links to the
+<a href="http://www.sevenforums.com/tutorials/61284-restart-computer-shortcut-create.html">Restart</a>
+and
+<a href="http://www.sevenforums.com/tutorials/61294-shut-down-computer-shortcut-create.html">Shut Down</a>
+shortcut tutorials.</li>
+<li>Right click on each of the created shortcuts, select <strong>Properties</strong>, then
+<strong>Shortcut</strong> and then click <strong>Change Icon</strong>.  Browse to the appropriate icon
+you created then click <strong>OK</strong>.</li>
+<li>Right click on the shortcut and select <strong>Pin to Start</strong>.</li>
+<li>You may then delete the shortcut from the location you created it.</li>
+</ol>
+
+<p>Here are some others I know many people will want on their Start screen:</p>
+
+<ul>
+<li><strong>Devices and Printers</strong>: Hit <strong>Start + W</strong>, type <strong>devices</strong>, right click on
+<strong>Devices and Printers</strong> and then <strong>Pin to Start</strong></li>
+<li><strong>Default Programs</strong>: Hit <strong>Start</strong>, type <strong>default</strong>, right click on
+<strong>Default Programs</strong> and then <strong>Pin to Start</strong></li>
+<li><strong>Run</strong>: Similar to the Screen Resolution example above, check out the
+<a href="http://www.sevenforums.com/tutorials/21246-run-command-create-shortcut.html">Seven Forums</a>
+to learn how to do this</li>
+</ul>
+
+<h2 id="right-click-your-way-to-power">Right Click Your Way to Power</h2>
+
+<p>Another handy feature in Windows 8 is the <strong>Win + X</strong> shortcut which can also
+be accessed by right-clicking on the bottom left of the screen.</p>
+
+<p><img src="/img/making-windows-8-work-on-your-desktop/right-click-start-menu.png" alt="" /></p>
+
+<p>This gives you access to some commonly used power user shortcuts.</p>
+
+<h2 id="grouping-organising-applications">Grouping &amp; Organising Applications</h2>
+
+<p>In the past, I would work in the following way to launch my applications in
+Windows 7:</p>
+
+<ul>
+<li>My most commonly used applications would sit in my Windows Superbar (the
+taskbar at the bottom of the screen)</li>
+<li>All other applications would have desktop shortcuts and be grouped into
+categorised with the use of Stardock&rsquo;s excellent
+<a href="http://www.stardock.com/products/fences/">Fences</a> application</li>
+<li>The Start menu would rarely be used to launch applications as it required
+more clicks than I thought was necessary</li>
+</ul>
+
+<p>This workflow worked reasonably well, although I would always have to hit
+<strong>Ctrl + D</strong> to get to the desktop if I wanted one of the less used
+applications which would break my workflow a little.  In addition, my desktop
+was very busy.</p>
+
+<p>The Windows 8 Modern UI is (in my opinion) actually superior to my previous
+solution as it is always one click away (Start button), doesn&rsquo;t clutter my
+desktop or get in the way of my current work and doesn&rsquo;t require the use of
+any third party applications.</p>
+
+<p>Here&rsquo;s a sample of many of my grouped applications:</p>
+
+<p><img src="/img/making-windows-8-work-on-your-desktop/start-menu-group-display.png" alt="" /></p>
+
+<p>Placing your shortcuts in groups is a simple matter of drag &amp; drop.</p>
+
+<p>You may name the group as follows:</p>
+
+<ol>
+<li>Hit the <strong>Start</strong> key</li>
+<li>Click on the very bottom right of the screen</li>
+<li>Right click on a group and select <strong>Name group</strong></li>
+</ol>
+
+<h2 id="but-where-s-my-start-menu">But &hellip; Where&rsquo;s My Start Menu? :&lsquo;)</h2>
+
+<p>I honestly encourage you to try the workflow above for a little while before
+looking into a 3rd party solution to provide you a Start menu.  However, if you
+feel that you absolutely must have your Start menu back, then I recommend you
+check out Stardock&rsquo;s <a href="http://www.stardock.com/products/start8/">Start8</a>
+application.</p>
+
+<p>I highly recommend avoiding ViStart as it&rsquo;s riddled with adware.  A lot of
+people seem to like <a href="http://classicshell.sourceforge.net/">Classic Shell</a> but
+I failed to see the appeal myself.</p>
+
+<h2 id="windows-8-my-desktop">Windows 8 My Desktop</h2>
+
+<p>I hope you&rsquo;ve found this little guide handy.  With the great improvements to
+Explorer, native ISO mounting, built-in Hyper-V (even though I still prefer
+VMware) and other under-the-hood improvements, it&rsquo;s well worth giving Windows 8
+a good chance.</p>
+
+	</div>
+  </div>
+</article>
+
+<div class="row">
+  <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <ul class="pager blog-pager">
+      
+      <li class="previous">
+        <a href="https://fgimian.github.io/blog/2012/10/18/who-on-earth-are-you/" data-toggle="tooltip" data-placement="top" title="Who on Earth are you?">&larr; Previous Post</a>
+      </li>
+      
+      
+      <li class="next">
+        <a href="https://fgimian.github.io/blog/2012/12/08/setting-up-virtual-development-environments-for-ruby/" data-toggle="tooltip" data-placement="top" title="Setting up Virtual Development Environments for Ruby">Next Post &rarr;</a>
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<div class="row disqus-comments">
+  <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fgimian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>
+
+
+      
+
+      
+      <div class="row disqus-comments">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fgimian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+      </div>
+      
+
+    </div>
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+          
+          <li>
+            <a href="https://github.com/fgimian" title="GitHub">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+          <li>
+            <a href="https://twitter.com/fgimian" title="Twitter">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+		      
+          <li>
+            <a href="https://linkedin.com/in/fotis-gimian-a5420053" title="LinkedIn">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+	    	  
+          <li>
+            <a href="https://stackoverflow.com/users/1905666/fotis-gimian" title="StackOverflow">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+
+    		  <li>
+      			<a href="https://fgimian.github.io/index.xml" title="RSS">
+      			  <span class="fa-stack fa-lg">
+        				<i class="fa fa-circle fa-stack-2x"></i>
+        				<i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+      			  </span>
+      			</a>
+    		  </li>		
+
+        </ul>
+        <p class="copyright text-muted">
+    		  Fotis Gimian
+    		  &nbsp;&bull;&nbsp;
+    		  2018
+    		  
+    		  
+    		  &nbsp;&bull;&nbsp;
+    		  <a href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    		  
+  	    </p>
+  	        
+    		<p class="theme-by text-muted">
+    		  Theme by
+    		  <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    		</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://fgimian.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://fgimian.github.io/js/bootstrap.min.js"></script>
+<script src="https://fgimian.github.io/js/main.js"></script>
+
+
+
+  </body>
+</html>

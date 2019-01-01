@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Why Crystal Is My Next Language</title>
+
+  <meta name="author" content="Fotis Gimian" />
+
+  
+
+  <meta name="generator" content="Hugo 0.53" />
+
+  <link rel="alternate" href="https://fgimian.github.io/index.xml" type="application/rss+xml" title="Fotsies Technology Blog">
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/main.css" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/custom.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/solarized-dark.css" />
+
+  <link rel="icon" type="image/png" href="https://fgimian.github.io/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="https://fgimian.github.io/favicon-16x16.png" sizes="16x16" />
+
+  
+  <meta property="og:title" content="Why Crystal Is My Next Language" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="/blog/2018/06/06/why-crystal-is-my-next-language//" />
+  <meta property="og:image" content="img/fotis.jpg" />
+
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+          <a title="Blog" href="/">Blog</a>
+  	      </li>
+  	    
+      
+        
+          <li>
+          <a title="About" href="/page/about/">About</a>
+  	      </li>
+  	    
+      
+      </ul>
+    </div>
+
+	<div class="avatar-container">
+	  <div class="avatar-img-border">
+      
+          <a title="Fotsies Technology Blog" href="https://fgimian.github.io/">
+              <img class="avatar-img" src="https://fgimian.github.io/img/fotis.jpg" alt="Fotsies Technology Blog" />
+          </a>
+      
+	  </div>
+	</div>
+
+  </div>
+</nav>
+
+
+    <div role="main" class="container main-content">
+
+      
+        <header class="header-post">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <div class="post-heading">
+        <h1>Why Crystal Is My Next Language</h1>
+        
+        <span class="post-meta">Posted on June 6, 2018</span>
+      </div>
+     </div>
+  </div>
+</header>
+
+<article>
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+	  
+
+<p><strong>Note</strong>: I&rsquo;ve made various corrections and amendments based on various feedback I have received.  Thanks everyone! :)</p>
+
+<p>I have been a heavy user and lover of Python since 2011.  At that time, when a good friend suggested I ditch Perl (eeek) and try Python instead, an entirely new world opened up to me.  A world where readability counted above everything else and an explicit style ruled.</p>
+
+<p>After around 7 years of using Python, I&rsquo;m just as passionate about it now as I was then.  However, as time goes on, one looks for new adventures and challenges.  The time has come for me to try another language!</p>
+
+<h1 id="python-challenges">Python Challenges</h1>
+
+<p>Let me start by noting some of the challenges I&rsquo;ve faced with Python:</p>
+
+<ul>
+<li><strong>Packaging</strong>: This is one area where most interpreted languages share challenges.  Tools such as <a href="https://github.com/jordansissel/fpm">FPM</a> make it really easy to ship an installable artifact that includes an entire virtualenv, but this still lacks the elegance of a single binary.</li>
+<li><strong>Static Typing</strong>: As someone who started with C++ and absolutely adored it, I do miss the type safety that I was used to from C++.  This goes hand in hand with compile-time checks that really helped me ensure my code was of reasonable quality before even being executed.</li>
+<li><strong>Speed</strong>: Once again, a challenge shared by most interpreted languages.  Python is fast enough for many tasks, but falls far behind compiled languages.</li>
+<li><strong>Verbosity</strong>: We only got f-strings in Python 3.6, which was truly a big relief.  However, we still have extremely verbose <code>self</code> syntax in classes and constructors are littered with <code>self.var = var</code>, which may be partly addressed with <a href="https://www.python.org/dev/peps/pep-0557/">data classes in Python 3.7</a>.</li>
+<li><strong>Implicit Private Class Members</strong>: When I say private, I mean private damn it!  As a former C++ guy, I found Python&rsquo;s underscore-prefix style for private attributes and methods a little &hellip; hacky? :&lsquo;)</li>
+</ul>
+
+<p>Further to this, I&rsquo;m not sure that I really love the direction that Python is taking in a few areas, particularly around async and typing.</p>
+
+<ul>
+<li><strong>Coroutines</strong>: Although highly welcome, the new async functionality in Python feels very user-hostile and difficult to grasp.  Existing code requires a good amount of work before it is made non-blocking too.  I think this situation will improve in time as more libraries become available and as I understand and use the new libraries more though.</li>
+<li><strong>Type Annotations (and mypy)</strong>: Honestly, type annotations are welcome &hellip; if they actually did anything in CPython.  The new idea of using type annotations as part of various constructs (e.g. data classes) seems pointless without mainstream support in the main CPython distribution.  In the meantime, mypy is not mainstream just yet but shows great promise as a type validator for Python in the future, particularly with the <code>--strict</code> flag enabled.</li>
+</ul>
+
+<p>I should note that I&rsquo;m still a massive fan and advocate of Python and think it&rsquo;s still one of the best interpreted languages available today; particularly when you take into account its wonderful ecosystem and maturity.</p>
+
+<h1 id="what-i-m-looking-for">What I&rsquo;m Looking For</h1>
+
+<p>My starting point is really Python and Ruby.  I&rsquo;ve used Ruby from time to time where it was needed and really love it too.  Ruby solves several problems that Python has (proper private/protected attributes, less verbose syntax .etc) but still suffers from performance problems and lacks static typing.</p>
+
+<p>As such, I started looking for a new language with the following features:</p>
+
+<ul>
+<li>Similar syntax to Python and Ruby</li>
+<li>Single-binary distribution</li>
+<li>Compiled, statically typed and fast</li>
+<li>Object-oriented (oh classes, how I love you&hellip;)</li>
+</ul>
+
+<h1 id="candidates">Candidates</h1>
+
+<p>The following languages were ruled out:</p>
+
+<ul>
+<li><strong>Go</strong>: No keyword arguments, no exceptions, no classes, no generics and awful naming styles all led to me saying no to Go (although perhaps this simplicity is what attracts many to it).  I have actually spent quite some time learning and coding in Go and found it frustrating at best.  A language like C++ had made many advancements after C and offered us far greater flexibility yet it feels as though Go is taking us back to the days of C.</li>
+<li><strong>Elixir</strong>: A fascinating functional language, but lack of OO features and the fact that a single binary distribution is not the target of this language is a bit of a bummer for my use case.  However, various folks in my team use Elixir as their primary language for all new projects and have found it great in use.  Elixir has a rich and proven legacy and should definitely be considered if a functional language is what you&rsquo;re after.</li>
+<li><strong>Rust</strong>: This is an interesting language that I have spent some time attempting to learn.  Really, I just feel that Rust is not aimed at my use case; it is a rather complex language that just doesn&rsquo;t seem to click with me and many others too.</li>
+<li><strong>Julia</strong>: This language is really targeted more for scientific computing as opposed my use case.  It also lacks the OO abilities that I&rsquo;m after.</li>
+<li><strong>Pony</strong>: A very fascinating language that seems to borrow a lot from Python, however it also borrows some things I dislike (e.g. underscore prefixed variables, lack of symmetry .etc).  I generally didn&rsquo;t feel that Pony aligned with the way I think nor did it have the same traction as other languages making it rather primitive currently.</li>
+</ul>
+
+<p>Some languages that I&rsquo;m really interested in and hope to examine further in the future are:</p>
+
+<ul>
+<li><strong>Nim</strong>: Nim was originally the front-runner as my next language and one which I hope to spend more time on in the future.</li>
+<li><strong>Swift</strong>: Another popular object-oriented language that definitely deserves attention beyond development of iOS and Mac apps.</li>
+</ul>
+
+<p>But ultimately, I decided to commit to learning <strong>Crystal</strong>!</p>
+
+<p>The reasons are as follows:</p>
+
+<ul>
+<li>Crystal feels immediately familiar as it mostly follows Ruby&rsquo;s syntax</li>
+<li>It compiles into a fast, single executable</li>
+<li>The entire standard library is written in Crystal which makes it very easy to read when required</li>
+<li>It offers a full object-oriented approach similar to Ruby (which includes real protected and private members)</li>
+<li>Crystal uses static typing but also provides unions (ability to define a variable that can be of multiple types)</li>
+<li>It offers the ability to develop DSLs similar to Ruby (which is something I&rsquo;ve always been interested in)</li>
+<li>Bindings to C libraries are fully native and written in Crystal (similar to ctypes in Python, only better)</li>
+</ul>
+
+<h1 id="caveats">Caveats</h1>
+
+<p>Crystal is a very young language that still hasn&rsquo;t hit 1.0.  It often introduces breaking changes in releases and has limited libraries.</p>
+
+<p>However, I plan to only use this language in my personal projects and was willing to become an early adopter due to the fact I feel that the language has enough promise to be worth using.</p>
+
+<h1 id="experiences">Experiences</h1>
+
+<h2 id="standard-library">Standard Library</h2>
+
+<p>The entire standard library is extremely easy to read and is something I reference all the time.  The library also seems moderately extensive and is a great base to work with.</p>
+
+<p>Here&rsquo;s an example of the addition of arrays:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-crystal" data-lang="crystal">1
+2
+3
+4
+5
+6
+7
+8</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-crystal" data-lang="crystal"><span></span>  <span class="k">def</span> <span class="nf">+</span><span class="p">(</span><span class="n">other</span> <span class="p">:</span> <span class="nb">Array</span><span class="p">(</span><span class="n">U</span><span class="p">))</span> <span class="n">forall</span> <span class="n">U</span>
+    <span class="n">new_size</span> <span class="o">=</span> <span class="n">size</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">size</span>
+    <span class="nb">Array</span><span class="p">(</span><span class="n">T</span> <span class="o">|</span> <span class="n">U</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">new_size</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">buffer</span><span class="o">|</span>
+      <span class="n">buffer</span><span class="o">.</span><span class="n">copy_from</span><span class="p">(</span><span class="vi">@buffer</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+      <span class="p">(</span><span class="n">buffer</span> <span class="o">+</span> <span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">copy_from</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">to_unsafe</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+      <span class="n">new_size</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
+</td></tr></table>
+<p>And here&rsquo;s the function that obtains the extension of a file:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-crystal" data-lang="crystal"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-crystal" data-lang="crystal"><span></span>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">extname</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="p">:</span> <span class="nb">String</span>
+    <span class="n">filename</span><span class="o">.</span><span class="n">check_no_null_byte</span>
+
+    <span class="n">dot_index</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">rindex</span><span class="p">(</span><span class="sc">&#39;.&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">dot_index</span> <span class="o">&amp;&amp;</span> <span class="n">dot_index</span> <span class="o">!=</span> <span class="n">filename</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span>
+        <span class="n">dot_index</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">rindex</span><span class="p">(</span><span class="no">SEPARATOR</span><span class="p">)</span> <span class="o">||</span> <span class="mi">0</span><span class="p">))</span>
+      <span class="n">filename</span><span class="o">[</span><span class="n">dot_index</span><span class="p">,</span> <span class="n">filename</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="n">dot_index</span><span class="o">]</span>
+    <span class="k">else</span>
+      <span class="s2">&quot;&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
+</td></tr></table>
+<p>If you choose to try out Crystal, ensure you keep its source right by your side; it&rsquo;s incredibly valuable and useful.</p>
+
+<h2 id="binding-to-c-libraries">Binding to C Libraries</h2>
+
+<p>It&rsquo;s amazing how easy this is!</p>
+
+<p>Here&rsquo;s an example of a binding to various functions that obtain user information from a Unix system:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-crystal" data-lang="crystal"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-crystal" data-lang="crystal"><span></span><span class="k">lib</span> <span class="nn">LibC</span>
+  <span class="k">struct</span> <span class="nc">Passwd</span>
+    <span class="n">pw_name</span>   <span class="p">:</span> <span class="n">LibC</span><span class="o">::</span><span class="nb">Char</span><span class="o">*</span>
+    <span class="n">pw_passwd</span> <span class="p">:</span> <span class="n">LibC</span><span class="o">::</span><span class="nb">Char</span><span class="o">*</span>
+    <span class="n">pw_uid</span>    <span class="p">:</span> <span class="n">LibC</span><span class="o">::</span><span class="n">UInt</span>
+    <span class="n">pw_gid</span>    <span class="p">:</span> <span class="n">LibC</span><span class="o">::</span><span class="n">UInt</span>
+    <span class="n">pw_change</span> <span class="p">:</span> <span class="n">LibC</span><span class="o">::</span><span class="n">Long</span>
+    <span class="n">pw_class</span>  <span class="p">:</span> <span class="n">LibC</span><span class="o">::</span><span class="nb">Char</span><span class="o">*</span>
+    <span class="n">pw_gecos</span>  <span class="p">:</span> <span class="n">LibC</span><span class="o">::</span><span class="nb">Char</span><span class="o">*</span>
+    <span class="n">pw_dir</span>    <span class="p">:</span> <span class="n">LibC</span><span class="o">::</span><span class="nb">Char</span><span class="o">*</span>
+    <span class="n">pw_shell</span>  <span class="p">:</span> <span class="n">LibC</span><span class="o">::</span><span class="nb">Char</span><span class="o">*</span>
+    <span class="n">pw_expire</span> <span class="p">:</span> <span class="n">LibC</span><span class="o">::</span><span class="n">Long</span>
+  <span class="k">end</span>
+
+  <span class="k">fun</span> <span class="nf">getpwuid</span><span class="p">(</span><span class="n">uid</span> <span class="p">:</span> <span class="n">LibC</span><span class="o">::</span><span class="n">UInt</span><span class="p">)</span> <span class="p">:</span> <span class="n">Passwd</span><span class="o">*</span>
+  <span class="k">fun</span> <span class="nf">getpwnam</span><span class="p">(</span><span class="n">name</span> <span class="p">:</span> <span class="n">LibC</span><span class="o">::</span><span class="nb">Char</span><span class="o">*</span><span class="p">)</span> <span class="p">:</span> <span class="n">Passwd</span><span class="o">*</span>
+  <span class="k">fun</span> <span class="nf">getpwent</span> <span class="p">:</span> <span class="n">Passwd</span><span class="o">*</span>
+  <span class="k">fun</span> <span class="nf">setpwent</span>
+  <span class="k">fun</span> <span class="nf">endpwent</span>
+<span class="k">end</span>
+</code></pre></div>
+</td></tr></table>
+<h2 id="exception-handling">Exception Handling</h2>
+
+<p>Similar exception handling is provided to both Ruby and Python:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-crystal" data-lang="crystal">1
+2
+3
+4
+5
+6
+7
+8
+9</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-crystal" data-lang="crystal"><span></span>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">mount?</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">begin</span>
+      <span class="n">stat_path</span> <span class="o">=</span> <span class="nb">File</span><span class="o">.</span><span class="n">lstat</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">rescue</span> <span class="n">Errno</span>
+      <span class="c1"># It doesn&#39;t exist so not a mount point</span>
+      <span class="k">return</span> <span class="kc">false</span>
+    <span class="k">end</span>
+    <span class="o">...</span>
+  <span class="k">end</span>
+</code></pre></div>
+</td></tr></table>
+<p>Writing your own exceptions is trivial; simply inherit from the <code>Exception</code> class.</p>
+
+<h2 id="import-system-namespaces">Import System &amp; Namespaces</h2>
+
+<p>This was a bit of an adjustment coming from Python, but really brought me back to C++ days as Ruby follows a similar method to C++.</p>
+
+<p>C++ namespaces are equivalent to Ruby/Crystal modules which you can define yourself.  Requiring any library will import all items that it defines, so it&rsquo;s always ideal to ensure that your entire library is contained within a module to avoid namespace pollution.</p>
+
+<p>Initially I was a bit concerned about this, but I find it liberating being able to easily build up a module from any number of files.  However, I will admit that it makes finding where things came from more of a challenge.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-crystal" data-lang="crystal">1
+2
+3
+4
+5
+6</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-crystal" data-lang="crystal"><span></span><span class="k">require</span> <span class="s2">&quot;yaml&quot;</span>
+
+<span class="c1"># In this example, the yaml library provides a module called YAML</span>
+<span class="c1"># which contains a function named parse which we are calling below</span>
+<span class="n">data</span> <span class="o">=</span> <span class="no">YAML</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="nb">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;./foo.yml&quot;</span><span class="p">))</span>
+<span class="nb">puts</span> <span class="n">data</span>
+</code></pre></div>
+</td></tr></table>
+<h2 id="classes">Classes</h2>
+
+<p>One of my very favourite things about Crystal is how it handles assignment of instance variables:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-crystal" data-lang="crystal">1
+2
+3
+4
+5</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-crystal" data-lang="crystal"><span></span><span class="k">class</span> <span class="nc">Person</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="vi">@name</span> <span class="p">:</span> <span class="nb">String</span><span class="p">,</span> <span class="vi">@age</span> <span class="p">:</span> <span class="nb">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+  <span class="k">end</span>
+  <span class="o">...</span>
+<span class="k">end</span>
+</code></pre></div>
+</td></tr></table>
+<p>This creates a constructor that will automatically assign the provided parameters to instance variables.  The equivalent code in Python would be:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python">1
+2
+3
+4</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+</code></pre></div>
+</td></tr></table>
+<p>Although it&rsquo;s a personal thing, I also really like the symmetry of the <code>end</code> statements and the two space indentation in Ruby/Crystal.  I feel that it ultimately makes the code more beautiful and elegant to read.</p>
+
+<p>And of course, we have proper protected and private members and abstract classes too; both features I missed from my C++ days.</p>
+
+<h2 id="documentation">Documentation</h2>
+
+<p>I absolutely love Crystal&rsquo;s documentation.  It is so inviting and enjoyable to read.  However, as with any new language, it is possibly not as comprehensive as it could be.</p>
+
+<p>The main two pieces of documentation provided are:</p>
+
+<ul>
+<li><a href="https://crystal-lang.org/docs/">Crystal Docs</a>: Offers a very enjoyable walkthrough of most features offered by the language.  Be sure to hit the little <strong>A</strong> icon on the top of the screen to adjust your font, font size and theme (nice touch).  I recommend starting here.</li>
+<li><a href="https://crystal-lang.org/api/">Crystal API Reference</a>: Details all modules offered and their respective classes and functions.</li>
+</ul>
+
+<p>Another incredibly valuable resource is the <a href="https://gitter.im/crystal-lang/crystal">Crystal chatroom on Gitter</a>.  Everyone in the channel is very welcoming and helpful.  They have been a great source of information for me on my journey thus far.</p>
+
+<h2 id="performance">Performance</h2>
+
+<p>Although it&rsquo;s too early for me to really determine performance gains, it&rsquo;s always fun to do a Fibonacci test :)</p>
+
+<h3 id="ruby-crystal">Ruby / Crystal</h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-ruby" data-lang="ruby">1
+2
+3
+4
+5
+6
+7
+8
+9</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span>
+    <span class="mi">1</span>
+  <span class="k">else</span>
+    <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="nb">puts</span> <span class="n">fib</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+<h3 id="python">Python</h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python">1
+2
+3
+4
+5
+6
+7</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">fib</span><span class="p">(</span><span class="mi">42</span><span class="p">))</span>
+</code></pre></div>
+</td></tr></table>
+<h3 id="c">C</h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-c" data-lang="c"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">fib</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">fib</span><span class="p">(</span><span class="mi">42</span><span class="p">));</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>Compiled with <code>-O3</code> for best performance.</p>
+
+<h3 id="c-1">C++</h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-c++" data-lang="c++"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-c++" data-lang="c++"><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">fib</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">fib</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>Compiled with <code>-O3</code> for best performance.</p>
+
+<h3 id="go">Go</h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-go" data-lang="go"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-go" data-lang="go"><span></span><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
+
+<span class="kd">func</span> <span class="nx">fib</span><span class="p">(</span><span class="nx">n</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">n</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">fib</span><span class="p">(</span><span class="nx">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="nx">fib</span><span class="p">(</span><span class="nx">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">fib</span><span class="p">(</span><span class="mi">42</span><span class="p">))</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<h3 id="results">Results</h3>
+
+<pre><code>Runtime          Time (sec)
+---------------- ----------
+C 4.2.1               0.747
+Crystal 0.24.2        0.751
+C++ 4.2.1             0.930
+Go 1.10.2             1.615
+PyPy3 6.0.0          12.578
+Ruby 2.5.1           37.944
+CPython 3.6.5       128.172
+</code></pre>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>Although it&rsquo;s early days for both me and the language itself, I&rsquo;m very optimistic and hopeful that Crystal will soon be the choice for many in production.  I think that the language will be a natural progression for Python and Ruby users alike.</p>
+
+<p>Be on the lookout for more posts about Crystal in the near future, including tips and tricks that I come across.</p>
+
+	</div>
+  </div>
+</article>
+
+<div class="row">
+  <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <ul class="pager blog-pager">
+      
+      <li class="previous">
+        <a href="https://fgimian.github.io/blog/2018/06/05/python-api-framework-benchmarks/" data-toggle="tooltip" data-placement="top" title="Python API Framework Benchmarks">&larr; Previous Post</a>
+      </li>
+      
+      
+      <li class="next">
+        <a href="https://fgimian.github.io/blog/2018/12/30/revisiting-go/" data-toggle="tooltip" data-placement="top" title="Revisiting Go">Next Post &rarr;</a>
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<div class="row disqus-comments">
+  <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fgimian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>
+
+
+      
+
+      
+      <div class="row disqus-comments">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fgimian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+      </div>
+      
+
+    </div>
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+          
+          <li>
+            <a href="https://github.com/fgimian" title="GitHub">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+          <li>
+            <a href="https://twitter.com/fgimian" title="Twitter">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+		      
+          <li>
+            <a href="https://linkedin.com/in/fotis-gimian-a5420053" title="LinkedIn">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+	    	  
+          <li>
+            <a href="https://stackoverflow.com/users/1905666/fotis-gimian" title="StackOverflow">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+
+    		  <li>
+      			<a href="https://fgimian.github.io/index.xml" title="RSS">
+      			  <span class="fa-stack fa-lg">
+        				<i class="fa fa-circle fa-stack-2x"></i>
+        				<i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+      			  </span>
+      			</a>
+    		  </li>		
+
+        </ul>
+        <p class="copyright text-muted">
+    		  Fotis Gimian
+    		  &nbsp;&bull;&nbsp;
+    		  2018
+    		  
+    		  
+    		  &nbsp;&bull;&nbsp;
+    		  <a href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    		  
+  	    </p>
+  	        
+    		<p class="theme-by text-muted">
+    		  Theme by
+    		  <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    		</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://fgimian.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://fgimian.github.io/js/bootstrap.min.js"></script>
+<script src="https://fgimian.github.io/js/main.js"></script>
+
+
+
+  </body>
+</html>

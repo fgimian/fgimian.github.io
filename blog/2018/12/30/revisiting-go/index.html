@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Revisiting Go</title>
+
+  <meta name="author" content="Fotis Gimian" />
+
+  
+
+  <meta name="generator" content="Hugo 0.53" />
+
+  <link rel="alternate" href="https://fgimian.github.io/index.xml" type="application/rss+xml" title="Fotsies Technology Blog">
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/main.css" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/custom.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/solarized-dark.css" />
+
+  <link rel="icon" type="image/png" href="https://fgimian.github.io/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="https://fgimian.github.io/favicon-16x16.png" sizes="16x16" />
+
+  
+  <meta property="og:title" content="Revisiting Go" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="/blog/2018/12/30/revisiting-go//" />
+  <meta property="og:image" content="img/fotis.jpg" />
+
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+          <a title="Blog" href="/">Blog</a>
+  	      </li>
+  	    
+      
+        
+          <li>
+          <a title="About" href="/page/about/">About</a>
+  	      </li>
+  	    
+      
+      </ul>
+    </div>
+
+	<div class="avatar-container">
+	  <div class="avatar-img-border">
+      
+          <a title="Fotsies Technology Blog" href="https://fgimian.github.io/">
+              <img class="avatar-img" src="https://fgimian.github.io/img/fotis.jpg" alt="Fotsies Technology Blog" />
+          </a>
+      
+	  </div>
+	</div>
+
+  </div>
+</nav>
+
+
+    <div role="main" class="container main-content">
+
+      
+        <header class="header-post">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <div class="post-heading">
+        <h1>Revisiting Go</h1>
+        
+        <span class="post-meta">Posted on December 30, 2018</span>
+      </div>
+     </div>
+  </div>
+</header>
+
+<article>
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+	  
+
+<p>Several months ago I wrote about Crystal and its potential, but also spoke about why Go was not a language I was interested in.</p>
+
+<p>In my post, I originally stated the following:</p>
+
+<blockquote>
+<p>No keyword arguments, no exceptions, no classes, no generics and awful naming styles all led to me saying no to Go (although perhaps this simplicity is what attracts many to it).  I have actually spent quite some time learning and coding in Go and found it frustrating at best &hellip; C++ is a far better language!  Having Google behind the language has ultimately resulted in its success even though it really takes us back to the days of C&hellip;</p>
+</blockquote>
+
+<p>Understandably and rightly so, these statements did cause some controversy when one of the Crystal advocates published the post to Hacker News (which I wasn&rsquo;t anticipating).  I will absolutely admit that I was way too opinionated on the language at that point and will be more mindful when being so critical in the future.  That particular blog post was just a dump of ideas I had at the time while trying to find a new language to learn for hobby projects at home.</p>
+
+<p>Although I spent quite a lot of time on Crystal and am still very fond of it, I had to abandon it for the current time due to its lack of maturity.  I realised that although I could use it for little things here and there at home, I would never be able to use it in production at work until it matures.  The state of libraries is also very touch and go in Crystal and I found myself only trusting that the included standard libraries would be stable and refined.</p>
+
+<p>So it&rsquo;s time to revisit Go and attempt to make sense of my thoughts about the language 6 months ago.  It is also the time to consider that I may have been incorrect about many of my sentiments.</p>
+
+<h1 id="current-work-project">Current Work Project</h1>
+
+<h2 id="maintaining-a-large-c-codebase">Maintaining a Large C++ Codebase</h2>
+
+<p>This begins several months after my post where I&rsquo;ve been moved onto a project at work which is primarily developed in C++ and with some minor tooling in Python and one tiny HTTP upload server in Go.  The application primarily works by exposing an API which reads and writes from a PostgreSQL database in addition to running various background tasks that ship data in and out of MQTT topics.  The app also implements a custom communication specification over UDP and TCP for devices to communicate with.</p>
+
+<p>I went through the C++ code in quite a lot of detail to understand the app&rsquo;s functionality and I along with several others in the team agreed that the code would be hard if not impossible to maintain long term.  The developer who wrote the code had really tried to use C++ in areas where it really isn&rsquo;t usually used (e.g. API development) and developed so many libraries himself with few unit tests.  Further to this, the few third party library dependencies were simply copied into the Git repository itself, a common problem seen in C++ projects due to lack of a standardised dependency management system.</p>
+
+<p>Having not done any serious coding in C++ for the better part of a decade, I also started to see how varied people&rsquo;s coding styles could be and how huge the C++ language has become over the years with the various iterations.  In a team of primarily Python and JavaScript developers, and with the lack of focus on APIs in the C++ world, would C++ be a viable choice if the application were to be rewritten?</p>
+
+<h2 id="thoughts-about-rewriting-the-application">Thoughts About Rewriting The Application</h2>
+
+<p>Due to the fact performance was a requirement for the app, my colleague and I discussed what language we would rewrite the app in if we were given the chance in 2019.</p>
+
+<p>This app would need to be running in production on a stable and mature language and assuming we didn&rsquo;t go with C++, our choices were really just Go and Rust.</p>
+
+<p>I spent some time reading about Rust and trying to reason about why we should use it.  The language is intriguing but a rather complex one and although it&rsquo;s gaining popularity, it still has nowhere near the following of Go when it comes to libraries and community discussion.  My colleague who had tried Rust previously explained to me that although he loved the language, it was a rather difficult language to get to grips with, approaching the complexity of C++.</p>
+
+<h2 id="go-makes-an-appearance">Go Makes An Appearance</h2>
+
+<p>Several weeks ago, I found myself in a situation where I had to debug that little HTTP upload component developed in Go.  Having only played with Go once well over a ago, I found it surprisingly easy to read the code and get it building and running on my dev server.  I made various changes to the codebase while troubleshooting which all went quite seamlessly.</p>
+
+<h2 id="developing-something-new-in-go">Developing Something New In Go</h2>
+
+<p>As I was finishing the year, I was asked to develop a monitoring API which would expose details about server health in an endpoint which would be consumed by a dashboard.</p>
+
+<p>I designed this in a client / server model (using SSH as the communication between both) and developed the initial version of both the client and server in Python.</p>
+
+<p>The client app would need to be deployed to all of our production servers and as we were nearing our Christmas embargo, this would need to happen fast!  I realised that getting the app deployed with Python would be rather painful as I would need to either Dockerise it (in which case I would need to install Docker everywhere) or install Python 3.6 with all dependent packages everywhere.</p>
+
+<p>So, I decided to rewrite the client in Rust or Go so I could ship a single binary instead.  I had already leveraged the awesome <a href="https://github.com/giampaolo/psutil">psutil</a> library in Python which I then started searching for in the two languages I had to choose from.  Go had a very mature and fully featured port called <a href="https://github.com/shirou/gopsutil">gopsutil</a> while Rust had a very incomplete <a href="https://github.com/borntyping/rust-psutil">rust-psutil</a> so decided to write the client in Go.  Doing this was surprisingly easy.  It took me only a few hours to do and I had only a single binary to deploy to all my servers which ran incredibly fast.</p>
+
+<p>After these experiences, more thought and a discussion with the developer in the team that had also used Go on that little HTTP upload server, I started to believe that Go would be the perfect choice for rewriting our app moving forward.</p>
+
+<h2 id="personal-projects-in-go">Personal Projects In Go</h2>
+
+<p>During the Christmas holiday season, I decided to rewrite various other CLI utilities that I&rsquo;ve developed for automating some activities on my Mac in Go to see if I would hit any roadblocks.</p>
+
+<p>Once again, porting the code from Python was surprisingly easy.  I also spent more time learning about the Go tooling and setting up Visual Studio Code as a proper Go IDE and realised just how rich the Go ecosystem actually is.  Development is very fluid and polished in comparison to a language like Crystal for example, where the ecosystem is still mostly in an alpha state.</p>
+
+<p>So I have now almost rewritten all my scripts in Go and really enjoyed the process with pretty much all my questions answered via Google or in the Go docs along the day.</p>
+
+<h1 id="original-gripes">Original Gripes</h1>
+
+<h2 id="keyword-arguments">Keyword Arguments</h2>
+
+<p>This was definitely something I was nervous about coming from Python, but in practice I didn&rsquo;t find this to be a huge problem.</p>
+
+<p>While in Python I would write:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">greet</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Fotis&#39;</span><span class="p">,</span> <span class="n">industry</span><span class="o">=</span><span class="s1">&#39;IT&#39;</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+<p>In Go, I could write the following if I wanted a similar effect:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-go" data-lang="go">1
+2
+3</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-go" data-lang="go"><span></span><span class="nx">name</span> <span class="o">:=</span> <span class="s">&quot;Fotis&quot;</span>
+<span class="nx">industry</span> <span class="o">:=</span> <span class="s">&quot;IT&quot;</span>
+<span class="nx">greet</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">industry</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+<h2 id="default-arguments">Default Arguments</h2>
+
+<p>Another concern was the fact that there were no default values for arguments.  This meant that all arguments must always be passed to a function call.</p>
+
+<p>In practice, I actually found this behaviour to be more of a positive than a negative as it made the code more explicit and clear to read.</p>
+
+<p>In the case where a huge number of arguments are required, Go often leverages structs which easily allow fields to be excluded.</p>
+
+<p>For example, here&rsquo;s how <a href="https://github.com/spf13/cobra">cobra</a> does it:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-go" data-lang="go"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-go" data-lang="go"><span></span><span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">genre</span><span class="p">,</span> <span class="nx">defaultArtist</span> <span class="kt">string</span>
+
+    <span class="kd">var</span> <span class="nx">cmd</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">cobra</span><span class="p">.</span><span class="nx">Command</span><span class="p">{</span>
+        <span class="nx">Use</span><span class="p">:</span>   <span class="s">&quot;sonic-element-encode [flags] &lt;filename&gt;&quot;</span><span class="p">,</span>
+        <span class="nx">Short</span><span class="p">:</span> <span class="s">&quot;Encodes and tags a render to a 320 kbps MP3 using LAME&quot;</span><span class="p">,</span>
+        <span class="nx">Args</span><span class="p">:</span>  <span class="nx">cobra</span><span class="p">.</span><span class="nx">ExactArgs</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+        <span class="nx">Run</span><span class="p">:</span> <span class="kd">func</span><span class="p">(</span><span class="nx">cmd</span> <span class="o">*</span><span class="nx">cobra</span><span class="p">.</span><span class="nx">Command</span><span class="p">,</span> <span class="nx">args</span> <span class="p">[]</span><span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+            <span class="o">...</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+
+    <span class="nx">flags</span> <span class="o">:=</span> <span class="nx">cmd</span><span class="p">.</span><span class="nx">Flags</span><span class="p">()</span>
+    <span class="nx">flags</span><span class="p">.</span><span class="nx">StringVarP</span><span class="p">(</span>
+        <span class="o">&amp;</span><span class="nx">genre</span><span class="p">,</span> <span class="s">&quot;genre&quot;</span><span class="p">,</span> <span class="s">&quot;g&quot;</span><span class="p">,</span> <span class="s">&quot;Trance&quot;</span><span class="p">,</span> <span class="s">&quot;the genre to use in the tags&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="nx">flags</span><span class="p">.</span><span class="nx">StringVarP</span><span class="p">(</span>
+        <span class="o">&amp;</span><span class="nx">defaultArtist</span><span class="p">,</span> <span class="s">&quot;default-artist&quot;</span><span class="p">,</span> <span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;Sonic Element&quot;</span><span class="p">,</span>
+        <span class="s">&quot;the artist name to use when it is missing in the filename&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">cmd</span><span class="p">.</span><span class="nx">Execute</span><span class="p">();</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nx">os</span><span class="p">.</span><span class="nx">Exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>Note that when creating the cobra <code>Command</code>, <a href="https://godoc.org/github.com/spf13/cobra#Command">various additional struct fields are possible</a> but have simply been excluded above.</p>
+
+<h2 id="generics">Generics</h2>
+
+<p>This hasn&rsquo;t hurt me so much thus far, but do still think it would resolve some frustrations while implementing functionality that can work across types.</p>
+
+<p>As an example, I had to implement a function to sort keys of a map, but due to the lack of generics, I needed to explicitly specify the key and value types (specifically <code>map[string]string)</code>) in the parameter of my function:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-go" data-lang="go">1
+2
+3
+4
+5
+6
+7
+8</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-go" data-lang="go"><span></span><span class="kd">func</span> <span class="nx">SortedMapKeysString</span><span class="p">(</span><span class="nx">data</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span><span class="p">)</span> <span class="p">[]</span><span class="kt">string</span> <span class="p">{</span>
+    <span class="nx">keys</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">data</span><span class="p">))</span>
+    <span class="k">for</span> <span class="nx">key</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">data</span> <span class="p">{</span>
+        <span class="nx">keys</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">keys</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nx">sort</span><span class="p">.</span><span class="nx">Strings</span><span class="p">(</span><span class="nx">keys</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">keys</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>I would need to re-approach this problem by leveraging <a href="https://golang.org/pkg/reflect/">reflect</a> similar to the Go <a href="https://golang.org/pkg/sort/">sort library</a> to make this work with maps containing any value type:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-go" data-lang="go"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-go" data-lang="go"><span></span><span class="kd">func</span> <span class="nx">SortedMapKeysString</span><span class="p">(</span><span class="nx">data</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">rv</span> <span class="o">:=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nx">ValueOf</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nx">rv</span><span class="p">.</span><span class="nx">Kind</span><span class="p">()</span> <span class="o">!=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nx">Map</span> <span class="o">||</span> <span class="nx">rv</span><span class="p">.</span><span class="nx">Type</span><span class="p">().</span><span class="nx">Key</span><span class="p">().</span><span class="nx">Kind</span><span class="p">()</span> <span class="o">!=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nx">String</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">errors</span><span class="p">.</span><span class="nx">New</span><span class="p">(</span><span class="s">&quot;data must be a map with keys as strings&quot;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">keys</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">rv</span><span class="p">.</span><span class="nx">Len</span><span class="p">())</span>
+    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">key</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">rv</span><span class="p">.</span><span class="nx">MapKeys</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">keys</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">keys</span><span class="p">,</span> <span class="nx">key</span><span class="p">.</span><span class="nx">String</span><span class="p">())</span>
+    <span class="p">}</span>
+    <span class="nx">sort</span><span class="p">.</span><span class="nx">Strings</span><span class="p">(</span><span class="nx">keys</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">keys</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<h2 id="error-handling">Error Handling</h2>
+
+<p>Every Go developer is now very accustomed to seeing <code>if err != nil</code> quite a lot in their codebase:</p>
+
+<p>e.g.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-go" data-lang="go"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-go" data-lang="go"><span></span><span class="c1">// Open and parse the Cubase information plist</span>
+<span class="nx">infoFile</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Open</span><span class="p">(</span><span class="nx">cubaseInfoPath</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Fprintln</span><span class="p">(</span>
+        <span class="nx">os</span><span class="p">.</span><span class="nx">Stderr</span><span class="p">,</span>
+        <span class="s">&quot;ERROR: Unable to open the Cubase information plist -&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="nx">os</span><span class="p">.</span><span class="nx">Exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">defer</span> <span class="nx">infoFile</span><span class="p">.</span><span class="nx">Close</span><span class="p">()</span>
+
+<span class="nx">cubaseInfoBytes</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nx">ReadAll</span><span class="p">(</span><span class="nx">infoFile</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Fprintln</span><span class="p">(</span>
+        <span class="nx">os</span><span class="p">.</span><span class="nx">Stderr</span><span class="p">,</span>
+        <span class="s">&quot;ERROR: Unable to read the Cubase information plist -&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="nx">os</span><span class="p">.</span><span class="nx">Exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">data</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}</span>
+<span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">plist</span><span class="p">.</span><span class="nx">Unmarshal</span><span class="p">(</span><span class="nx">cubaseInfoBytes</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">data</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Fprintln</span><span class="p">(</span>
+        <span class="nx">os</span><span class="p">.</span><span class="nx">Stderr</span><span class="p">,</span>
+        <span class="s">&quot;ERROR: Unable to parse the Cubase information plist -&quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="nx">os</span><span class="p">.</span><span class="nx">Exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>This is certainly quite a big mindset shift when coming from the world of exceptions and it can sometimes be a little too verbose.</p>
+
+<p>However, on the plus side, I find that Go really forces developers to think about how to handle every possible error that could occur.  It is also a lot harder to miss an error in Go compared to Python or Crystal where catching exceptions is essentially optional.  Often in Python, people resort to <code>except Exception</code> because they simply don&rsquo;t know what exception to catch (especially when working with 3rd party libraries that may themselves fail to catch all possible exceptions).</p>
+
+<p>As such, this has actually been one of my favourite things about Go.  I really feel that I am writing robust software that will rarely panic unless I explicitly ignore an error or panic myself.</p>
+
+<p>It would be ideal if there was a way to fall-through to a certain code block when attempting a large amount of operations that can throw errors through:</p>
+
+<p>e.g.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-go" data-lang="go"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-go" data-lang="go"><span></span><span class="nx">loudness</span><span class="p">.</span><span class="nx">Integrated</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nx">ParseFloat</span><span class="p">(</span><span class="nx">matches</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">64</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+<span class="p">}</span>
+<span class="nx">loudness</span><span class="p">.</span><span class="nx">IntegratedThreshold</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nx">ParseFloat</span><span class="p">(</span><span class="nx">matches</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">64</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+<span class="p">}</span>
+<span class="nx">loudness</span><span class="p">.</span><span class="nx">LRA</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nx">ParseFloat</span><span class="p">(</span><span class="nx">matches</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="mi">64</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+<span class="p">}</span>
+<span class="nx">loudness</span><span class="p">.</span><span class="nx">LRAThreshold</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nx">ParseFloat</span><span class="p">(</span><span class="nx">matches</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="mi">64</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+<span class="p">}</span>
+<span class="nx">loudness</span><span class="p">.</span><span class="nx">LRALow</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nx">ParseFloat</span><span class="p">(</span><span class="nx">matches</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="mi">64</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+<span class="p">}</span>
+<span class="nx">loudness</span><span class="p">.</span><span class="nx">LRAHigh</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nx">ParseFloat</span><span class="p">(</span><span class="nx">matches</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="mi">64</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+<span class="p">}</span>
+<span class="nx">loudness</span><span class="p">.</span><span class="nx">TruePeak</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nx">ParseFloat</span><span class="p">(</span><span class="nx">matches</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="mi">64</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>There are current <a href="https://go.googlesource.com/proposal/+/master/design/go2draft-error-handling.md">proposals</a> to improve this in upcoming versions of Go. I&rsquo;m personally not so fond of the proposed design change as it makes the language less explicit (e.g. the <code>check</code> statement means that you unwrap return values but exclude the last return value assuming it will be an <code>error</code> type).  I can&rsquo;t really think of a better approach either, so I&rsquo;m tempted to say that the current approach is still more clear, albeit verbose.</p>
+
+<h2 id="lack-of-classes">Lack of Classes</h2>
+
+<p>Although Go doesn&rsquo;t have classes per se, it does have structs which can have methods created on them.  These work very similarly to classes in use.</p>
+
+<p>Inheritance is replaced with composition which would hopefully result in clearer code in a large project. However, I have not yet written anything big enough in Go to see how composition works in practice.</p>
+
+<h2 id="strange-naming-styles">Strange Naming Styles</h2>
+
+<p>So firstly, I should get this out of the way.  I do find <code>camelCase</code> less clear that <code>snake_case</code>.  I realise this is personal preference, and it is something that hasn&rsquo;t been nearly as bad in practice as I had thought it would be.  As such, this particular aspect is not a deal breaker, but it is a bit of a shame that Go didn&rsquo;t go with <code>snake_case</code> for clarity.</p>
+
+<p>The bigger problem I&rsquo;m facing is the fact that it is hard to see the difference between constants, variables, functions and structs all of which use the exact same convention.  <code>camelCase</code> is used for local or &ldquo;unexported&rdquo; items while <code>TitleCase</code> is used for &ldquo;exported&rdquo; items.</p>
+
+<p>So let&rsquo;s suppose we have an exported name such as <strong>Download</strong>:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-go" data-lang="go">1
+2
+3
+4
+5
+6
+7
+8</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-go" data-lang="go"><span></span><span class="kd">type</span> <span class="nx">Download</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">MetadataPath</span> <span class="kt">string</span>
+    <span class="nx">Filename</span>     <span class="kt">string</span>
+    <span class="nx">Size</span>         <span class="kt">int</span>
+    <span class="nx">MD5</span>          <span class="kt">string</span>
+    <span class="nx">SHA256</span>       <span class="kt">string</span>
+    <span class="nx">URL</span>          <span class="kt">string</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>I can now easily write:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-go" data-lang="go">1
+2
+3
+4
+5
+6
+7
+8</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-go" data-lang="go"><span></span><span class="nx">download</span> <span class="o">:=</span> <span class="nx">Download</span><span class="p">{</span>
+    <span class="nx">MetadataPath</span><span class="p">:</span> <span class="s">&quot;/var/test/download.meta&quot;</span><span class="p">,</span>
+    <span class="nx">Filename</span><span class="p">:</span>     <span class="s">&quot;hello.txt&quot;</span><span class="p">,</span>
+    <span class="nx">Size</span><span class="p">:</span>         <span class="mi">659</span><span class="p">,</span>
+    <span class="nx">MD5</span><span class="p">:</span>          <span class="s">&quot;9bba825bbe9c53ae1fe1df99fa5aef3e&quot;</span><span class="p">,</span>
+    <span class="nx">SHA256</span><span class="p">:</span>       <span class="s">&quot;b922835c1753a6bd28d90db8d2b9d47fb3ad9455317178c0ea04aa522a673257&quot;</span><span class="p">,</span>
+    <span class="nx">URL</span><span class="p">:</span>          <span class="s">&quot;http://example.com/hello.txt&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>But what if it was private?</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-go" data-lang="go">1
+2
+3
+4
+5
+6
+7
+8</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-go" data-lang="go"><span></span><span class="kd">type</span> <span class="nx">download</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">MetadataPath</span> <span class="kt">string</span>
+    <span class="nx">Filename</span>     <span class="kt">string</span>
+    <span class="nx">Size</span>         <span class="kt">int</span>
+    <span class="nx">MD5</span>          <span class="kt">string</span>
+    <span class="nx">SHA256</span>       <span class="kt">string</span>
+    <span class="nx">URL</span>          <span class="kt">string</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>I would now need to be more inventive with my variable name since <strong>download</strong> is already the name of the struct.</p>
+
+<p>Many would just use <code>d</code>, or shorten it to <code>dwnld</code> or similar.</p>
+
+<p>This is a relatively minor gripe in the greater scheme of things but I will admit that i would just prefer a <code>export</code> keyword in front of items that are to be available outside and naming conventions such as these below used all the time:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-go" data-lang="go">1
+2
+3
+4
+5
+6
+7
+8
+9</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-go" data-lang="go"><span></span><span class="nx">export</span> <span class="kd">const</span> <span class="nx">MY_CONSTANT</span> <span class="p">=</span> <span class="s">&quot;Hello&quot;</span>
+
+<span class="nx">export</span> <span class="kd">type</span> <span class="nx">DownloadItem</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">variableName</span> <span class="o">:=</span> <span class="mi">5</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<h1 id="little-frustrations-with-go">Little Frustrations With Go</h1>
+
+<p>Naturally, while actually coding in Go, I&rsquo;ve discovered a few additional things that I found a bit frustrating thus far.</p>
+
+<h2 id="lack-of-sets">Lack of Sets</h2>
+
+<p>Sets in Python are very useful for creating a collection of unique items but also for easily comparing two sets of data too.</p>
+
+<p>There are some libraries that implement this functionality, but more commonly, you would create a set in Go as follows:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-go" data-lang="go">1
+2
+3
+4</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-go" data-lang="go"><span></span><span class="nx">set</span> <span class="o">:=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">struct</span><span class="p">{}{}</span>
+<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">items</span> <span class="p">{</span>
+    <span class="nx">set</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="kd">struct</span><span class="p">{}{}</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>Using <code>struct{}</code> as the value is efficient since this is an empty data structure.</p>
+
+<p>You would then be responsible for implementing functions for comparing such items.  For example, you can see <a href="https://stackoverflow.com/questions/19374219/how-to-find-the-difference-between-two-slices-of-strings-in-golang">this stackoverflow post</a> for ideas.</p>
+
+<h2 id="lack-of-sorting-for-maps">Lack of Sorting for Maps</h2>
+
+<p>There&rsquo;s currently no built-in way to sort keys of a map.  Instead, you would typically create a slice containing the keys, sort that and then use it to iterate over the map:</p>
+
+<p>Using the function defined above under <strong>Generics</strong>, we could then do something like this:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-go" data-lang="go"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-go" data-lang="go"><span></span><span class="nx">data</span> <span class="o">:=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span><span class="p">{</span>
+    <span class="s">&quot;key2&quot;</span><span class="p">:</span> <span class="s">&quot;value2&quot;</span><span class="p">,</span>
+    <span class="s">&quot;key1&quot;</span><span class="p">:</span> <span class="s">&quot;value1&quot;</span><span class="p">,</span>
+    <span class="s">&quot;key4&quot;</span><span class="p">:</span> <span class="s">&quot;value4&quot;</span><span class="p">,</span>
+    <span class="s">&quot;key3&quot;</span><span class="p">:</span> <span class="s">&quot;value3&quot;</span>
+<span class="p">}</span>
+<span class="nx">keys</span> <span class="o">:=</span> <span class="nx">SortedMapKeysString</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">key</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">keys</span> <span class="p">{</span>
+    <span class="nx">value</span> <span class="o">:=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="s">&quot;:&quot;</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>This is not really a big deal, but does result in more code for fairly trivial actions.</p>
+
+<h2 id="lack-of-search-for-slices-arrays">Lack of Search for Slices &amp; Arrays</h2>
+
+<p>I was a bit surprised to find that there&rsquo;s no built in way to search a slice in Go.  Instead, you must resort to a for loop for a linear search, or sort your slice and use <a href="https://golang.org/pkg/sort/#SearchStrings">sort.Search</a> instead.</p>
+
+<p>A typical linear search is written as follows:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-go" data-lang="go">1
+2
+3
+4
+5
+6
+7
+8</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-go" data-lang="go"><span></span><span class="c1">// Check if the item should be ignored</span>
+<span class="nx">ignore</span> <span class="o">:=</span> <span class="kc">false</span>
+<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">ignoredName</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">ignoredNames</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">name</span> <span class="o">==</span> <span class="nx">ignoredName</span> <span class="p">{</span>
+        <span class="nx">ignore</span> <span class="p">=</span> <span class="kc">true</span>
+        <span class="k">break</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>Once again, not a deal breaker, but functionality I would have loved to see available in the standard library.</p>
+
+<h2 id="tabs-vs-spaces">Tabs vs Spaces</h2>
+
+<p>I realise this is a topic that often makes developers very <em>passionate</em> but I personally have no problem with tabs in theory.</p>
+
+<p>The real problem is the way code appears on sites like GitHub and GitLab, along with various tools on Unix based systems.  In the browser, tabs almost always appear as 8 spaces which look seriously ugly.</p>
+
+<p>Fortunately, it is possible to remedy such problems on your own system for tools like <code>git diff</code>, <code>less</code> and <code>cat</code>:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1
+2
+3
+4
+5
+6
+7
+8
+9</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="c1"># Update your bash profile to setup less and cat</span>
+cat &gt;&gt; ~/.bash_profile <span class="s">&lt;&lt; EOF</span>
+<span class="s"># Ensure that Go is displayed with 4 spaces per tab in less and cat</span>
+<span class="s">export LESS=&quot;x4&quot;</span>
+<span class="s">tabs -4</span>
+<span class="s">EOF</span>
+
+<span class="c1"># Explicitly set the Git pager to ensure it works well with the LESS env variable</span>
+git config --global core.pager <span class="s2">&quot;less -FRX&quot;</span>
+</code></pre></div>
+</td></tr></table>
+<h1 id="great-things-about-go">Great Things About Go</h1>
+
+<p>Along the way, I&rsquo;ve discovered various aspects of Go that I really loved.</p>
+
+<h2 id="ecosystem-community-development-experience">Ecosystem, Community &amp; Development Experience</h2>
+
+<p>It really is wonderful to work on a language which is so widely supported and discussed.</p>
+
+<p>The library ecosystem is rich and covers a lot of territory, editor integration is fantastic and there&rsquo;s even a fully fledged JetBrains <a href="https://www.jetbrains.com/go/">GoLand</a> IDE if you are so inclined.  The Visual Studio Code Go extension is officially developed by Microsoft and is amazing and more than enough for me personally.</p>
+
+<p>Tools like gofmt and golint are very refined and helpful too and ensure good code quality and consistency.</p>
+
+<h2 id="automatic-formatting">Automatic Formatting</h2>
+
+<p>The Visual Studio Code Go extension (along with various others) automatically format your code upon save using a tool such as gofmt.  I initially was nervous about this but actually find it liberating and great. Fortunately the styles imposed by the Go tooling are very reasonable and easy to adapt to.</p>
+
+<p>This ultimately means that I can spend less time worrying about aesthetics and just focus on functionality and code quality.</p>
+
+<h2 id="static-typing-data-marshalling">Static Typing &amp; Data Marshalling</h2>
+
+<p>This was one of the points that drew me to a language like Crystal and C++ in the past.  Go&rsquo;s implementation of the empty interface <code>interface{}</code> and the reflect package really make it possible to do very dynamic things if you wish.  However, most code follows more rigid typing practices which make everything much clearer to debug and result in much more robust and solid apps.</p>
+
+<p>Using typed structs to marshal and unmarshal JSON and other data means extremely robust parsing and interpretation of data; an advantage mostly found in many statically typed languages.  Fortunately, I recently discovered libraries like <a href="https://github.com/jmvrbanac/alchemize">alchemize</a> do something similar in Python.</p>
+
+<h2 id="simplicity-readability">Simplicity &amp; Readability</h2>
+
+<p>Clearly this is the biggest selling point of Go for most people and one of the driving forces that the inventors of the language were keen to impart on the language.</p>
+
+<p>Go is extremely easy to read, absolutely as easy if not easier than a language like Python.  There are very few &ldquo;tricks&rdquo; up Go&rsquo;s sleeve compared to languages like Ruby, Python, Crystal and JavaScript.</p>
+
+<p>On the downside, this can lead to extra verbosity (as discussed above) which is the tradeoff here.  But overall, I think Go code would be much easier for a large team to maintain than many other languages.</p>
+
+<h2 id="explicit-nature">Explicit Nature</h2>
+
+<p>One of the Zen of Python items is:</p>
+
+<pre><code>Explicit is better than implicit.
+</code></pre>
+
+<p>Interestingly, Go is about as explicit as a language can get.  This is an area where Crystal wasn&rsquo;t quite as good.</p>
+
+<p>For example, I found a little bug in the Crystal standard library in the following function:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-crystal" data-lang="crystal">1
+2
+3
+4
+5
+6</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-crystal" data-lang="crystal"><span></span><span class="k">def</span> <span class="nf">flags</span> <span class="p">:</span> <span class="o">::</span><span class="nb">File</span><span class="o">::</span><span class="n">Flags</span>
+  <span class="n">flags</span> <span class="o">=</span> <span class="o">::</span><span class="nb">File</span><span class="o">::</span><span class="n">Flags</span><span class="o">::</span><span class="n">None</span>
+  <span class="n">flags</span> <span class="o">|=</span> <span class="o">::</span><span class="nb">File</span><span class="o">::</span><span class="n">Flags</span><span class="o">::</span><span class="n">SetUser</span> <span class="k">if</span> <span class="vi">@stat</span><span class="o">.</span><span class="n">st_mode</span><span class="o">.</span><span class="n">bits_set?</span> <span class="n">LibC</span><span class="o">::</span><span class="no">S_ISUID</span>
+  <span class="n">flags</span> <span class="o">|=</span> <span class="o">::</span><span class="nb">File</span><span class="o">::</span><span class="n">Flags</span><span class="o">::</span><span class="n">SetGroup</span> <span class="k">if</span> <span class="vi">@stat</span><span class="o">.</span><span class="n">st_mode</span><span class="o">.</span><span class="n">bits_set?</span> <span class="n">LibC</span><span class="o">::</span><span class="no">S_ISGID</span>
+  <span class="n">flags</span> <span class="o">|=</span> <span class="o">::</span><span class="nb">File</span><span class="o">::</span><span class="n">Flags</span><span class="o">::</span><span class="n">Sticky</span> <span class="k">if</span> <span class="vi">@stat</span><span class="o">.</span><span class="n">st_mode</span><span class="o">.</span><span class="n">bits_set?</span> <span class="n">LibC</span><span class="o">::</span><span class="no">S_ISVTX</span>
+<span class="k">end</span>
+</code></pre></div>
+</td></tr></table>
+<p>Crystal has inferred return types in functions which caused a problem in the function above.  The function is missing a return statement to return the flags that were created, so instead, it inferred a nil return value.  This would thankfully never happen in Go.</p>
+
+<p>In Go, all parameter and return value types must be specified in functions.</p>
+
+<p>Further to this, the explicit nature of handling errors makes Go feel very upfront as a language.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>Congratulations for reading this far (assuming you didn&rsquo;t just scroll down to the bottom) :)  Clearly, I&rsquo;ve only spent a short time with Go and am sure to discover many more things I love and don&rsquo;t love about the language.</p>
+
+<p>I hope to use it more extensively for real applications at work in the coming year to see how well it works in our team (assuming I can convince the guys that it&rsquo;s the right choice).</p>
+
+<p>It&rsquo;s also great to see that the Go designers are improving the language with a native module system being added to Go 1.11 and hopefully generics on the horizon too.</p>
+
+	</div>
+  </div>
+</article>
+
+<div class="row">
+  <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <ul class="pager blog-pager">
+      
+      <li class="previous">
+        <a href="https://fgimian.github.io/blog/2018/06/06/why-crystal-is-my-next-language/" data-toggle="tooltip" data-placement="top" title="Why Crystal Is My Next Language">&larr; Previous Post</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+
+
+<div class="row disqus-comments">
+  <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fgimian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>
+
+
+      
+
+      
+      <div class="row disqus-comments">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fgimian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+      </div>
+      
+
+    </div>
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+          
+          <li>
+            <a href="https://github.com/fgimian" title="GitHub">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+          <li>
+            <a href="https://twitter.com/fgimian" title="Twitter">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+		      
+          <li>
+            <a href="https://linkedin.com/in/fotis-gimian-a5420053" title="LinkedIn">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+	    	  
+          <li>
+            <a href="https://stackoverflow.com/users/1905666/fotis-gimian" title="StackOverflow">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+
+    		  <li>
+      			<a href="https://fgimian.github.io/index.xml" title="RSS">
+      			  <span class="fa-stack fa-lg">
+        				<i class="fa fa-circle fa-stack-2x"></i>
+        				<i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+      			  </span>
+      			</a>
+    		  </li>		
+
+        </ul>
+        <p class="copyright text-muted">
+    		  Fotis Gimian
+    		  &nbsp;&bull;&nbsp;
+    		  2018
+    		  
+    		  
+    		  &nbsp;&bull;&nbsp;
+    		  <a href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    		  
+  	    </p>
+  	        
+    		<p class="theme-by text-muted">
+    		  Theme by
+    		  <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    		</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://fgimian.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://fgimian.github.io/js/bootstrap.min.js"></script>
+<script src="https://fgimian.github.io/js/main.js"></script>
+
+
+
+  </body>
+</html>

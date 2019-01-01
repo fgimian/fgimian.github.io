@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Setting up Virtual Development Environments for Python</title>
+
+  <meta name="author" content="Fotis Gimian" />
+
+  
+
+  <meta name="generator" content="Hugo 0.53" />
+
+  <link rel="alternate" href="https://fgimian.github.io/index.xml" type="application/rss+xml" title="Fotsies Technology Blog">
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/main.css" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/custom.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/solarized-dark.css" />
+
+  <link rel="icon" type="image/png" href="https://fgimian.github.io/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="https://fgimian.github.io/favicon-16x16.png" sizes="16x16" />
+
+  
+  <meta property="og:title" content="Setting up Virtual Development Environments for Python" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="/blog/2012/12/08/setting-up-virtual-development-environments-for-python//" />
+  <meta property="og:image" content="img/fotis.jpg" />
+
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+          <a title="Blog" href="/">Blog</a>
+  	      </li>
+  	    
+      
+        
+          <li>
+          <a title="About" href="/page/about/">About</a>
+  	      </li>
+  	    
+      
+      </ul>
+    </div>
+
+	<div class="avatar-container">
+	  <div class="avatar-img-border">
+      
+          <a title="Fotsies Technology Blog" href="https://fgimian.github.io/">
+              <img class="avatar-img" src="https://fgimian.github.io/img/fotis.jpg" alt="Fotsies Technology Blog" />
+          </a>
+      
+	  </div>
+	</div>
+
+  </div>
+</nav>
+
+
+    <div role="main" class="container main-content">
+
+      
+        <header class="header-post">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <div class="post-heading">
+        <h1>Setting up Virtual Development Environments for Python</h1>
+        
+        <span class="post-meta">Posted on December 8, 2012</span>
+      </div>
+     </div>
+  </div>
+</header>
+
+<article>
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+	  
+
+<p>Setting up virtual environments for Python is always a great way to keep your
+projects and their related Python packages independent.</p>
+
+<h2 id="virtualenv">Virtualenv</h2>
+
+<p><a href="http://www.virtualenv.org">Virtualenv</a> is the de-facto standard choice for
+Python environments.  It&rsquo;s capable of creating independent Python module
+groupings which you can switch to and from using commands.  Unfortunately,
+virtualenv does not install and manage multiple versions of Python, but we&rsquo;ll
+get to a solution for that with pythonbrew later.</p>
+
+<p>To install virtualenv, simply use pip:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>sudo pip install virtualenv
+</code></pre></div>
+</td></tr></table>
+<p>If you would like bash completion, you can use the script created by Eugene
+Kalinin:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1
+2
+3</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>git clone git://github.com/ekalinin/virtualenv-bash-completion.git
+sudo cp ./virtualenv-bash-completion/virtualenv /etc/bash_completion.d/
+<span class="nb">source</span> ~/bashrc
+</code></pre></div>
+</td></tr></table>
+<p>You may now use virtualenv and install packages within environments as either
+root or an ordinary user on the system.</p>
+
+<p>Create an environment as follows:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>virtualenv python-env
+</code></pre></div>
+</td></tr></table>
+<p>You now have a local instance of Python which can be found at
+<strong>./python-env/bin/python</strong></p>
+
+<p>You may then go ahead and install packages in the current directory by using
+the virtualenv&rsquo;s pip executable.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>./python-env/bin/pip install Flask
+</code></pre></div>
+</td></tr></table>
+<p>All packages will placed in the local virtualenv under
+<strong>./python-env/lib/python2.7/site-packages/</strong></p>
+
+<p>Rather than having to type such nasty pathnames to get to pip and python,
+virtualenv has a cool little activate script which will alter your entire
+working environment so that you can use all tools as you would if they were
+installed on the system.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="nb">source</span> ./python-env/bin/activate
+</code></pre></div>
+</td></tr></table>
+<p>You may now use the tools as per usual:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1
+2
+3
+4</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="o">(</span>python-env<span class="o">)</span>fots@fotsies-ubprecise-01:~$ which python
+/home/fots/python-env/bin/python
+<span class="o">(</span>python-env<span class="o">)</span>fots@fotsies-ubprecise-01:~$ which pip
+/home/fots/python-env/bin/pip
+</code></pre></div>
+</td></tr></table>
+<p>To return to your normal environment, simply type deactivate:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>deactivate
+</code></pre></div>
+</td></tr></table>
+<p>I suggest adding the following to the end of your .bashrc to help simplify
+activation of virtualenvs:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1
+2
+3
+4
+5</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="c1"># Switch to a Python virtual environment</span>
+activate<span class="o">()</span>
+<span class="o">{</span>
+    <span class="nb">source</span> <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">/bin/activate&quot;</span>
+<span class="o">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>You may now type the following to activate a virtual environment for Python:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>activate ./python-env
+</code></pre></div>
+</td></tr></table>
+<h2 id="pythonbrew-installation-usage">Pythonbrew Installation &amp; Usage</h2>
+
+<p><a href="https://github.com/utahta/pythonbrew">Pythonbrew</a> takes virtualenv a lot
+further, allowing for installation of various Python versions and management
+more akin to the amazing RVM for Ruby.</p>
+
+<p>Install pythonbrew as follows:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1
+2
+3</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>curl -kL http://xrl.us/pythonbrewinstall <span class="p">|</span> bash
+<span class="nb">echo</span> <span class="s2">&quot;[[ -s </span><span class="nv">$HOME</span><span class="s2">/.pythonbrew/etc/bashrc ]] &amp;&amp; source </span><span class="nv">$HOME</span><span class="s2">/.pythonbrew/etc/bashrc&quot;</span> &gt;&gt; ~/.bashrc
+<span class="nb">source</span> ~/.bashrc
+</code></pre></div>
+</td></tr></table>
+<p>Since pythonbrew will build Python from source, we need to be prepared:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>sudo apt-get install build-essential zlib1g-dev
+</code></pre></div>
+</td></tr></table>
+<p>Installing Python versions may be done as follows:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pybrew install <span class="m">2</span>.7.3
+</code></pre></div>
+</td></tr></table>
+<p>It&rsquo;s a good idea to switch on verbose mode if you want to see what&rsquo;s going on:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pybrew install --verbose <span class="m">2</span>.7.2
+</code></pre></div>
+</td></tr></table>
+<p>To view the newest Python version for each sub-version and get an idea what you
+can install:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pybrew list -k
+</code></pre></div>
+</td></tr></table>
+<p>Permanently switch to a Python version as follows:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pybrew switch <span class="m">2</span>.7.2
+</code></pre></div>
+</td></tr></table>
+<p>Or temporarily switch to a Python version in the current session:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pybrew use <span class="m">2</span>.7.3
+</code></pre></div>
+</td></tr></table>
+<p>Jump back to the system&rsquo;s Python version by using:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pybrew off
+</code></pre></div>
+</td></tr></table>
+<p>You may also view all installed Python versions:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pybrew list
+</code></pre></div>
+</td></tr></table>
+<p>Uninstall a version of Python as follows:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pybrew uninstall <span class="m">2</span>.7.2
+</code></pre></div>
+</td></tr></table>
+<p>To upgrade pythonbrew to the newest version:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pybrew update
+</code></pre></div>
+</td></tr></table>
+<p>You may run your Python script against all installed versions of Python using:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pybrew py -v test.py
+</code></pre></div>
+</td></tr></table>
+<h2 id="pythonbrew-environments-using-virtualenv">Pythonbrew Environments Using Virtualenv</h2>
+
+<p>Pythonbrew can now use virtualenv to create environments.  Install virtualenv
+for pythonbrew as follows:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pybrew venv init
+</code></pre></div>
+</td></tr></table>
+<p>Creating a project:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pybrew venv create proj
+</code></pre></div>
+</td></tr></table>
+<p>Much like RVM, projects are related to each version of Python that&rsquo;s installed.
+Thus, you may have a project called &ldquo;hello&rdquo; twice, one against version 2.7.3
+and one against 3.2.3 if you like.</p>
+
+<p>List your projects</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pybrew venv list
+</code></pre></div>
+</td></tr></table>
+<p>To switch to a project, type:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pybrew venv use proj
+</code></pre></div>
+</td></tr></table>
+<p>To de-activate the environment:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>deactivate
+</code></pre></div>
+</td></tr></table>
+<p>To delete an environment:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pybrew venv delete proj
+</code></pre></div>
+</td></tr></table>
+<p>You may install packages using pip which is available independently for each
+environment automatically.</p>
+
+<h2 id="pythonbrew-shortcomings">Pythonbrew Shortcomings</h2>
+
+<p>Pythonbrew has so much potential and could easily be as good as RVM, but there
+are a few problems:</p>
+
+<ul>
+<li><a href="https://github.com/utahta/pythonbrew/issues/91">Lack of bash completion</a></li>
+<li><a href="https://github.com/utahta/pythonbrew/issues/48">No auto-switching of profiles</a></li>
+<li><a href="https://github.com/utahta/pythonbrew/issues/32">Lack of support for PyPy and Jython</a>:
+Although there&rsquo;s a fork of the project
+(<a href="https://github.com/saghul/pythonz">pythonz</a>) which adds this support, the
+fork is based on a very old version of pythonbrew.  PyPy is the future of
+Python and Jython is really handy when you need Java integration with Python,
+so this functionality would be great.</li>
+<li>Project abandoned?: Check out the
+<a href="https://github.com/utahta/pythonbrew/pulls">number of pull requests pending at Github</a>
+(many of which are really useful).</li>
+</ul>
+
+<p>If I have some spare time one day, I&rsquo;ll attempt to tackle these problems so
+that us Python-heads can have all bells and whistles in this otherwise
+excellent application.</p>
+
+	</div>
+  </div>
+</article>
+
+<div class="row">
+  <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <ul class="pager blog-pager">
+      
+      <li class="previous">
+        <a href="https://fgimian.github.io/blog/2012/12/08/setting-up-virtual-development-environments-for-ruby/" data-toggle="tooltip" data-placement="top" title="Setting up Virtual Development Environments for Ruby">&larr; Previous Post</a>
+      </li>
+      
+      
+      <li class="next">
+        <a href="https://fgimian.github.io/blog/2012/12/08/setting-up-a-rock-solid-python-development-web-server/" data-toggle="tooltip" data-placement="top" title="Setting up a Rock Solid Python Development Web Server">Next Post &rarr;</a>
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<div class="row disqus-comments">
+  <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fgimian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>
+
+
+      
+
+      
+      <div class="row disqus-comments">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fgimian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+      </div>
+      
+
+    </div>
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+          
+          <li>
+            <a href="https://github.com/fgimian" title="GitHub">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+          <li>
+            <a href="https://twitter.com/fgimian" title="Twitter">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+		      
+          <li>
+            <a href="https://linkedin.com/in/fotis-gimian-a5420053" title="LinkedIn">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+	    	  
+          <li>
+            <a href="https://stackoverflow.com/users/1905666/fotis-gimian" title="StackOverflow">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+
+    		  <li>
+      			<a href="https://fgimian.github.io/index.xml" title="RSS">
+      			  <span class="fa-stack fa-lg">
+        				<i class="fa fa-circle fa-stack-2x"></i>
+        				<i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+      			  </span>
+      			</a>
+    		  </li>		
+
+        </ul>
+        <p class="copyright text-muted">
+    		  Fotis Gimian
+    		  &nbsp;&bull;&nbsp;
+    		  2018
+    		  
+    		  
+    		  &nbsp;&bull;&nbsp;
+    		  <a href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    		  
+  	    </p>
+  	        
+    		<p class="theme-by text-muted">
+    		  Theme by
+    		  <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    		</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://fgimian.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://fgimian.github.io/js/bootstrap.min.js"></script>
+<script src="https://fgimian.github.io/js/main.js"></script>
+
+
+
+  </body>
+</html>

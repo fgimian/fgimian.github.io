@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Fotsies Technology Blog</title>
+
+  <meta name="author" content="Fotis Gimian" />
+
+  
+
+  <meta name="generator" content="Hugo 0.53" />
+
+  <link rel="alternate" href="https://fgimian.github.io/index.xml" type="application/rss+xml" title="Fotsies Technology Blog">
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/main.css" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/custom.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/solarized-dark.css" />
+
+  <link rel="icon" type="image/png" href="https://fgimian.github.io/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="https://fgimian.github.io/favicon-16x16.png" sizes="16x16" />
+
+  
+  <meta property="og:title" content="Fotsies Technology Blog" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="//" />
+  <meta property="og:image" content="img/fotis.jpg" />
+
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+          <a title="Blog" href="/">Blog</a>
+  	      </li>
+  	    
+      
+        
+          <li>
+          <a title="About" href="/page/about/">About</a>
+  	      </li>
+  	    
+      
+      </ul>
+    </div>
+
+	<div class="avatar-container">
+	  <div class="avatar-img-border">
+      
+          <a title="Fotsies Technology Blog" href="https://fgimian.github.io/">
+              <img class="avatar-img" src="https://fgimian.github.io/img/fotis.jpg" alt="Fotsies Technology Blog" />
+          </a>
+      
+	  </div>
+	</div>
+
+  </div>
+</nav>
+
+
+    <div role="main" class="container main-content">
+
+      <div class="posts-list">
+        
+        
+        <article class="post-preview">
+          <a href="https://fgimian.github.io/blog/2015/06/27/a-simple-plistbuddy-tutorial/">
+      	  <h2 class="post-title">A Simple PlistBuddy Tutorial</h2>
+      	
+      	    
+          </a>
+
+          <p class="post-meta">
+            Posted on June 27, 2015
+          </p>
+        
+          <div class="post-entry">
+            Good ol&rsquo; plist files. They are at the core of OS X for storing application settings and they work really well.
+If you have ever automated part of your OS X build or changed some cool hidden feature, you have probably used the defaults command to do so. The defaults command is great and is still recommended for simple things, but if you want to edit complex plist structures like arrays, dicts and nested structures, you&rsquo;ll inevitably come across PlistBuddy.
+      	  <a href="https://fgimian.github.io/blog/2015/06/27/a-simple-plistbuddy-tutorial/" class="post-read-more">[Read&nbsp;More]</a>
+          </div>
+        
+         </article>
+        
+        <article class="post-preview">
+          <a href="https://fgimian.github.io/blog/2015/06/06/selecting-a-solid-code-editor/">
+      	  <h2 class="post-title">Selecting a Solid Code Editor</h2>
+      	
+      	    
+          </a>
+
+          <p class="post-meta">
+            Posted on June 6, 2015
+          </p>
+        
+          <div class="post-entry">
+            Hello guys, hope everyone is doing well. I&rsquo;ll start this post by admitting that I absolutely love Sublime Text and already own a license for it. But, I&rsquo;m a curious lad who likes to try new things and therefore I couldn&rsquo;t help being interested in trying out the slew of new open source and also payware editors which are popping up.
+As you also can tell, I primarily develop in Python but do a lot of frontend work too, so CSS and Javascript are of interest.
+      	  <a href="https://fgimian.github.io/blog/2015/06/06/selecting-a-solid-code-editor/" class="post-read-more">[Read&nbsp;More]</a>
+          </div>
+        
+         </article>
+        
+        <article class="post-preview">
+          <a href="https://fgimian.github.io/blog/2014/04/27/running-nose-tests-with-plugins-using-the-setuptools-test-command/">
+      	  <h2 class="post-title">Running nose tests with plugins using the setuptools test command</h2>
+      	
+      	    
+          </a>
+
+          <p class="post-meta">
+            Posted on April 27, 2014
+          </p>
+        
+          <div class="post-entry">
+            The nose Python test framework is a really good choice for writing and running your tests. However, it seems that the author is deprecating the use of nose.collector which was used when running the test setuptools command:
+1python setup.py test   Furthermore, even in its current form, the nose collector doesn&rsquo;t correctly work with plugins such as coverage.py.
+The recommended way is to use the nosetests setuptools command instead. Though, this presents several problems:
+      	  <a href="https://fgimian.github.io/blog/2014/04/27/running-nose-tests-with-plugins-using-the-setuptools-test-command/" class="post-read-more">[Read&nbsp;More]</a>
+          </div>
+        
+         </article>
+        
+        <article class="post-preview">
+          <a href="https://fgimian.github.io/blog/2014/04/20/better-python-version-and-environment-management-with-pyenv/">
+      	  <h2 class="post-title">Better Python version and environment management with pyenv</h2>
+      	
+      	    
+          </a>
+
+          <p class="post-meta">
+            Posted on April 20, 2014
+          </p>
+        
+          <div class="post-entry">
+            In the Setting up Virtual Development Environments for Python post, we discussed the use of pythonbrew for managing Python versions and their related virtualenvs. If you do enjoy pythonbrew, then be sure to check out pythonz which is now the active fork of the original project and has resolved almost all issues that I had originally reported.
+However, there is another alternative called pyenv which has several significant advantages. Probably one of the biggest is the fact that pyenv doesn&rsquo;t depend on Python 2.
+      	  <a href="https://fgimian.github.io/blog/2014/04/20/better-python-version-and-environment-management-with-pyenv/" class="post-read-more">[Read&nbsp;More]</a>
+          </div>
+        
+         </article>
+        
+        <article class="post-preview">
+          <a href="https://fgimian.github.io/blog/2014/04/10/using-the-python-mock-library-to-fake-regular-functions-during-tests/">
+      	  <h2 class="post-title">Using the Python mock library to fake regular functions during tests</h2>
+      	
+      	    
+          </a>
+
+          <p class="post-meta">
+            Posted on April 10, 2014
+          </p>
+        
+          <div class="post-entry">
+            While writing unit tests in Python, there will often be times where you&rsquo;ll need to fake the result of a function as testing against the actual function may be impossible. A simple example is a random function since one can&rsquo;t predict what it will return. Another could be a database call for a database that&rsquo;s only available in certain environments.
+Python&rsquo;s mock library is the de facto standard when mocking functions in Python, yet I have always struggled to understand it from the official documentation.
+      	  <a href="https://fgimian.github.io/blog/2014/04/10/using-the-python-mock-library-to-fake-regular-functions-during-tests/" class="post-read-more">[Read&nbsp;More]</a>
+          </div>
+        
+         </article>
+        
+      </div>
+
+      
+      <ul class="pager main-pager">
+        
+        <li class="previous">
+          <a href="/page/2">&larr; Newer Posts</a>
+        </li>
+        
+        
+        <li class="next">
+          <a href="/page/4">Older Posts &rarr;</a>
+        </li>
+        
+      </ul>
+      
+
+    </div>
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+          
+          <li>
+            <a href="https://github.com/fgimian" title="GitHub">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+          <li>
+            <a href="https://twitter.com/fgimian" title="Twitter">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+		      
+          <li>
+            <a href="https://linkedin.com/in/fotis-gimian-a5420053" title="LinkedIn">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+	    	  
+          <li>
+            <a href="https://stackoverflow.com/users/1905666/fotis-gimian" title="StackOverflow">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+
+    		  <li>
+      			<a href="https://fgimian.github.io/index.xml" title="RSS">
+      			  <span class="fa-stack fa-lg">
+        				<i class="fa fa-circle fa-stack-2x"></i>
+        				<i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+      			  </span>
+      			</a>
+    		  </li>		
+
+        </ul>
+        <p class="copyright text-muted">
+    		  Fotis Gimian
+    		  &nbsp;&bull;&nbsp;
+    		  2018
+    		  
+    		  
+    		  &nbsp;&bull;&nbsp;
+    		  <a href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    		  
+  	    </p>
+  	        
+    		<p class="theme-by text-muted">
+    		  Theme by
+    		  <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    		</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://fgimian.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://fgimian.github.io/js/bootstrap.min.js"></script>
+<script src="https://fgimian.github.io/js/main.js"></script>
+
+
+
+  </body>
+</html>

@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Setting up a Rock Solid Python Development Web Server</title>
+
+  <meta name="author" content="Fotis Gimian" />
+
+  
+
+  <meta name="generator" content="Hugo 0.53" />
+
+  <link rel="alternate" href="https://fgimian.github.io/index.xml" type="application/rss+xml" title="Fotsies Technology Blog">
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/main.css" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/custom.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/solarized-dark.css" />
+
+  <link rel="icon" type="image/png" href="https://fgimian.github.io/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="https://fgimian.github.io/favicon-16x16.png" sizes="16x16" />
+
+  
+  <meta property="og:title" content="Setting up a Rock Solid Python Development Web Server" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="/blog/2012/12/08/setting-up-a-rock-solid-python-development-web-server//" />
+  <meta property="og:image" content="img/fotis.jpg" />
+
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+          <a title="Blog" href="/">Blog</a>
+  	      </li>
+  	    
+      
+        
+          <li>
+          <a title="About" href="/page/about/">About</a>
+  	      </li>
+  	    
+      
+      </ul>
+    </div>
+
+	<div class="avatar-container">
+	  <div class="avatar-img-border">
+      
+          <a title="Fotsies Technology Blog" href="https://fgimian.github.io/">
+              <img class="avatar-img" src="https://fgimian.github.io/img/fotis.jpg" alt="Fotsies Technology Blog" />
+          </a>
+      
+	  </div>
+	</div>
+
+  </div>
+</nav>
+
+
+    <div role="main" class="container main-content">
+
+      
+        <header class="header-post">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <div class="post-heading">
+        <h1>Setting up a Rock Solid Python Development Web Server</h1>
+        
+        <span class="post-meta">Posted on December 8, 2012</span>
+      </div>
+     </div>
+  </div>
+</header>
+
+<article>
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+	  
+
+<p>So you want to start developing a Python application do ya?  Let&rsquo;s assume we
+are planning to use a smaller framework like <a href="http://flask.pocoo.org/">Flask</a>
+which is a framework I&rsquo;m really loving at the moment.</p>
+
+<p><strong>Update (6th of April 2014)</strong>: In the past, I had found Flask&rsquo;s in-built
+development server to be a bit unstable which is why I put together this entry
+but this is no longer the case.  As such, I now recommend using the dev server
+that comes with Flask for development purposes.  However, if you prefer to use
+another server instead, please read on.</p>
+
+<p>In this article, I&rsquo;ll show you how to setup various web servers to serve Flask
+applications using WSGI which may also be suitable for production use later on.</p>
+
+<p>The requirements I have for a development server are as follows:</p>
+
+<ul>
+<li>It must print access and error log output to stdout in realtime</li>
+<li>It must display stdout when the print function is used in the code (which is
+really handy for debugging)</li>
+<li>The server should reliably reload automatically when any code is changed</li>
+<li>Exceptions should be printed to stderr or the browser if something goes wrong</li>
+<li>The web server needs to be easy to setup</li>
+<li>(Bonus) It would be ideal if the web server works with Jython 2.5.x too</li>
+</ul>
+
+<p>So let&rsquo;s get into it.</p>
+
+<h2 id="cherrypy">CherryPy</h2>
+
+<p><a href="http://www.cherrypy.org/">CherryPy</a>&rsquo;s web server is very well regarded and was
+one of the first I looked at.  My main criticism of CherryPy was its
+documentation which I found extremely difficult to read through and grasp.
+With a bit of digging around, I managed to get everything to work.  You must
+use the Paste library for logging.</p>
+
+<p>Installation of CherryPy is super easy:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pip install cherrypy paste
+</code></pre></div>
+</td></tr></table>
+<p>And here&rsquo;s the Flask script:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">import</span> <span class="nn">cherrypy</span>
+<span class="kn">from</span> <span class="nn">paste.translogger</span> <span class="kn">import</span> <span class="n">TransLogger</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="bp">True</span>
+
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s2">&quot;Hello World!&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">run_server</span><span class="p">():</span>
+    <span class="c1"># Enable WSGI access logging via Paste</span>
+    <span class="n">app_logged</span> <span class="o">=</span> <span class="n">TransLogger</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+    <span class="c1"># Mount the WSGI callable object (app) on the root directory</span>
+    <span class="n">cherrypy</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">graft</span><span class="p">(</span><span class="n">app_logged</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Set the configuration of the web server</span>
+    <span class="n">cherrypy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s1">&#39;engine.autoreload_on&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+        <span class="s1">&#39;log.screen&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+        <span class="s1">&#39;server.socket_port&#39;</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>
+        <span class="s1">&#39;server.socket_host&#39;</span><span class="p">:</span> <span class="s1">&#39;0.0.0.0&#39;</span>
+    <span class="p">})</span>
+
+    <span class="c1"># Start the CherryPy WSGI web server</span>
+    <span class="n">cherrypy</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">cherrypy</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">block</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">run_server</span><span class="p">()</span>
+</code></pre></div>
+</td></tr></table>
+<p>With a bit of extra effort, we can customise the access logging from Paste to
+be consistent with CherryPy if desired:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">import</span> <span class="nn">cherrypy</span>
+<span class="kn">from</span> <span class="nn">paste.translogger</span> <span class="kn">import</span> <span class="n">TransLogger</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="bp">True</span>
+
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s2">&quot;Hello World!&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">FotsTransLogger</span><span class="p">(</span><span class="n">TransLogger</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">write_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">req_uri</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; We&#39;ll override the write_log function to remove the time offset so</span>
+<span class="sd">        that the output aligns nicely with CherryPy&#39;s web server logging</span>
+
+<span class="sd">        i.e.</span>
+
+<span class="sd">        [08/Jan/2013:23:50:03] ENGINE Serving on 0.0.0.0:5000</span>
+<span class="sd">        [08/Jan/2013:23:50:03] ENGINE Bus STARTED</span>
+<span class="sd">        [08/Jan/2013:23:50:45 +1100] REQUES GET 200 / (192.168.172.1) 830</span>
+
+<span class="sd">        becomes</span>
+
+<span class="sd">        [08/Jan/2013:23:50:03] ENGINE Serving on 0.0.0.0:5000</span>
+<span class="sd">        [08/Jan/2013:23:50:03] ENGINE Bus STARTED</span>
+<span class="sd">        [08/Jan/2013:23:50:45] REQUES GET 200 / (192.168.172.1) 830</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">bytes</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="nb">bytes</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span>
+        <span class="n">remote_addr</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span>
+        <span class="k">if</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;HTTP_X_FORWARDED_FOR&#39;</span><span class="p">):</span>
+            <span class="n">remote_addr</span> <span class="o">=</span> <span class="n">environ</span><span class="p">[</span><span class="s1">&#39;HTTP_X_FORWARDED_FOR&#39;</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;REMOTE_ADDR&#39;</span><span class="p">):</span>
+            <span class="n">remote_addr</span> <span class="o">=</span> <span class="n">environ</span><span class="p">[</span><span class="s1">&#39;REMOTE_ADDR&#39;</span><span class="p">]</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;REMOTE_ADDR&#39;</span><span class="p">:</span> <span class="n">remote_addr</span><span class="p">,</span>
+            <span class="s1">&#39;REMOTE_USER&#39;</span><span class="p">:</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;REMOTE_USER&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;REQUEST_METHOD&#39;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
+            <span class="s1">&#39;REQUEST_URI&#39;</span><span class="p">:</span> <span class="n">req_uri</span><span class="p">,</span>
+            <span class="s1">&#39;HTTP_VERSION&#39;</span><span class="p">:</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;SERVER_PROTOCOL&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%b/%Y:%H:%M:%S&#39;</span><span class="p">,</span> <span class="n">start</span><span class="p">),</span>
+            <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="n">status</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="s1">&#39;bytes&#39;</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span>
+            <span class="s1">&#39;HTTP_REFERER&#39;</span><span class="p">:</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;HTTP_REFERER&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;HTTP_USER_AGENT&#39;</span><span class="p">:</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;HTTP_USER_AGENT&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">%</span> <span class="n">d</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logging_level</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">run_server</span><span class="p">():</span>
+    <span class="c1"># Enable custom Paste access logging</span>
+    <span class="n">log_format</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;[</span><span class="si">%(time)s</span><span class="s1">] REQUES </span><span class="si">%(REQUEST_METHOD)s</span><span class="s1"> </span><span class="si">%(status)s</span><span class="s1"> </span><span class="si">%(REQUEST_URI)s</span><span class="s1"> &#39;</span>
+        <span class="s1">&#39;(</span><span class="si">%(REMOTE_ADDR)s</span><span class="s1">) </span><span class="si">%(bytes)s</span><span class="s1">&#39;</span>
+    <span class="p">)</span>
+    <span class="n">app_logged</span> <span class="o">=</span> <span class="n">FotsTransLogger</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="n">log_format</span><span class="p">)</span>
+
+    <span class="c1"># Mount the WSGI callable object (app) on the root directory</span>
+    <span class="n">cherrypy</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">graft</span><span class="p">(</span><span class="n">app_logged</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Set the configuration of the web server</span>
+    <span class="n">cherrypy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s1">&#39;engine.autoreload_on&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+        <span class="s1">&#39;log.screen&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+        <span class="s1">&#39;server.socket_port&#39;</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>
+        <span class="s1">&#39;server.socket_host&#39;</span><span class="p">:</span> <span class="s1">&#39;0.0.0.0&#39;</span>
+    <span class="p">})</span>
+
+    <span class="c1"># Start the CherryPy WSGI web server</span>
+    <span class="n">cherrypy</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">cherrypy</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">block</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">run_server</span><span class="p">()</span>
+</code></pre></div>
+</td></tr></table>
+<h2 id="gevent">Gevent</h2>
+
+<p><a href="Gevent">http://www.gevent.org/</a> appears to be one of the fastest WSGI web
+servers out there and provides all the features we are after too!</p>
+
+<p>Installing Gevent is a bit more of a pain due to the libevent dependency:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1
+2</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>sudo apt-get install build-essential python-dev libevent-dev
+pip install gevent
+</code></pre></div>
+</td></tr></table>
+<p>And here&rsquo;s the Flask script:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">import</span> <span class="nn">gevent.wsgi</span>
+<span class="kn">import</span> <span class="nn">gevent.monkey</span>
+<span class="kn">import</span> <span class="nn">werkzeug.serving</span>
+
+<span class="n">gevent</span><span class="o">.</span><span class="n">monkey</span><span class="o">.</span><span class="n">patch_all</span><span class="p">()</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="bp">True</span>
+
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s2">&quot;Hello World!&quot;</span>
+
+
+<span class="nd">@werkzeug.serving.run_with_reloader</span>
+<span class="k">def</span> <span class="nf">run_server</span><span class="p">():</span>
+    <span class="n">ws</span> <span class="o">=</span> <span class="n">gevent</span><span class="o">.</span><span class="n">wsgi</span><span class="o">.</span><span class="n">WSGIServer</span><span class="p">(</span><span class="n">listener</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="mi">5000</span><span class="p">),</span>
+                                <span class="n">application</span><span class="o">=</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">ws</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">run_server</span><span class="p">()</span>
+</code></pre></div>
+</td></tr></table>
+<h2 id="gunicorn">Gunicorn</h2>
+
+<p><a href="http://gunicorn.org/">Gunicorn</a> is a production-ready web server for Python.
+I must commend the designer of the site who shows that even Python-related
+sites can look beautiful!  Unfortunately, Gunicorn (being a server aimed at
+production use) makes it a lot harder to get auto-restart capabilities as this
+functionality is not natively included.</p>
+
+<p>Installing Gunicorn is painless:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pip install gunicorn
+</code></pre></div>
+</td></tr></table>
+<p>To make it all happen with Gunicorn, we&rsquo;re going to need
+<a href="http://supervisord.org/">supervisor</a> and
+<a href="http://packages.python.org/watchdog/">watchdog</a> to monitor for changes and
+trigger a restart of Gunicorn.</p>
+
+<p>These tools rely on several C libraries, so there&rsquo;s a bit more to it than just
+using pip:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1
+2</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>sudo apt-get install build-essential python-dev libyaml-dev
+pip install supervisor watchdog
+</code></pre></div>
+</td></tr></table>
+<p>The supervisor configuration is as follows:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-ini" data-lang="ini"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-ini" data-lang="ini"><span></span><span class="k">[supervisord]</span>
+<span class="na">logfile</span><span class="o">=</span><span class="s">test.log</span>
+<span class="na">loglevel</span><span class="o">=</span><span class="s">debug</span>
+<span class="na">nodaemon</span><span class="o">=</span><span class="s">true</span>
+
+<span class="k">[program:test]</span>
+<span class="na">autostart</span><span class="o">=</span><span class="s">true</span>
+<span class="na">command</span><span class="o">=</span><span class="s">gunicorn --pid /tmp/flask-project.pid --workers 4 --log-level debug -b 0.0.0.0:5000 test:app</span>
+
+<span class="k">[program:test-reloader]</span>
+<span class="na">autostart</span><span class="o">=</span><span class="s">true</span>
+<span class="na">autorestart</span><span class="o">=</span><span class="s">false</span>
+<span class="na">command</span><span class="o">=</span><span class="s">watchmedo shell-command --patterns=&quot;*.py;*.html;*.css;*.js&quot; --recursive --command=&#39;kill -HUP $(cat /tmp/flask-project.pid)&#39;</span>
+</code></pre></div>
+</td></tr></table>
+<p>The Python script stays super clean and simple which is nice:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="bp">True</span>
+
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s2">&quot;Hello World!&quot;</span>
+</code></pre></div>
+</td></tr></table>
+<p>We can now launch the web server using supervisor as follows:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>supervisord -c test.conf
+</code></pre></div>
+</td></tr></table>
+<p>Overall though, I don&rsquo;t see myself using Gunicorn for development purposes due
+to the added complexity involved.  Another point worth noting is that
+<strong>print statements to stdout do not appear on the console with Gunicorn</strong>,
+unlike the rest of the web servers tested here.</p>
+
+<h2 id="rocket">Rocket</h2>
+
+<p><a href="https://launchpad.net/rocket">Rocket</a> is a newer pure Python WSGI web server
+which is also production ready.  I thought it would be worth giving it a try
+too.</p>
+
+<p>Installing Rocket is very simple</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pip install rocket
+</code></pre></div>
+</td></tr></table>
+<p>And here&rsquo;s the Flask script:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">rocket</span> <span class="kn">import</span> <span class="n">Rocket</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="bp">True</span>
+
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s2">&quot;Hello World!&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">run_server</span><span class="p">():</span>
+    <span class="c1"># Setup logging</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;Rocket&#39;</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">))</span>
+
+    <span class="c1"># Set the configuration of the web server</span>
+    <span class="n">server</span> <span class="o">=</span> <span class="n">Rocket</span><span class="p">(</span><span class="n">interfaces</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="mi">5000</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;wsgi&#39;</span><span class="p">,</span>
+                    <span class="n">app_info</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;wsgi_app&quot;</span><span class="p">:</span> <span class="n">app</span><span class="p">})</span>
+
+    <span class="c1"># Start the Rocket web server</span>
+    <span class="n">server</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">run_server</span><span class="p">()</span>
+</code></pre></div>
+</td></tr></table>
+<p>Unfortunately, Rocket (much like Gunicorn) is primarily aimed at production
+deployments, so it doesn&rsquo;t include an auto-restart feature.</p>
+
+<p>To restart it, you may send a <strong>SIGUSR1</strong> to the pid:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="nb">kill</span> -SIGUSR1 &lt;pid&gt;
+</code></pre></div>
+</td></tr></table>
+<p>You may shutdown the process using <strong>SIGTERM</strong>:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="nb">kill</span> -SIGTERM &lt;pid&gt;
+</code></pre></div>
+</td></tr></table>
+<h2 id="tornado">Tornado</h2>
+
+<p><a href="http://www.tornadoweb.org/">Tornado</a> appears to be well respected too and has
+no C dependencies.</p>
+
+<p><strong>Note</strong>: The latest Tornado 3.x has a significantly changed API and therefore
+the code below will not work with it.  I may look into rewriting the code below
+to work with Tornado 3.x when I have a spare moment.</p>
+
+<p>Installing Tornado is as easy as CherryPy:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pip install <span class="nv">tornado</span><span class="o">==</span><span class="m">2</span>.4
+</code></pre></div>
+</td></tr></table>
+<p>And here&rsquo;s the Flask script:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">import</span> <span class="nn">tornado.wsgi</span>
+<span class="kn">import</span> <span class="nn">tornado.httpserver</span>
+<span class="kn">import</span> <span class="nn">tornado.ioloop</span>
+<span class="kn">import</span> <span class="nn">tornado.options</span>
+<span class="kn">import</span> <span class="nn">tornado.autoreload</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="bp">True</span>
+
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s2">&quot;Hello World!&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">run_server</span><span class="p">():</span>
+    <span class="c1"># Create the HTTP server</span>
+    <span class="n">http_server</span> <span class="o">=</span> <span class="n">tornado</span><span class="o">.</span><span class="n">httpserver</span><span class="o">.</span><span class="n">HTTPServer</span><span class="p">(</span>
+        <span class="n">tornado</span><span class="o">.</span><span class="n">wsgi</span><span class="o">.</span><span class="n">WSGIContainer</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">http_server</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">5000</span><span class="p">)</span>
+
+    <span class="c1"># Reads args given at command line (this also enables logging to stderr)</span>
+    <span class="n">tornado</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">parse_command_line</span><span class="p">()</span>
+
+    <span class="c1"># Start the I/O loop with autoreload</span>
+    <span class="n">io_loop</span> <span class="o">=</span> <span class="n">tornado</span><span class="o">.</span><span class="n">ioloop</span><span class="o">.</span><span class="n">IOLoop</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+    <span class="n">tornado</span><span class="o">.</span><span class="n">autoreload</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">io_loop</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">io_loop</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">run_server</span><span class="p">()</span>
+</code></pre></div>
+</td></tr></table>
+<h2 id="further-wsgi-debugging-with-werkzeug">Further WSGI Debugging with Werkzeug</h2>
+
+<p>Flask&rsquo;s Werkzeug has an awesome debugging module which you will lose access to
+when not using the default web server.  But don&rsquo;t fear, we can add it back in!</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python">1
+2
+3
+4
+5
+6
+7
+8</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="o">...</span>
+<span class="kn">from</span> <span class="nn">werkzeug.debug</span> <span class="kn">import</span> <span class="n">DebuggedApplication</span>
+<span class="o">...</span>
+
+<span class="k">def</span> <span class="nf">run_server</span><span class="p">():</span>
+    <span class="c1"># Enable the Werkzeug Debugger</span>
+    <span class="n">app_debug</span> <span class="o">=</span> <span class="n">DebuggedApplication</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">evalex</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="o">...</span>
+</code></pre></div>
+</td></tr></table>
+<p>Now simply ensure that you pass <strong>app_debug</strong> into sebsequent functions instead
+of <strong>app</strong> as we did above.</p>
+
+<h2 id="further-wsgi-logging-with-wsgilog">Further WSGI Logging with wsgilog</h2>
+
+<p>An additional module you can plug in into your application is
+<a href="http://pypi.python.org/pypi/wsgilog/">wsgilog</a> which provides further logging
+options for capturing output of WSGI applications.</p>
+
+<p>Installation goes something like this:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pip install wsgilog
+</code></pre></div>
+</td></tr></table>
+<p>You may use it as follows:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python">1
+2
+3
+4
+5
+6
+7
+8
+9</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="o">...</span>
+<span class="kn">import</span> <span class="nn">wsgilog</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="n">app_logged_wsgi</span> <span class="o">=</span> <span class="n">wsgilog</span><span class="o">.</span><span class="n">WsgiLog</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">tohtml</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">tofile</span><span class="o">=</span><span class="s1">&#39;wsgi.log&#39;</span><span class="p">,</span>
+                                  <span class="n">tostream</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">toprint</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="o">...</span>
+</code></pre></div>
+</td></tr></table>
+<p>Now when initialising the web server, pass in <strong>app_logged_wsgi</strong> instead of
+<strong>app</strong>.</p>
+
+<h2 id="final-words">Final Words</h2>
+
+<p>To summarise, the following web servers failed to meet one or more criteria
+above:</p>
+
+<ul>
+<li><strong>Gunicorn</strong>: Does not display stdout via the print statement.  Gunicorn is
+also more work to setup for a development server compared to the rest.</li>
+<li><strong>Rocket</strong>: Doesn&rsquo;t include auto-restart ability, but is less troublesome to
+work with in comparison to Gunicorn.</li>
+</ul>
+
+<p>As far as Jython is concerned, I&rsquo;m sorry to say that none of the web servers
+worked with it.  I also tried them with 2.7b1 and still no dice.</p>
+
+	</div>
+  </div>
+</article>
+
+<div class="row">
+  <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <ul class="pager blog-pager">
+      
+      <li class="previous">
+        <a href="https://fgimian.github.io/blog/2012/12/08/setting-up-virtual-development-environments-for-python/" data-toggle="tooltip" data-placement="top" title="Setting up Virtual Development Environments for Python">&larr; Previous Post</a>
+      </li>
+      
+      
+      <li class="next">
+        <a href="https://fgimian.github.io/blog/2013/01/02/setting-up-samba-on-a-ubuntu-vm-for-use-with-sublime-text-on-a-windows-host/" data-toggle="tooltip" data-placement="top" title="Setting up Samba on a Ubuntu VM for use With Sublime Text on a Windows Host">Next Post &rarr;</a>
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<div class="row disqus-comments">
+  <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fgimian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>
+
+
+      
+
+      
+      <div class="row disqus-comments">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fgimian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+      </div>
+      
+
+    </div>
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+          
+          <li>
+            <a href="https://github.com/fgimian" title="GitHub">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+          <li>
+            <a href="https://twitter.com/fgimian" title="Twitter">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+		      
+          <li>
+            <a href="https://linkedin.com/in/fotis-gimian-a5420053" title="LinkedIn">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+	    	  
+          <li>
+            <a href="https://stackoverflow.com/users/1905666/fotis-gimian" title="StackOverflow">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+
+    		  <li>
+      			<a href="https://fgimian.github.io/index.xml" title="RSS">
+      			  <span class="fa-stack fa-lg">
+        				<i class="fa fa-circle fa-stack-2x"></i>
+        				<i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+      			  </span>
+      			</a>
+    		  </li>		
+
+        </ul>
+        <p class="copyright text-muted">
+    		  Fotis Gimian
+    		  &nbsp;&bull;&nbsp;
+    		  2018
+    		  
+    		  
+    		  &nbsp;&bull;&nbsp;
+    		  <a href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    		  
+  	    </p>
+  	        
+    		<p class="theme-by text-muted">
+    		  Theme by
+    		  <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    		</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://fgimian.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://fgimian.github.io/js/bootstrap.min.js"></script>
+<script src="https://fgimian.github.io/js/main.js"></script>
+
+
+
+  </body>
+</html>

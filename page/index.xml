@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pages on Fotsies Technology Blog</title>
+    <link>https://fgimian.github.io/page/</link>
+    <description>Recent content in Pages on Fotsies Technology Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 02 Apr 2016 17:25:36 +1100</lastBuildDate>
+    
+	<atom:link href="https://fgimian.github.io/page/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>About</title>
+      <link>https://fgimian.github.io/page/about/</link>
+      <pubDate>Sat, 02 Apr 2016 17:25:36 +1100</pubDate>
+      
+      <guid>https://fgimian.github.io/page/about/</guid>
+      <description>My name is Fotis (pronounced Foti) and I work in a DevOps team in a large organisation residing in Australia.
+In my spare time, I love playing with technology, coding and building servers. In addition, I listen to lots and lots of music and am really into audio gear.</description>
+    </item>
+    
+  </channel>
+</rss>

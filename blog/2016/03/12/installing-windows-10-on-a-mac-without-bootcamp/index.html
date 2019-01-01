@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Installing Windows 10 on a Mac without Bootcamp</title>
+
+  <meta name="author" content="Fotis Gimian" />
+
+  
+
+  <meta name="generator" content="Hugo 0.53" />
+
+  <link rel="alternate" href="https://fgimian.github.io/index.xml" type="application/rss+xml" title="Fotsies Technology Blog">
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/main.css" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/custom.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/solarized-dark.css" />
+
+  <link rel="icon" type="image/png" href="https://fgimian.github.io/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="https://fgimian.github.io/favicon-16x16.png" sizes="16x16" />
+
+  
+  <meta property="og:title" content="Installing Windows 10 on a Mac without Bootcamp" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="/blog/2016/03/12/installing-windows-10-on-a-mac-without-bootcamp//" />
+  <meta property="og:image" content="img/fotis.jpg" />
+
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+          <a title="Blog" href="/">Blog</a>
+  	      </li>
+  	    
+      
+        
+          <li>
+          <a title="About" href="/page/about/">About</a>
+  	      </li>
+  	    
+      
+      </ul>
+    </div>
+
+	<div class="avatar-container">
+	  <div class="avatar-img-border">
+      
+          <a title="Fotsies Technology Blog" href="https://fgimian.github.io/">
+              <img class="avatar-img" src="https://fgimian.github.io/img/fotis.jpg" alt="Fotsies Technology Blog" />
+          </a>
+      
+	  </div>
+	</div>
+
+  </div>
+</nav>
+
+
+    <div role="main" class="container main-content">
+
+      
+        <header class="header-post">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <div class="post-heading">
+        <h1>Installing Windows 10 on a Mac without Bootcamp</h1>
+        
+        <span class="post-meta">Posted on March 12, 2016</span>
+      </div>
+     </div>
+  </div>
+</header>
+
+<article>
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+	  
+
+<p>Installing Windows on a Mac should be a piece of cake with Bootcamp, but that
+rarely is the case.  In fact, I would personally say that Boot Camp Assistant
+is one of the worst apps that comes with OS X and unlike the rest, it doesn&rsquo;t
+work seamlessly.</p>
+
+<p>A few of its drawbacks:</p>
+
+<ul>
+<li>It only supports a drive with a single partition.</li>
+<li>It often throws very obscure error messages with limited detail.</li>
+<li>It re-downloads 1.6 GB Windows drivers every single time it runs.  These are
+placed under <code>/Library/Application Support/BootCamp/WindowsSupport.dmg</code> and
+deleted and re-downloaded each time Boot Camp Assistant starts processing.</li>
+</ul>
+
+<p>This post did take a lot of work to complie and I did bone my hard drive a
+few times while trying certain ideas, so please throw out a thanks if it
+helped you out :)</p>
+
+<p><strong>Disclaimer</strong>: This guide below contains procedures which can potentially
+destroy your partitions and data.  I accept no responsibility for such loss so
+please proceed at your own risk.</p>
+
+<p><strong>Update (2016-07-20)</strong>: I have updated this post with further improvements
+relating to downloading of Boot Camp drivers and ensuring that a Hybrid MBR is
+not used (which would cause issues when installing Windows).</p>
+
+<h1 id="what-you-will-need">What You Will Need</h1>
+
+<ul>
+<li>An 8 GB or larger USB stick</li>
+<li>A copy of the <a href="https://www.microsoft.com/en-au/software-download/windows10ISO">Windows 10 ISO</a></li>
+<li>A valid Windows 10 license</li>
+<li>A downloaded copy of <a href="https://unetbootin.github.io/">unetbootin</a></li>
+</ul>
+
+<h1 id="downloading-boot-camp-drivers">Downloading Boot Camp Drivers</h1>
+
+<ol>
+<li>Start <strong>Boot Camp Assistant</strong></li>
+<li>Select <strong>Action</strong> / <strong>Download Windows Support Software</strong></li>
+<li>Choose your <strong>Downloads</strong> directory, enter your password and then click
+<strong>Save</strong></li>
+</ol>
+
+<p>This will be the only step that we will use Boot Camp Assistant for.</p>
+
+<h1 id="creating-a-bootable-usb-windows-10-installer">Creating a Bootable USB Windows 10 Installer</h1>
+
+<h2 id="formatting-your-usb-stick">Formatting Your USB Stick</h2>
+
+<p>Attach your USB stick and start <strong>Disk Utility</strong>, select your USB drive in the
+left panel under External, click <strong>Erase</strong> and set the options as follows
+(exactly) and click <strong>Erase</strong>:</p>
+
+<p><strong>Name</strong>: FAT32<br />
+<strong>Format</strong>: MS-DOS (FAT)<br />
+<strong>Scheme</strong>: Master Boot Record</p>
+
+<p><img src="/img/installing-windows-10-on-a-mac-without-bootcamp/disk-utility-erase-disk.png" alt="" /></p>
+
+<h2 id="turning-your-usb-stick-into-a-windows-installer">Turning Your USB Stick into a Windows Installer</h2>
+
+<p>Open <strong>unetbootin</strong>, enter your password, set the options as follows and
+click <strong>OK</strong>:</p>
+
+<p><strong>Diskimage</strong>: checked, set to <strong>ISO</strong> and browse to your Windows 10 ISO<br />
+<strong>Type</strong>: USB Drive<br />
+<strong>Drive</strong>: Your USB drive (you should only see one entry here)</p>
+
+<p><img src="/img/installing-windows-10-on-a-mac-without-bootcamp/unetbootin.png" alt="" /></p>
+
+<p>If you see more than one drive listed, you may confirm which is your USB drive
+by opening the <strong>Terminal</strong> and typing:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>diskutil list FAT32
+</code></pre></div>
+</td></tr></table>
+<p>You&rsquo;ll see your USB drive in the output and it should look something like this:</p>
+
+<pre><code>/dev/disk2 (external, physical):
+   #:                       TYPE NAME                    SIZE       IDENTIFIER
+   0:     FDisk_partition_scheme                        *16.0 GB    disk2
+   1:                 DOS_FAT_32 FAT32                   16.0 GB    disk2s1
+</code></pre>
+
+<p>Once you have kicked off unetbootin, grab a snack while the Windows ISO is
+copied to the USB stick. This process takes around 15 minutes to complete.</p>
+
+<h2 id="finishing-up">Finishing Up</h2>
+
+<p>When this has completed, you may right click on the USB stick in Finder,
+select <strong>Rename &ldquo;FAT32&rdquo;</strong> and rename it as you like (I&rsquo;ll call mine
+&ldquo;WINDOWS 10&rdquo;).</p>
+
+<p>Finally, copy the <strong>WindowsSupport</strong> in your Downloads directory to
+the Windows 10 USB stick so it&rsquo;s easy to get to after our installation.</p>
+
+<h1 id="partitioning-your-drive">Partitioning Your Drive</h1>
+
+<p>In <strong>Disk Utility</strong>, select your internal hard drive on the left panel, and
+click on <strong>Partition</strong>.</p>
+
+<p>Click the <strong>+</strong> button and create a new partition of your desired size for your
+Windows installation and name it as you wish (I&rsquo;ll call mine &ldquo;BOOTCAMP&rdquo;).  Ensure that the <strong>Format</strong> is set to <strong>MS-DOS (FAT)</strong> and click on <strong>Apply</strong>.</p>
+
+<p><img src="/img/installing-windows-10-on-a-mac-without-bootcamp/disk-utility-partition-disk.png" alt="" /></p>
+
+<h1 id="ensuring-that-a-hybrid-mbr-is-not-used">Ensuring that a Hybrid MBR is not used</h1>
+
+<p>Huge thanks to Rod&rsquo;s post from the superuser post titled
+<a href="http://superuser.com/questions/508026/windows-detects-gpt-disk-as-mbr-in-efi-boot">Windows detects GPT disk as MBR in EFI boot</a>.</p>
+
+<p>Once you add a FAT32 partition with either Boot Camp Assistant or Disk Utility,
+your disk is converted into a hybrid GPT / MBR disk which is actually not
+supported by newer versions of Windows.  In this step, we revert this
+additional change made by Disk Utility by switching back to a pure GPT
+partition table.</p>
+
+<ol>
+<li>Dowload the latest version of
+<a href="https://sourceforge.net/projects/gptfdisk/files/gptfdisk/">GPT fdisk</a>
+by browsing to the version, then <strong>gdisk-binaries</strong> and clicking the file
+with the *<strong>.pkg</strong> extension (e.g. gdisk-1.0.1.pkg).</li>
+<li>Install GPT fdisk by running the installer you downloaded</li>
+
+<li><p>Open a Terminal and check the state of your MBR</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>sudo gdisk /dev/disk0
+</code></pre></div>
+</td></tr></table>
+<p>If your MBR partition is set to <strong>hybrid</strong>, please continue with step 4,
+otherwise if it is set to <strong>protective</strong>, you may skip the rest of this
+section.  Simply type <strong>q</strong> and hit <strong>return</strong> to exit GPT fdisk.</p></li>
+
+<li><p>Type <strong>p</strong> to view the existing partition table and verify you&rsquo;re working
+on the correct disk</p></li>
+
+<li><p>Type <strong>x</strong> to enter the expert menu</p></li>
+
+<li><p>Type <strong>n</strong> to create a fresh protective MBR</p></li>
+
+<li><p>Type <strong>w</strong> to save your changes and confirm the change when asked</p></li>
+
+<li><p>Type <strong>q</strong> to exit GPT fdisk</p></li>
+
+<li><p>Run GPT fdisk to show your disk layout:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>sudo gdisk -l /dev/disk0
+</code></pre></div>
+</td></tr></table>
+<p>Your partition table should look something like this:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>GPT fdisk <span class="o">(</span>gdisk<span class="o">)</span> version <span class="m">1</span>.0.1
+
+Warning: Devices opened with shared lock will not have their
+partition table automatically reloaded!
+Partition table scan:
+  MBR: protective
+  BSD: not present
+  APM: not present
+  GPT: present
+
+Found valid GPT with protective MBR<span class="p">;</span> using GPT.
+</code></pre></div>
+</td></tr></table></li>
+</ol>
+
+<h1 id="installing-windows">Installing Windows</h1>
+
+<h2 id="disconnecting-all-devices-from-usb-ports">Disconnecting All Devices From USB Ports</h2>
+
+<p>This step is critical as I have had rather serious problems during Windows
+installation when certain external drives are connected.</p>
+
+<p>Unplug everything from your Mac except your keyboard (if wired) and your
+bootable Windows USB stick (which we prepared earlier).</p>
+
+<p>If your Mac contains multiple physical drives, you will need to disconnect
+all disks except the one which you intend to install Windows on or you may
+encounter the following error:</p>
+
+<blockquote>
+<p>Windows could not prepare the computer to boot into the next phase of installation. To install Windows, restart the installation.</p>
+</blockquote>
+
+<h2 id="booting-from-the-usb-stick">Booting From the USB Stick</h2>
+
+<p>Ensure that the USB stick containing the Windows installer is inserted and
+then restart your Mac while holding down the <strong>option (alt)</strong> key.</p>
+
+<p>You should now be presented with a list of bootable drives. Select the USB
+drive (usually titled &ldquo;EFI Boot&rdquo;) to begin installing Windows.</p>
+
+<p><img src="/img/installing-windows-10-on-a-mac-without-bootcamp/boot-select-device.png" alt="" /></p>
+
+<h2 id="correcting-your-windows-hard-disk-partition">Correcting Your Windows Hard Disk Partition</h2>
+
+<p>When you are asked <strong>Where do you want to install Windows?</strong>, select the
+Windows partition created earlier (which I called &ldquo;BOOTCAMP&rdquo;) and click
+<strong>Delete</strong>.</p>
+
+<p><img src="/img/installing-windows-10-on-a-mac-without-bootcamp/windows-install-partition-delete.png" alt="" /></p>
+
+<p>Next, select the chunk of <strong>Unallocated Space</strong> and click on <strong>New</strong> to create
+a proper Windows NTFS partition.</p>
+
+<p><img src="/img/installing-windows-10-on-a-mac-without-bootcamp/windows-install-partition-new.png" alt="" /></p>
+
+<p><strong>Note</strong>: OS X only supports creation of FAT filesystems, so this is why we need
+to re-create the partition ourselves during install.</p>
+
+<h2 id="completing-the-installation">Completing the Installation</h2>
+
+<p>Allow the installer to complete and boot into Windows.</p>
+
+<h2 id="installing-boot-camp-support-software">Installing Boot Camp Support Software</h2>
+
+<p>Once Windows is up and running, install the Boot Camp Support software running
+<strong>WindowsSupport/BootCamp/Setup.exe</strong> on your USB stick.</p>
+
+<p><strong>Note</strong>: The installer takes a little while to show up, so please be patient.</p>
+
+<p>You may encounter a known issue whereby the Boot Camp Support Software
+installer locks up while installing Realtek audio.</p>
+
+<p><img src="/img/installing-windows-10-on-a-mac-without-bootcamp/bootcamp-installer-realtek-freeze.png" alt="" /></p>
+
+<p>If this occurs, you will need to open <strong>Task Manager</strong> and kill the
+<strong>RealtekSetup.exe</strong> process.</p>
+
+<p><img src="/img/installing-windows-10-on-a-mac-without-bootcamp/bootcamp-installer-realtek-end-process.png" alt="" /></p>
+
+<p>After the installer has completed, answer <strong>No</strong> when prompted to reboot
+and install the Realtek drivers manually by running
+<strong>%USERPROFILE%\AppData\Local\Temp\RarSFX0\BootCamp\Drivers\RealTek\RealtekSetup.exe</strong>.
+If you can&rsquo;t find this file, check any other directories starting with
+<strong>RARSFX</strong> under <strong>%USERPROFILE%\AppData\Local\Temp</strong>.</p>
+
+<p>Once complete, reboot Windows.</p>
+
+<h1 id="what-you-will-need-to-configure-windows">What You Will Need to Configure Windows</h1>
+
+<ul>
+<li>The latest version of <a href="https://sharpkeys.codeplex.com/">SharpKeys</a></li>
+<li>The <a href="https://github.com/jamie-pate/flipflop-windows-wheel">flipflop-windows-sheel binary</a> (see README for a download link)</li>
+</ul>
+
+<h1 id="configuring-windows">Configuring Windows</h1>
+
+<h2 id="mapping-your-mac-keyboard">Mapping Your Mac Keyboard</h2>
+
+<p>Install and run <strong>SharpKeys</strong> and then configure the following mappings to
+correct your Mac keyboard so that it behaves like a regular Windows keyboard:</p>
+
+<p>Function: F13 -&gt; Special: PrtSc<br />
+Special: Left Alt =&gt; Special: Left Windows<br />
+Special: Left Windows =&gt; Special: Left Alt<br />
+Special: Right Alt =&gt; Special: Right Windows<br />
+Special: Right Windows =&gt; Special: Right Alt</p>
+
+<p><img src="/img/installing-windows-10-on-a-mac-without-bootcamp/sharpkeys-configuration.png" alt="" /></p>
+
+<p><strong>Note</strong>: for F13, you&rsquo;ll need to select <strong>Press a key</strong> and click F13 on your
+keyboard.</p>
+
+<h2 id="switching-to-natural-scrolling">Switching to Natural Scrolling</h2>
+
+<p>If you wish to flip scrolling direction to match that on OS X, run
+<strong>FlipWheel.exe</strong> and then click on <strong>Flip All</strong>.</p>
+
+<p><img src="/img/installing-windows-10-on-a-mac-without-bootcamp/flipwheel-configuration.png" alt="" /></p>
+
+<h2 id="enabling-num-lock-on-boot">Enabling Num Lock on Boot</h2>
+
+<p>Paste the following into a file named <strong>Enable NumLock on Boot.reg</strong> then
+import this into the registry to enable NumLock when Windows boots up
+(it doesn&rsquo;t by default).</p>
+
+<pre><code>Windows Registry Editor Version 5.00
+
+[HKEY_USERS\.DEFAULT\Control Panel\Keyboard]
+&quot;InitialKeyboardIndicators&quot;=&quot;80000002&quot;
+</code></pre>
+
+<h2 id="completing-configuration">Completing Configuration</h2>
+
+<p>That&rsquo;s it, give your machine one last reboot and you&rsquo;ll have a fully working
+Windows 10 installation.</p>
+
+<p><strong>Note</strong>: I have found Apple&rsquo;s Magic Mouse to be extremely unreliable using
+the Boot Camp drivers from Apple.  As such, I recommend purchasing a Logitech
+(or similar) mouse for use in Windows.  I have no trouble plugging the
+wireless receiver for my Logitech mouse into one of the USB ports of my wired
+Apple Keyboard and it&rsquo;s so tiny that you can&rsquo;t see it at all.</p>
+
+<h1 id="cleaning-up-a-windows-installation">Cleaning up a Windows Installation</h1>
+
+<h2 id="removing-the-windows-partitions">Removing the Windows Partitions</h2>
+
+<p>If you decide to remove Windows, you may find that Disk Utility doesn&rsquo;t allow
+you to delete the two partitions that have been created by the Windows
+installer.</p>
+
+<p><img src="/img/installing-windows-10-on-a-mac-without-bootcamp/disk-utility-delete-partitions.png" alt="" /></p>
+
+<p>This happens due to the fact that the first small partition created is of a
+type called <strong>Microsoft Reserved</strong> which OS X&rsquo;s Disk Utility doesn&rsquo;t support.</p>
+
+<p>The safest way to delete these partitions is through the Windows installer.  So
+simply boot from your USB stick as we did before and when you reach the
+<strong>Where do you want to install Windows?</strong> question, you may delete your
+&ldquo;BOOTCAMP&rdquo; partition and the small 16 MB partition of type <strong>MSR (Reserved)</strong>
+just above the BOOTCAMP partition.</p>
+
+<p><img src="/img/installing-windows-10-on-a-mac-without-bootcamp/windows-install-partition-clean.png" alt="" /></p>
+
+<p>Once done, simply quit the installer by clicking the X in the top right corner
+of each Window and reboot back into OS X.</p>
+
+<h2 id="removing-the-boot-entry">Removing the Boot Entry</h2>
+
+<p>Even though we have removed the Windows partition, a boot entry will still be
+present when holding down <strong>option (alt)</strong> during boot.</p>
+
+<p>You may remove these items by running the following in your <strong>Terminal</strong>:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-bash" data-lang="bash">1
+2
+3
+4</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>sudo mkdir /Volumes/EFI
+sudo mount -t msdos /dev/disk0s1 /Volumes/EFI
+sudo rm -rfv /Volumes/EFI/EFI/Boot /Volumes/EFI/EFI/Microsoft
+sudo umount /Volumes/EFI
+</code></pre></div>
+</td></tr></table>
+	</div>
+  </div>
+</article>
+
+<div class="row">
+  <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <ul class="pager blog-pager">
+      
+      <li class="previous">
+        <a href="https://fgimian.github.io/blog/2015/07/04/the-battle-of-popular-music-streaming-services/" data-toggle="tooltip" data-placement="top" title="The Battle of Popular Music Streaming Services">&larr; Previous Post</a>
+      </li>
+      
+      
+      <li class="next">
+        <a href="https://fgimian.github.io/blog/2016/04/03/building-web-assets-using-shell-scripts/" data-toggle="tooltip" data-placement="top" title="Building Web Assets Using Shell Scripts">Next Post &rarr;</a>
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<div class="row disqus-comments">
+  <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fgimian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>
+
+
+      
+
+      
+      <div class="row disqus-comments">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fgimian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+      </div>
+      
+
+    </div>
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+          
+          <li>
+            <a href="https://github.com/fgimian" title="GitHub">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+          <li>
+            <a href="https://twitter.com/fgimian" title="Twitter">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+		      
+          <li>
+            <a href="https://linkedin.com/in/fotis-gimian-a5420053" title="LinkedIn">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+	    	  
+          <li>
+            <a href="https://stackoverflow.com/users/1905666/fotis-gimian" title="StackOverflow">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+
+    		  <li>
+      			<a href="https://fgimian.github.io/index.xml" title="RSS">
+      			  <span class="fa-stack fa-lg">
+        				<i class="fa fa-circle fa-stack-2x"></i>
+        				<i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+      			  </span>
+      			</a>
+    		  </li>		
+
+        </ul>
+        <p class="copyright text-muted">
+    		  Fotis Gimian
+    		  &nbsp;&bull;&nbsp;
+    		  2018
+    		  
+    		  
+    		  &nbsp;&bull;&nbsp;
+    		  <a href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    		  
+  	    </p>
+  	        
+    		<p class="theme-by text-muted">
+    		  Theme by
+    		  <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    		</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://fgimian.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://fgimian.github.io/js/bootstrap.min.js"></script>
+<script src="https://fgimian.github.io/js/main.js"></script>
+
+
+
+  </body>
+</html>

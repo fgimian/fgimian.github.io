@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Using the Python mock library to fake regular functions during tests</title>
+
+  <meta name="author" content="Fotis Gimian" />
+
+  
+
+  <meta name="generator" content="Hugo 0.53" />
+
+  <link rel="alternate" href="https://fgimian.github.io/index.xml" type="application/rss+xml" title="Fotsies Technology Blog">
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/main.css" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/custom.css" />
+  <link rel="stylesheet" href="https://fgimian.github.io/css/solarized-dark.css" />
+
+  <link rel="icon" type="image/png" href="https://fgimian.github.io/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="https://fgimian.github.io/favicon-16x16.png" sizes="16x16" />
+
+  
+  <meta property="og:title" content="Using the Python mock library to fake regular functions during tests" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="/blog/2014/04/10/using-the-python-mock-library-to-fake-regular-functions-during-tests//" />
+  <meta property="og:image" content="img/fotis.jpg" />
+
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+          <li>
+          <a title="Blog" href="/">Blog</a>
+  	      </li>
+  	    
+      
+        
+          <li>
+          <a title="About" href="/page/about/">About</a>
+  	      </li>
+  	    
+      
+      </ul>
+    </div>
+
+	<div class="avatar-container">
+	  <div class="avatar-img-border">
+      
+          <a title="Fotsies Technology Blog" href="https://fgimian.github.io/">
+              <img class="avatar-img" src="https://fgimian.github.io/img/fotis.jpg" alt="Fotsies Technology Blog" />
+          </a>
+      
+	  </div>
+	</div>
+
+  </div>
+</nav>
+
+
+    <div role="main" class="container main-content">
+
+      
+        <header class="header-post">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <div class="post-heading">
+        <h1>Using the Python mock library to fake regular functions during tests</h1>
+        
+        <span class="post-meta">Posted on April 10, 2014</span>
+      </div>
+     </div>
+  </div>
+</header>
+
+<article>
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+	  
+
+<p>While writing unit tests in Python, there will often be times where you&rsquo;ll need
+to fake the result of a function as testing against the actual function may be
+impossible.  A simple example is a random function since one can&rsquo;t predict what
+it will return.  Another could be a database call for a database that&rsquo;s only
+available in certain environments.</p>
+
+<p>Python&rsquo;s <a href="https://pypi.python.org/pypi/mock">mock</a> library is the de facto
+standard when mocking functions in Python, yet I have always struggled to
+understand it from the official documentation.</p>
+
+<p>In this post, I&rsquo;m going to focus on regular functions.  We&rsquo;ll take a look at
+mocking classes and their related properties some time in the future.</p>
+
+<h2 id="mocking-functions-using-decorators">Mocking Functions Using Decorators</h2>
+
+<p>Let&rsquo;s start with the <strong>os.urandom</strong> function.  We&rsquo;ll begin by writing a mock
+function that will act similarly to urandom:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python">1
+2</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">simple_urandom</span><span class="p">(</span><span class="n">length</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;f&#39;</span> <span class="o">*</span> <span class="n">length</span>
+</code></pre></div>
+</td></tr></table>
+<p>OK, so now let&rsquo;s use it!</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">mock</span>
+
+
+<span class="k">def</span> <span class="nf">simple_urandom</span><span class="p">(</span><span class="n">length</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;f&#39;</span> <span class="o">*</span> <span class="n">length</span>
+
+
+<span class="k">class</span> <span class="nc">TestRandom</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="nd">@mock.patch</span><span class="p">(</span><span class="s1">&#39;os.urandom&#39;</span><span class="p">,</span> <span class="n">side_effect</span><span class="o">=</span><span class="n">simple_urandom</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_urandom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">urandom_function</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;fffff&#39;</span>
+</code></pre></div>
+</td></tr></table>
+<p>The <strong>side_effect</strong> keyword argument simply allows you to replace an entire
+function with another.  Please also notice that the decorator now adds an
+additional argument to the function that it wraps which I&rsquo;ve called
+<strong>urandom_function</strong>.  We&rsquo;ll discuss some of the things you can do with this
+later on.</p>
+
+<p>The code above also works if we were importing a function that used
+<strong>os.urandom</strong> too.</p>
+
+<p>OK, but what if we imported the urandom function using a from statement?
+Well this is a special case where you can use <strong>__main__</strong> to mock the
+function:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">urandom</span>
+<span class="kn">import</span> <span class="nn">mock</span>
+
+
+<span class="k">def</span> <span class="nf">simple_urandom</span><span class="p">(</span><span class="n">length</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;f&#39;</span> <span class="o">*</span> <span class="n">length</span>
+
+
+<span class="k">class</span> <span class="nc">TestRandom</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="nd">@mock.patch</span><span class="p">(</span><span class="s1">&#39;__main__.urandom&#39;</span><span class="p">,</span> <span class="n">side_effect</span><span class="o">=</span><span class="n">simple_urandom</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_urandom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">urandom_function</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">urandom</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;fffff&#39;</span>
+</code></pre></div>
+</td></tr></table>
+<p>Great stuff!  But in many cases, we would be importing a function from a module
+that calls urandom directly using a from import.  For example, let&rsquo;s say we had
+this function in a module called <strong>fots</strong>:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python">1
+2
+3
+4
+5</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">urandom</span>
+
+
+<span class="k">def</span> <span class="nf">abc_urandom</span><span class="p">(</span><span class="n">length</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;abc&#39;</span> <span class="o">+</span> <span class="n">urandom</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+<p>In this case, we can mock the urandom function in the fots module like this:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">mock</span>
+
+<span class="kn">from</span> <span class="nn">fots</span> <span class="kn">import</span> <span class="n">abc_urandom</span>
+
+
+<span class="k">class</span> <span class="nc">TestRandom</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="nd">@mock.patch</span><span class="p">(</span><span class="s1">&#39;fots.urandom&#39;</span><span class="p">,</span> <span class="n">side_effect</span><span class="o">=</span><span class="n">simple_urandom</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_abc_urandom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">abc_urandom_function</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">abc_urandom</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;abcfffff&#39;</span>
+</code></pre></div>
+</td></tr></table>
+<p>At this point, we know how to mock the various types of function calls that may
+occur.</p>
+
+<p>If you would like to perform a much simpler mock and just replace the return
+value of the function with a simple expression, you may do this:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python">1</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="nd">@mock.patch</span><span class="p">(</span><span class="s1">&#39;os.urandom&#39;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="s1">&#39;pumpkins&#39;</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+<h2 id="mocking-functions-using-context-managers">Mocking Functions Using Context Managers</h2>
+
+<p>For more granular control over when mocking should take place within a test
+case, you may use a with statement instead of a decorator as shown below.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python">1
+2</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">with</span> <span class="n">mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s1">&#39;os.urandom&#39;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="s1">&#39;pumpkins&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">abc_urandom_function</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="n">abc_urandom</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;abcpumpkins&#39;</span>
+</code></pre></div>
+</td></tr></table>
+<p>As you can see, the syntax really doesn&rsquo;t change all that much and once again
+you&rsquo;ll have the function available within the with statement&rsquo;s scope for
+manipulation.</p>
+
+<h2 id="using-the-mocked-function-during-tests">Using the Mocked Function During Tests</h2>
+
+<p>As mentioned above, using the decorator or context manager provides access to
+the mocked function via an additional variable.</p>
+
+<p>Firstly, we can change the mock function on the fly throughout the test like
+this:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">mock</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<span class="k">class</span> <span class="nc">TestRandom</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="nd">@mock.patch</span><span class="p">(</span><span class="s1">&#39;os.urandom&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_abc_urandom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">urandom_function</span><span class="p">):</span>
+        <span class="n">urandom_function</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="s1">&#39;pumpkins&#39;</span>
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;pumpkins&#39;</span>
+        <span class="n">urandom_function</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="s1">&#39;lemons&#39;</span>
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;lemons&#39;</span>
+        <span class="n">urandom_function</span><span class="o">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="s1">&#39;f&#39;</span> <span class="o">*</span> <span class="n">l</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;fffff&#39;</span>
+</code></pre></div>
+</td></tr></table>
+<p>We can also determine if the mock function was called and how many times it was
+called.  These particular statistics can be reset using the <strong>reset_mock</strong>
+function.  Please see an example below:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">mock</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<span class="k">class</span> <span class="nc">TestRandom</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="nd">@mock.patch</span><span class="p">(</span><span class="s1">&#39;os.urandom&#39;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="s1">&#39;pumpkins&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_abc_urandom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">urandom_function</span><span class="p">):</span>
+        <span class="c1"># The mock function hasn&#39;t been called yet</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">urandom_function</span><span class="o">.</span><span class="n">called</span>
+
+        <span class="c1"># Here we call the mock function twice and assert that it has been</span>
+        <span class="c1"># called and the number of times called is 2</span>
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;pumpkins&#39;</span>
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;pumpkins&#39;</span>
+        <span class="k">assert</span> <span class="n">urandom_function</span><span class="o">.</span><span class="n">called</span>
+        <span class="k">assert</span> <span class="n">urandom_function</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">2</span>
+
+        <span class="c1"># Finally, we can reset all function call statistics as though the</span>
+        <span class="c1"># mock function had never been used</span>
+        <span class="n">urandom_function</span><span class="o">.</span><span class="n">reset_mock</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">urandom_function</span><span class="o">.</span><span class="n">called</span>
+        <span class="k">assert</span> <span class="n">urandom_function</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">0</span>
+</code></pre></div>
+</td></tr></table>
+<p>You may even determine exactly what parameters the mocked function was called
+with:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><code class="language-python" data-lang="python"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27</code></pre></div></td><td class="code"><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">mock</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<span class="k">class</span> <span class="nc">TestRandom</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="nd">@mock.patch</span><span class="p">(</span><span class="s1">&#39;os.urandom&#39;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="s1">&#39;pumpkins&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_abc_urandom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">urandom_function</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;pumpkins&#39;</span>
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;pumpkins&#39;</span>
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;pumpkins&#39;</span>
+
+        <span class="c1"># Function was last called with argument 10</span>
+        <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">urandom_function</span><span class="o">.</span><span class="n">call_args</span>
+        <span class="k">assert</span> <span class="n">args</span> <span class="o">==</span> <span class="p">(</span><span class="mi">10</span><span class="p">,)</span>
+        <span class="k">assert</span> <span class="n">kwargs</span> <span class="o">==</span> <span class="p">{}</span>
+
+        <span class="c1"># All function calls were called with the following arguments</span>
+        <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">urandom_function</span><span class="o">.</span><span class="n">call_args_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">args</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span>
+        <span class="k">assert</span> <span class="n">kwargs</span> <span class="o">==</span> <span class="p">{}</span>
+        <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">urandom_function</span><span class="o">.</span><span class="n">call_args_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">args</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)</span>
+        <span class="k">assert</span> <span class="n">kwargs</span> <span class="o">==</span> <span class="p">{}</span>
+        <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">urandom_function</span><span class="o">.</span><span class="n">call_args_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">args</span> <span class="o">==</span> <span class="p">(</span><span class="mi">10</span><span class="p">,)</span>
+        <span class="k">assert</span> <span class="n">kwargs</span> <span class="o">==</span> <span class="p">{}</span>
+</code></pre></div>
+</td></tr></table>
+<p>Pretty cool huh?</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>It&rsquo;s easy to see how awesome this library is and why it&rsquo;s now part of the
+standard library.  Its implementation is also very Pythonic and elegant.
+Hopefully this little guide has gotten you over the hurdles that I first had
+to go through while learning it.  Happy mocking! :)</p>
+
+	</div>
+  </div>
+</article>
+
+<div class="row">
+  <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <ul class="pager blog-pager">
+      
+      <li class="previous">
+        <a href="https://fgimian.github.io/blog/2014/04/06/headless-browser-testing-with-chrome-and-firefox/" data-toggle="tooltip" data-placement="top" title="Headless Browser Testing with Chrome and Firefox">&larr; Previous Post</a>
+      </li>
+      
+      
+      <li class="next">
+        <a href="https://fgimian.github.io/blog/2014/04/20/better-python-version-and-environment-management-with-pyenv/" data-toggle="tooltip" data-placement="top" title="Better Python version and environment management with pyenv">Next Post &rarr;</a>
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<div class="row disqus-comments">
+  <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fgimian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>
+
+
+      
+
+      
+      <div class="row disqus-comments">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fgimian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+      </div>
+      
+
+    </div>
+
+    <footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+          
+          <li>
+            <a href="https://github.com/fgimian" title="GitHub">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+          <li>
+            <a href="https://twitter.com/fgimian" title="Twitter">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+		      
+		      
+          <li>
+            <a href="https://linkedin.com/in/fotis-gimian-a5420053" title="LinkedIn">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+	    	  
+          <li>
+            <a href="https://stackoverflow.com/users/1905666/fotis-gimian" title="StackOverflow">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+
+    		  <li>
+      			<a href="https://fgimian.github.io/index.xml" title="RSS">
+      			  <span class="fa-stack fa-lg">
+        				<i class="fa fa-circle fa-stack-2x"></i>
+        				<i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+      			  </span>
+      			</a>
+    		  </li>		
+
+        </ul>
+        <p class="copyright text-muted">
+    		  Fotis Gimian
+    		  &nbsp;&bull;&nbsp;
+    		  2018
+    		  
+    		  
+    		  &nbsp;&bull;&nbsp;
+    		  <a href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    		  
+  	    </p>
+  	        
+    		<p class="theme-by text-muted">
+    		  Theme by
+    		  <a href="http://deanattali.com/beautiful-jekyll/">beautiful-jekyll</a>
+    		</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://fgimian.github.io/js/jquery-1.11.2.min.js"></script>
+<script src="https://fgimian.github.io/js/bootstrap.min.js"></script>
+<script src="https://fgimian.github.io/js/main.js"></script>
+
+
+
+  </body>
+</html>
