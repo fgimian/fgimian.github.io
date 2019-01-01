@@ -31,7 +31,7 @@ Due to the fact performance was a requirement for the app, my colleague and I di
 
 This app would need to be running in production on a stable and mature language and assuming we didn't go with C++, our choices were really just Go and Rust.
 
-I spent some time reading about Rust and trying to reason about why we should use it.  The language is intriguing but a rather complex one and although it's gaining popularity, it's still has nowhere near the following of Go when it comes to libraries and community discussion.  My colleague who had tried Rust previously explained to me that although he loved the language, it was a rather difficult language to get to grips with, approaching the complexity of C++.
+I spent some time reading about Rust and trying to reason about why we should use it.  The language is intriguing but a rather complex one and although it's gaining popularity, it still has nowhere near the following of Go when it comes to libraries and community discussion.  My colleague who had tried Rust previously explained to me that although he loved the language, it was a rather difficult language to get to grips with, approaching the complexity of C++.
 
 ## Go Makes An Appearance
 
@@ -193,7 +193,7 @@ if err != nil {
 
 This is certainly quite a big mindset shift when coming from the world of exceptions and it can sometimes be a little too verbose.
 
-However, on the plus side, I find that Go really forces developers to think about how to handle every possible error that could occur.  It is also a lot harder to miss an error in Go compared to Python or Crystal where catching exceptions is essentially optional.  Often in Python, people resort to `except Exception` because they simply don't know what exception to catch (especially when working with 3rd party libraries that may themselves fail to catch all possible exceptions themselves).
+However, on the plus side, I find that Go really forces developers to think about how to handle every possible error that could occur.  It is also a lot harder to miss an error in Go compared to Python or Crystal where catching exceptions is essentially optional.  Often in Python, people resort to `except Exception` because they simply don't know what exception to catch (especially when working with 3rd party libraries that may themselves fail to catch all possible exceptions).
 
 As such, this has actually been one of my favourite things about Go.  I really feel that I am writing robust software that will rarely panic unless I explicitly ignore an error or panic myself.
 
@@ -244,7 +244,7 @@ Inheritance is replaced with composition which would hopefully result in clearer
 
 So firstly, I should get this out of the way.  I do find `camelCase` less clear that `snake_case`.  I realise this is personal preference, and it is something that hasn't been nearly as bad in practice as I had thought it would be.  As such, this particular aspect is not a deal breaker, but it is a bit of a shame that Go didn't go with `snake_case` for clarity.
 
-The bigger problem I'm facing is the fact that it is hard to see the difference between constants, variables, functions and structs all of which use the exact same convention.  `camelCase` is used for local or "private" items while `TitleCase` is used for "public" items.
+The bigger problem I'm facing is the fact that it is hard to see the difference between constants, variables, functions and structs all of which use the exact same convention.  `camelCase` is used for local or "unexported" items while `TitleCase` is used for "exported" items.
 
 So let's suppose we have an exported name such as **Download**:
 
