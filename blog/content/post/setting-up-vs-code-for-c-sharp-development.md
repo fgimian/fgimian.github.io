@@ -4,7 +4,7 @@ url: setting-up-vs-code-for-c-sharp-development
 date: 2021-07-10T20:41:08+10:00
 ---
 
-Oh hello there, I haven't seen you in a while? :)
+Oh hello there, I haven't seen you in a while! :)
 
 So while Python is still my main language at work, I continued to search for a new language that I
 would use for hobby projects.  I've been back on Windows for several years and done more Go and a
@@ -13,8 +13,8 @@ the end game for me.  Crystal is lovely and has hit 1.0 but is still extremely f
 
 Some recent openings in our IoT department were requesting C# skills which I got really excited
 about for some reason, and off I went to see what all the fuss was about.  Well, all I can say is,
-I get it!  I really wish I had paid attention to the developments since .NET Core as the language
-is now completely cross-platform, developed constantly and one absolutely incredible language for
+I get it!  I really wish I had paid attention to the developments since .NET Core, as the language
+is now completely cross-platform, evolving constantly and one absolutely incredible language for
 developing a very wide variety of apps.
 
 The main IDEs C# developers use are [Microsoft's Visual Studio](https://visualstudio.microsoft.com/)
@@ -59,7 +59,7 @@ to install the following extensions:
 
 Now for configuration, I'd recommend the following additions to your existing config:
 
-```json
+```js
 {
     // Configure ruler markers
     "editor.rulers": [100],
@@ -72,14 +72,6 @@ Now for configuration, I'd recommend the following additions to your existing co
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
 
-    // Format and organise imports on save
-    "[csharp]": {
-        "editor.formatOnSave": true,
-        "editor.codeActionsOnSave": {
-            "source.organizeImports": true
-        }
-    },
-
     // Enable Roslyn Analyzers which check your code for issues
     "omnisharp.enableRoslynAnalyzers": true
 }
@@ -88,7 +80,7 @@ Now for configuration, I'd recommend the following additions to your existing co
 Please note that I have left coverage reporting out of this post as it deserves its own which I'll
 post in the future.
 
-## Creating Pour Project
+## Creating Your Project
 
 Creating your project must be done at a terminal; we'll be using PowerShell:
 
@@ -126,7 +118,7 @@ So let's summarise what we've done here:
 * **Create a Solution**: A solution (*.sln) file is one which brings together multiple projects
   that you create into a single unified entity.
 * **Create Several Projects**: We can create any number of projects in a solution.  Usually
-  you would have project for your library and a separate project for your tests of that library.
+  you would have a project for your library and a separate project for your tests of that library.
   Similarly, your CLI will typically be a separate project also.  Of course, you may create as
   many projects as you like if you have many libraries that you wish to separate.
 * **Add Projects to Solution**: We must explicitly add each project to the solution so that the
@@ -171,16 +163,19 @@ or linting configuration.  These are more in-depth topics that deserve their own
 
 ## Some Limitations of VS Code
 
-Overall, I have found VS Code to be an excellent C# development environment, but in naturally has
+Overall, I have found VS Code to be an excellent C# development environment, but it naturally has
 various limitations compared to the IDEs mentioned above:
 
-* **Project Types**: Naturally, VS Code won't offer you the sort of tools provided with Visual
+* **Project Types**: Visual Studio Code won't offer you the sort of tools provided with Visual
   Studio for things like desktop and mobile app development.
 * **EditorConfig Generation**: Visual Studio offers a very rich way to create an
   [.editorconfig](https://editorconfig.org/) which sets both linting and styling rules for your
   code.  Some of these features are not supported in VS Code and I haven't found any way to
   create this file other than manually in VS Code.
 * **Linting Exclusions**: Unfortunately, adding an exclusion for a linting error is not one click
-  away as it is in Visual Studio.
+  away as it is in Visual Studio.  Doing this manually is IMHO not so straightforward either, so
+  I typically just open Visual Studio to do this at the moment.
+* **Organising Imports**: I haven't yet found a way to automatically organise imports
+  alphabetically as I would with isort when coding Python.
 
 I'd be happy to be corrected if anyone is aware of a way to accomplish some of these items above.
