@@ -1,0 +1,47 @@
+title =  "Fotsies Technology Blog"
+baseurl =  "https://fgimian.github.io/"
+languageCode =  "en-us"
+theme =  "beautifulhugo"
+
+# Pygments code block support
+PygmentsCodeFences = true
+
+# Enable the use of CSS classes so we can keep the Solarized theme in
+# this repository (see /static/css/solarized-dark.css)
+PygmentsUseClasses = true
+
+# Enable line numbers in code blocks
+PygmentsOptions = "linenos=true"
+
+# Disqus commenting integration
+disqusShortname = "fgimian"
+
+# Number of blog posts displayed in each page
+paginate = 5
+
+# Set post URL path to match that of Octopress
+[permalinks]
+post = "/blog/:year/:month/:day/:title/"
+
+[params]
+# Set my little round logo photo
+logo = "img/fotis.jpg"
+
+# Author information and links
+[author]
+name = "Fotis Gimian"
+github = "fgimian"
+twitter = "fgimian"
+linkedin = "in/fotis-gimian-a5420053"
+stackoverflow = "1905666/fotis-gimian"
+
+# Navbar menu
+[[menu.main]]
+name = "Blog"
+url = ""
+weight = 1
+
+[[menu.main]]
+name = "About"
+url = "page/about/"
+weight = 3
