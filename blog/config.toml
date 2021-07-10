@@ -27,6 +27,12 @@ post = "/blog/:year/:month/:day/:title/"
 # Set my little round logo photo
 logo = "img/fotis.jpg"
 
+# Enable Disqus comments
+comments = true
+
+# Display reading time in minutes for each post
+readingTime = true
+
 # Author information and links
 [author]
 name = "Fotis Gimian"
