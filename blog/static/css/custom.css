@@ -6,19 +6,13 @@ h2,h3,h4,h5,h6 {
 
 h1 {
   margin-top: 0.3em !important;
-  margin-bottom: 0.5em !important;
+  margin-bottom: 0.5em;
   font-size: 3em !important;
 }
 
 hr.small {
   max-width: 200px !important;
   border-width: 1px !important;
-}
-
-/* --- Navbar --- */
-
-.navbar-brand {
-  font-weight: normal !important;
 }
 
 /* --- Post preview --- */
@@ -29,6 +23,6 @@ hr.small {
 
 /* --- Code blocks --- */
 
-.chroma {
-  font-size: 14px;
+.chroma > * {
+  font-size: 1.2em;
 }
