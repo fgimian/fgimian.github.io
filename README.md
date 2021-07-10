@@ -7,6 +7,12 @@
 Artwork courtesy of
 [Open Clip Art Library](https://openclipart.org/detail/97789/nerd)
 
+The code syntax highlighting theme used is **solarized-dark** and was generated as follows:
+
+```powershell
+hugo gen chromastyles --style=solarized-dark > blog/static/css/syntax.css
+```
+
 ## Introduction
 
 This repository contains [Hugo](https://gohugo.io/) configuration, themes and
