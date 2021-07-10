@@ -15,30 +15,28 @@ written posts for my blog which are published to
 
 ## Quick Start
 
-Start by install [Hugo](https://gohugo.io/) on OS X using
-[Homebrew](http://brew.sh/) and [Pygments](http://pygments.org/) using pip:
+Start by install [Hugo](https://gohugo.io/) on Windows using [Scoop](https://scoop.sh/):
 
-```bash
-brew install hugo
-pip install Pygments
+```powershell
+scoop install hugo
 ```
 
 You may now start the development server using:
 
-```bash
-./start develop
+```powershell
+.\start.ps1 Develop
 ```
 
 Create a new blog post with the following command:
 
-```bash
+```powershell
 hugo new post/my-post-name.md
 ```
 
 And when you're ready to deploy, use:
 
-```bash
-./start deploy
+```powershell
+ .\start.ps1 Deploy
 ```
 
 ## License
