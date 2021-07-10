@@ -30,7 +30,9 @@ You may now start the development server using:
 Create a new blog post with the following command:
 
 ```powershell
+pushd blog
 hugo new post/my-post-name.md
+popd
 ```
 
 And when you're ready to deploy, use:
