@@ -1,5 +1,6 @@
 ---
 title: "Setting Up VS Code for C# Development"
+url: setting-up-vs-code-for-c-sharp-development
 date: 2021-07-10T20:41:08+10:00
 ---
 
