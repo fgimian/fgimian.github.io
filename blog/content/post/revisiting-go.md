@@ -15,9 +15,9 @@ Although I spent quite a lot of time on Crystal and am still very fond of it, I 
 
 So it's time to revisit Go and attempt to make sense of my thoughts about the language 6 months ago.  It is also the time to consider that I may have been incorrect about many of my sentiments.
 
-# Current Work Project
+## Current Work Project
 
-## Maintaining a Large C++ Codebase
+### Maintaining a Large C++ Codebase
 
 This begins several months after my post where I've been moved onto a project at work which is primarily developed in C++ and with some minor tooling in Python and one tiny HTTP upload server in Go.  The application primarily works by exposing an API which reads and writes from a PostgreSQL database in addition to running various background tasks that ship data in and out of MQTT topics.  The app also implements a custom communication specification over UDP and TCP for devices to communicate with.
 
@@ -25,7 +25,7 @@ I went through the C++ code in quite a lot of detail to understand the app's fun
 
 Having not done any serious coding in C++ for the better part of a decade, I also started to see how varied people's coding styles could be and how huge the C++ language has become over the years with the various iterations.  In a team of primarily Python and JavaScript developers, and with the lack of focus on APIs in the C++ world, would C++ be a viable choice if the application were to be rewritten?
 
-## Thoughts About Rewriting The Application
+### Thoughts About Rewriting The Application
 
 Due to the fact performance was a requirement for the app, my colleague and I discussed what language we would rewrite the app in if we were given the chance in 2019.
 
@@ -33,11 +33,11 @@ This app would need to be running in production on a stable and mature language 
 
 I spent some time reading about Rust and trying to reason about why we should use it.  The language is intriguing but a rather complex one and although it's gaining popularity, it still has nowhere near the following of Go when it comes to libraries and community discussion.  My colleague who had tried Rust previously explained to me that although he loved the language, it was a rather difficult language to get to grips with, approaching the complexity of C++.
 
-## Go Makes An Appearance
+### Go Makes An Appearance
 
 Several weeks ago, I found myself in a situation where I had to debug that little HTTP upload component developed in Go.  Having only played with Go once well over a ago, I found it surprisingly easy to read the code and get it building and running on my dev server.  I made various changes to the codebase while troubleshooting which all went quite seamlessly.
 
-## Developing Something New In Go
+### Developing Something New In Go
 
 As I was finishing the year, I was asked to develop a monitoring API which would expose details about server health in an endpoint which would be consumed by a dashboard.
 
@@ -49,7 +49,7 @@ So, I decided to rewrite the client in Rust or Go so I could ship a single binar
 
 After these experiences, more thought and a discussion with the developer in the team that had also used Go on that little HTTP upload server, I started to believe that Go would be the perfect choice for rewriting our app moving forward.
 
-## Personal Projects In Go
+### Personal Projects In Go
 
 During the Christmas holiday season, I decided to rewrite various other CLI utilities that I've developed for automating some activities on my Mac in Go to see if I would hit any roadblocks.
 
@@ -57,9 +57,9 @@ Once again, porting the code from Python was surprisingly easy.  I also spent mo
 
 So I have now almost rewritten all my scripts in Go and really enjoyed the process with pretty much all my questions answered via Google or in the Go docs along the day.
 
-# Original Gripes
+## Original Gripes
 
-## Keyword Arguments
+### Keyword Arguments
 
 This was definitely something I was nervous about coming from Python, but in practice I didn't find this to be a huge problem.
 
@@ -77,7 +77,7 @@ industry := "IT"
 greet(name, industry)
 ```
 
-## Default Arguments
+### Default Arguments
 
 Another concern was the fact that there were no default values for arguments.  This meant that all arguments must always be passed to a function call.
 
@@ -117,7 +117,7 @@ func main() {
 
 Note that when creating the cobra `Command`, [various additional struct fields are possible](https://godoc.org/github.com/spf13/cobra#Command) but have simply been excluded above.
 
-## Generics
+### Generics
 
 This hasn't hurt me so much thus far, but do still think it would resolve some frustrations while implementing functionality that can work across types.
 
@@ -153,7 +153,7 @@ func SortedMapKeysString(data interface{}) ([]string, error) {
 }
 ```
 
-## Error Handling
+### Error Handling
 
 Every Go developer is now very accustomed to seeing `if err != nil` quite a lot in their codebase:
 
@@ -234,13 +234,13 @@ if err != nil {
 
 There are current [proposals](https://go.googlesource.com/proposal/+/master/design/go2draft-error-handling.md) to improve this in upcoming versions of Go. I'm personally not so fond of the proposed design change as it makes the language less explicit (e.g. the `check` statement means that you unwrap return values but exclude the last return value assuming it will be an `error` type).  I can't really think of a better approach either, so I'm tempted to say that the current approach is still more clear, albeit verbose.
 
-## Lack of Classes
+### Lack of Classes
 
 Although Go doesn't have classes per se, it does have structs which can have methods created on them.  These work very similarly to classes in use.
 
 Inheritance is replaced with composition which would hopefully result in clearer code in a large project. However, I have not yet written anything big enough in Go to see how composition works in practice.
 
-## Strange Naming Styles
+### Strange Naming Styles
 
 So firstly, I should get this out of the way.  I do find `camelCase` less clear that `snake_case`.  I realise this is personal preference, and it is something that hasn't been nearly as bad in practice as I had thought it would be.  As such, this particular aspect is not a deal breaker, but it is a bit of a shame that Go didn't go with `snake_case` for clarity.
 
@@ -303,11 +303,11 @@ func main() {
 }
 ```
 
-# Little Frustrations With Go
+## Little Frustrations With Go
 
 Naturally, while actually coding in Go, I've discovered a few additional things that I found a bit frustrating thus far.
 
-## Lack of Sets
+### Lack of Sets
 
 Sets in Python are very useful for creating a collection of unique items but also for easily comparing two sets of data too.
 
@@ -324,7 +324,7 @@ Using `struct{}` as the value is efficient since this is an empty data structure
 
 You would then be responsible for implementing functions for comparing such items.  For example, you can see [this stackoverflow post](https://stackoverflow.com/questions/19374219/how-to-find-the-difference-between-two-slices-of-strings-in-golang) for ideas.
 
-## Lack of Sorting for Maps
+### Lack of Sorting for Maps
 
 There's currently no built-in way to sort keys of a map.  Instead, you would typically create a slice containing the keys, sort that and then use it to iterate over the map:
 
@@ -346,7 +346,7 @@ for _, key := range keys {
 
 This is not really a big deal, but does result in more code for fairly trivial actions.
 
-## Lack of Search for Slices & Arrays
+### Lack of Search for Slices & Arrays
 
 I was a bit surprised to find that there's no built in way to search a slice in Go.  Instead, you must resort to a for loop for a linear search, or sort your slice and use [sort.Search](https://golang.org/pkg/sort/#SearchStrings) instead.
 
@@ -365,7 +365,7 @@ for _, ignoredName := range ignoredNames {
 
 Once again, not a deal breaker, but functionality I would have loved to see available in the standard library.
 
-## Tabs vs Spaces
+### Tabs vs Spaces
 
 I realise this is a topic that often makes developers very *passionate* but I personally have no problem with tabs in theory.
 
@@ -385,11 +385,11 @@ EOF
 git config --global core.pager "less -FRX"
 ```
 
-# Great Things About Go
+## Great Things About Go
 
 Along the way, I've discovered various aspects of Go that I really loved.
 
-## Ecosystem, Community & Development Experience
+### Ecosystem, Community & Development Experience
 
 It really is wonderful to work on a language which is so widely supported and discussed.
 
@@ -397,19 +397,19 @@ The library ecosystem is rich and covers a lot of territory, editor integration 
 
 Tools like gofmt and golint are very refined and helpful too and ensure good code quality and consistency.
 
-## Automatic Formatting
+### Automatic Formatting
 
 The Visual Studio Code Go extension (along with various others) automatically format your code upon save using a tool such as gofmt.  I initially was nervous about this but actually find it liberating and great. Fortunately the styles imposed by the Go tooling are very reasonable and easy to adapt to.
 
 This ultimately means that I can spend less time worrying about aesthetics and just focus on functionality and code quality.
 
-## Static Typing & Data Marshalling
+### Static Typing & Data Marshalling
 
 This was one of the points that drew me to a language like Crystal and C++ in the past.  Go's implementation of the empty interface `interface{}` and the reflect package really make it possible to do very dynamic things if you wish.  However, most code follows more rigid typing practices which make everything much clearer to debug and result in much more robust and solid apps.
 
 Using typed structs to marshal and unmarshal JSON and other data means extremely robust parsing and interpretation of data; an advantage mostly found in many statically typed languages.  Fortunately, I recently discovered libraries like [alchemize](https://github.com/jmvrbanac/alchemize) do something similar in Python.
 
-## Simplicity & Readability
+### Simplicity & Readability
 
 Clearly this is the biggest selling point of Go for most people and one of the driving forces that the inventors of the language were keen to impart on the language.
 
@@ -417,7 +417,7 @@ Go is extremely easy to read, absolutely as easy if not easier than a language l
 
 On the downside, this can lead to extra verbosity (as discussed above) which is the tradeoff here.  But overall, I think Go code would be much easier for a large team to maintain than many other languages.
 
-## Explicit Nature
+### Explicit Nature
 
 One of the Zen of Python items is:
 
@@ -444,7 +444,7 @@ In Go, all parameter and return value types must be specified in functions.
 
 Further to this, the explicit nature of handling errors makes Go feel very upfront as a language.
 
-# Conclusion
+## Conclusion
 
 Congratulations for reading this far (assuming you didn't just scroll down to the bottom) :)  Clearly, I've only spent a short time with Go and am sure to discover many more things I love and don't love about the language.
 

@@ -28,14 +28,14 @@ please proceed at your own risk.
 relating to downloading of Boot Camp drivers and ensuring that a Hybrid MBR is
 not used (which would cause issues when installing Windows).
 
-# What You Will Need
+## What You Will Need
 
 * An 8 GB or larger USB stick
 * A copy of the [Windows 10 ISO](https://www.microsoft.com/en-au/software-download/windows10ISO)
 * A valid Windows 10 license
 * A downloaded copy of [unetbootin](https://unetbootin.github.io/)
 
-# Downloading Boot Camp Drivers
+## Downloading Boot Camp Drivers
 
 1. Start **Boot Camp Assistant**
 2. Select **Action** / **Download Windows Support Software**
@@ -44,9 +44,9 @@ not used (which would cause issues when installing Windows).
 
 This will be the only step that we will use Boot Camp Assistant for.
 
-# Creating a Bootable USB Windows 10 Installer
+## Creating a Bootable USB Windows 10 Installer
 
-## Formatting Your USB Stick
+### Formatting Your USB Stick
 
 Attach your USB stick and start **Disk Utility**, select your USB drive in the
 left panel under External, click **Erase** and set the options as follows
@@ -58,7 +58,7 @@ left panel under External, click **Erase** and set the options as follows
 
 ![](/img/installing-windows-10-on-a-mac-without-bootcamp/disk-utility-erase-disk.png)
 
-## Turning Your USB Stick into a Windows Installer
+### Turning Your USB Stick into a Windows Installer
 
 Open **unetbootin**, enter your password, set the options as follows and
 click **OK**:
@@ -88,7 +88,7 @@ You'll see your USB drive in the output and it should look something like this:
 Once you have kicked off unetbootin, grab a snack while the Windows ISO is
 copied to the USB stick. This process takes around 15 minutes to complete.
 
-## Finishing Up
+### Finishing Up
 
 When this has completed, you may right click on the USB stick in Finder,
 select **Rename "FAT32"** and rename it as you like (I'll call mine
@@ -97,7 +97,7 @@ select **Rename "FAT32"** and rename it as you like (I'll call mine
 Finally, copy the **WindowsSupport** in your Downloads directory to
 the Windows 10 USB stick so it's easy to get to after our installation.
 
-# Partitioning Your Drive
+## Partitioning Your Drive
 
 In **Disk Utility**, select your internal hard drive on the left panel, and
 click on **Partition**.
@@ -107,7 +107,7 @@ Windows installation and name it as you wish (I'll call mine "BOOTCAMP").  Ensur
 
 ![](/img/installing-windows-10-on-a-mac-without-bootcamp/disk-utility-partition-disk.png)
 
-# Ensuring that a Hybrid MBR is not used
+## Ensuring that a Hybrid MBR is not used
 
 Huge thanks to Rod's post from the superuser post titled
 [Windows detects GPT disk as MBR in EFI boot](http://superuser.com/questions/508026/windows-detects-gpt-disk-as-mbr-in-efi-boot).
@@ -161,9 +161,9 @@ partition table.
     Found valid GPT with protective MBR; using GPT.
     ```
 
-# Installing Windows
+## Installing Windows
 
-## Disconnecting All Devices From USB Ports
+### Disconnecting All Devices From USB Ports
 
 This step is critical as I have had rather serious problems during Windows
 installation when certain external drives are connected.
@@ -177,7 +177,7 @@ encounter the following error:
 
 > Windows could not prepare the computer to boot into the next phase of installation. To install Windows, restart the installation.
 
-## Booting From the USB Stick
+### Booting From the USB Stick
 
 Ensure that the USB stick containing the Windows installer is inserted and
 then restart your Mac while holding down the **option (alt)** key.
@@ -187,7 +187,7 @@ drive (usually titled "EFI Boot") to begin installing Windows.
 
 ![](/img/installing-windows-10-on-a-mac-without-bootcamp/boot-select-device.png)
 
-## Correcting Your Windows Hard Disk Partition
+### Correcting Your Windows Hard Disk Partition
 
 When you are asked **Where do you want to install Windows?**, select the
 Windows partition created earlier (which I called "BOOTCAMP") and click
@@ -203,11 +203,11 @@ a proper Windows NTFS partition.
 **Note**: OS X only supports creation of FAT filesystems, so this is why we need
 to re-create the partition ourselves during install.
 
-## Completing the Installation
+### Completing the Installation
 
 Allow the installer to complete and boot into Windows.
 
-## Installing Boot Camp Support Software
+### Installing Boot Camp Support Software
 
 Once Windows is up and running, install the Boot Camp Support software running
 **WindowsSupport/BootCamp/Setup.exe** on your USB stick.
@@ -232,14 +232,14 @@ If you can't find this file, check any other directories starting with
 
 Once complete, reboot Windows.
 
-# What You Will Need to Configure Windows
+## What You Will Need to Configure Windows
 
 * The latest version of [SharpKeys](https://sharpkeys.codeplex.com/)
 * The [flipflop-windows-sheel binary](https://github.com/jamie-pate/flipflop-windows-wheel) (see README for a download link)
 
-# Configuring Windows
+## Configuring Windows
 
-## Mapping Your Mac Keyboard
+### Mapping Your Mac Keyboard
 
 Install and run **SharpKeys** and then configure the following mappings to
 correct your Mac keyboard so that it behaves like a regular Windows keyboard:
@@ -255,14 +255,14 @@ Special: Right Windows => Special: Right Alt
 **Note**: for F13, you'll need to select **Press a key** and click F13 on your
 keyboard.
 
-## Switching to Natural Scrolling
+### Switching to Natural Scrolling
 
 If you wish to flip scrolling direction to match that on OS X, run
 **FlipWheel.exe** and then click on **Flip All**.
 
 ![](/img/installing-windows-10-on-a-mac-without-bootcamp/flipwheel-configuration.png)
 
-## Enabling Num Lock on Boot
+### Enabling Num Lock on Boot
 
 Paste the following into a file named **Enable NumLock on Boot.reg** then
 import this into the registry to enable NumLock when Windows boots up
@@ -275,7 +275,7 @@ Windows Registry Editor Version 5.00
 "InitialKeyboardIndicators"="80000002"
 ```
 
-## Completing Configuration
+### Completing Configuration
 
 That's it, give your machine one last reboot and you'll have a fully working
 Windows 10 installation.
@@ -286,9 +286,9 @@ the Boot Camp drivers from Apple.  As such, I recommend purchasing a Logitech
 wireless receiver for my Logitech mouse into one of the USB ports of my wired
 Apple Keyboard and it's so tiny that you can't see it at all.
 
-# Cleaning up a Windows Installation
+## Cleaning up a Windows Installation
 
-## Removing the Windows Partitions
+### Removing the Windows Partitions
 
 If you decide to remove Windows, you may find that Disk Utility doesn't allow
 you to delete the two partitions that have been created by the Windows
@@ -310,7 +310,7 @@ just above the BOOTCAMP partition.
 Once done, simply quit the installer by clicking the X in the top right corner
 of each Window and reboot back into OS X.
 
-## Removing the Boot Entry
+### Removing the Boot Entry
 
 Even though we have removed the Windows partition, a boot entry will still be
 present when holding down **option (alt)** during boot.

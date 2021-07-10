@@ -28,7 +28,7 @@ You may check out the entire database schema using the schema command:
 .schema
 ```
 
-# Launchpad Data Structure
+## Launchpad Data Structure
 
 The structure of Launchpad data is as follows:
 

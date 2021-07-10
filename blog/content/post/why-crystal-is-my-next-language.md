@@ -9,7 +9,7 @@ I have been a heavy user and lover of Python since 2011.  At that time, when a g
 
 After around 7 years of using Python, I'm just as passionate about it now as I was then.  However, as time goes on, one looks for new adventures and challenges.  The time has come for me to try another language!
 
-# Python Challenges
+## Python Challenges
 
 Let me start by noting some of the challenges I've faced with Python:
 
@@ -26,7 +26,7 @@ Further to this, I'm not sure that I really love the direction that Python is ta
 
 I should note that I'm still a massive fan and advocate of Python and think it's still one of the best interpreted languages available today; particularly when you take into account its wonderful ecosystem and maturity.
 
-# What I'm Looking For
+## What I'm Looking For
 
 My starting point is really Python and Ruby.  I've used Ruby from time to time where it was needed and really love it too.  Ruby solves several problems that Python has (proper private/protected attributes, less verbose syntax .etc) but still suffers from performance problems and lacks static typing.
 
@@ -37,7 +37,7 @@ As such, I started looking for a new language with the following features:
 * Compiled, statically typed and fast
 * Object-oriented (oh classes, how I love you...)
 
-# Candidates
+## Candidates
 
 The following languages were ruled out:
 
@@ -64,15 +64,15 @@ The reasons are as follows:
 * It offers the ability to develop DSLs similar to Ruby (which is something I've always been interested in)
 * Bindings to C libraries are fully native and written in Crystal (similar to ctypes in Python, only better)
 
-# Caveats
+## Caveats
 
 Crystal is a very young language that still hasn't hit 1.0.  It often introduces breaking changes in releases and has limited libraries.
 
 However, I plan to only use this language in my personal projects and was willing to become an early adopter due to the fact I feel that the language has enough promise to be worth using.
 
-# Experiences
+## Experiences
 
-## Standard Library
+### Standard Library
 
 The entire standard library is extremely easy to read and is something I reference all the time.  The library also seems moderately extensive and is a great base to work with.
 
@@ -108,7 +108,7 @@ And here's the function that obtains the extension of a file:
 
 If you choose to try out Crystal, ensure you keep its source right by your side; it's incredibly valuable and useful.
 
-## Binding to C Libraries
+### Binding to C Libraries
 
 It's amazing how easy this is!
 
@@ -137,7 +137,7 @@ lib LibC
 end
 ```
 
-## Exception Handling
+### Exception Handling
 
 Similar exception handling is provided to both Ruby and Python:
 
@@ -155,7 +155,7 @@ Similar exception handling is provided to both Ruby and Python:
 
 Writing your own exceptions is trivial; simply inherit from the `Exception` class.
 
-## Import System & Namespaces
+### Import System & Namespaces
 
 This was a bit of an adjustment coming from Python, but really brought me back to C++ days as Ruby follows a similar method to C++.
 
@@ -172,7 +172,7 @@ data = YAML.parse(File.read("./foo.yml"))
 puts data
 ```
 
-## Classes
+### Classes
 
 One of my very favourite things about Crystal is how it handles assignment of instance variables:
 
@@ -197,7 +197,7 @@ Although it's a personal thing, I also really like the symmetry of the `end` sta
 
 And of course, we have proper protected and private members and abstract classes too; both features I missed from my C++ days.
 
-## Documentation
+### Documentation
 
 I absolutely love Crystal's documentation.  It is so inviting and enjoyable to read.  However, as with any new language, it is possibly not as comprehensive as it could be.
 
@@ -208,11 +208,11 @@ The main two pieces of documentation provided are:
 
 Another incredibly valuable resource is the [Crystal chatroom on Gitter](https://gitter.im/crystal-lang/crystal).  Everyone in the channel is very welcoming and helpful.  They have been a great source of information for me on my journey thus far.
 
-## Performance
+### Performance
 
 Although it's too early for me to really determine performance gains, it's always fun to do a Fibonacci test :)
 
-### Ruby / Crystal
+#### Ruby / Crystal
 
 ```ruby
 def fib(n)
@@ -226,7 +226,7 @@ end
 puts fib(42)
 ```
 
-### Python
+#### Python
 
 ```python
 def fib(n):
@@ -238,7 +238,7 @@ def fib(n):
 print(fib(42))
 ```
 
-### C
+#### C
 
 ```c
 #include <stdio.h>
@@ -260,7 +260,7 @@ int main()
 
 Compiled with `-O3` for best performance.
 
-### C++
+#### C++
 
 ```c++
 #include <iostream>
@@ -284,7 +284,7 @@ int main()
 
 Compiled with `-O3` for best performance.
 
-### Go
+#### Go
 
 ```go
 package main
@@ -304,7 +304,7 @@ func main() {
 }
 ```
 
-### Results
+#### Results
 
 ```
 Runtime          Time (sec)
@@ -318,7 +318,7 @@ Ruby 2.5.1           37.944
 CPython 3.6.5       128.172
 ```
 
-# Conclusion
+## Conclusion
 
 Although it's early days for both me and the language itself, I'm very optimistic and hopeful that Crystal will soon be the choice for many in production.  I think that the language will be a natural progression for Python and Ruby users alike.
 

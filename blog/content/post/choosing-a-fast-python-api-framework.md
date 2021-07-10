@@ -30,7 +30,7 @@ Our requirements are as follows:
 * **WSGI Based**: Most API calls should be moderately quick to return and no long-running processes are expected, so a standard syncronous framework running on top of WSGI is what we're after.
 * **Object-oriented Routes**: This is more of a preference as I personally believe that using classes for routes in a REST API is more suitable due the modularity and ability to initialise aspects of the endpoint without placing variables in a global context.  However, this almost always can be worked-around by simply calling the appropriate method if a function/decorator based approach is used by the framework.
 
-# WSGI Servers
+## WSGI Servers
 
 * [Gunicorn](http://gunicorn.org): This is my favourite WSGI server and has pluggable runners which can improve performance (see Meinheld below).  
 
@@ -50,7 +50,7 @@ Our requirements are as follows:
     uwsgi -p 17 --http 0.0.0.0:8000 --wsgi-file [MODULE] --callable [APP]
     ```
 
-## Others (Ruled Out)
+### Others (Ruled Out)
 
 * [bjoern](https://github.com/jonashaag/bjoern): Very fast but also extremely minimal, you must implement logging and workers yourself.
 * [CherryPy](https://cherrypy.org): Not fast enough in my testing.
@@ -59,13 +59,13 @@ Our requirements are as follows:
 * [gevent](http://www.gevent.org): Not fast enough in my testing.  I would use gevent for async tasks in our code though, it just didn't perform as well as Meinheld for WSGI purposes.
 * [Chaussette](https://chaussette.readthedocs.io/): Seemed unstable (crashed with Meinheld) and no better than gunicorn in my testing.
 
-## Conclusion
+### Conclusion
 
 Gunicorn with Meinheld workers seems like the best option here.  It was the fastest in the tests I ran and is simple to setup and configure.
 
-# WSGI Frameworks
+## WSGI Frameworks
 
-## Ruled Out
+### Ruled Out
 
 * [Django](https://github.com/django/django): Too big and with batteries included (contains an ORM, templating .etc); is clearly intended for full-stack as well as APIs
 * [Tornado](https://github.com/tornadoweb/tornado): Mostly intended for long-running endpoints (async)
@@ -75,7 +75,7 @@ Gunicorn with Meinheld workers seems like the best option here.  It was the fast
 * [Muffin](https://github.com/klen/muffin): Not popular enough yet
 * [Morepath](https://github.com/morepath/morepath): Not popular enough yet
 
-## Considered (But Ruled Out)
+### Considered (But Ruled Out)
 
 * [Flask](https://github.com/pallets/flask): 
     - Very popular
@@ -125,7 +125,7 @@ Gunicorn with Meinheld workers seems like the best option here.  It was the fast
     - Appears to be a young project (version 0.1)
     - I didn't spend as much time testing this, so it may be worth revisiting
 
-## The Choice / Conclusion
+### The Choice / Conclusion
 
 There was one framework that stood out amongst them all (for me), and that is Falcon.  Please find my notes below:
 
@@ -136,7 +136,7 @@ There was one framework that stood out amongst them all (for me), and that is Fa
     - Intended only for APIs which makes it more focused and minimal
     - Excellent design, documentation and codebase
 
-# Load Testing Tools
+## Load Testing Tools
 
 * [wrk](https://github.com/wg/wrk): This was the main tool I personally used while testing and found it great.
 
@@ -156,7 +156,7 @@ There was one framework that stood out amongst them all (for me), and that is Fa
     siege -c2 -t2m [URL]
     ```
 
-# Final Thoughts
+## Final Thoughts
 
 It's been a few years since I looked at Python web frameworks and the landscape has changed dramatically.  I really love the way frameworks like apistar are incorporating type annotations, and also am impressed by the focus on async processing too (which is of great importance to many).
 

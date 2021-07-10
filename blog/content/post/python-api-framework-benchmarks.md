@@ -7,7 +7,7 @@ With the multitude of awesome Python web frameworks out there today, I thought i
 
 **Disclaimer**: I'm aware that this test doesn't offer multiple real-life use-cases and may not be a great representation of real-world performance.  However, I still thought it would be fun to share the results.
 
-# Test Environment
+## Test Environment
 
 Two servers were created in AWS with the following details:
 
@@ -59,11 +59,11 @@ cd ..
 rm -rf wrk
 ```
 
-# Hello World Benchmarks
+## Hello World Benchmarks
 
-## Code
+### Code
 
-### API Star
+#### API Star
 
 ```python
 from apistar import App, Route
@@ -76,7 +76,7 @@ app = App(routes=[
 ])
 ```
 
-### Bottle
+#### Bottle
 
 ```python
 import bottle
@@ -88,7 +88,7 @@ def hello():
 app = bottle.default_app()
 ```
 
-### Falcon
+#### Falcon
 
 ```python
 import falcon
@@ -101,7 +101,7 @@ app = falcon.API()
 app.add_route('/', HelloResource())
 ```
 
-### Flask
+#### Flask
 
 ```python
 from flask import Flask
@@ -113,7 +113,7 @@ def hello():
     return 'Hello World!'
 ```
 
-### hug
+#### hug
 
 ```python
 import hug
@@ -125,7 +125,7 @@ def hello():
 app = __hug_wsgi__
 ```
 
-### Sanic
+#### Sanic
 
 ```python
 from sanic import Sanic
@@ -141,9 +141,9 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000, access_log=False)
 ```
 
-## Commands
+### Commands
 
-### wrk
+#### wrk
 
 ```bash
 wrk --duration 10s --threads 1 --connections 200 http://wsgi:8000
@@ -151,7 +151,7 @@ wrk --duration 10s --threads 1 --connections 200 http://wsgi:8000
 
 Note that 5 - 6 runs were conducted and the most requests/sec from any iteration were recorded.  I also note below if results varied wildly to set appropriate expectations.
 
-### WSGI Servers
+#### WSGI Servers
 
 **Note**: I'm using Sanic's inbuilt `run` function instead of its Gunicorn workers as there's [no way to disable to access logging otherwise](https://github.com/channelcat/sanic/issues/1143).
 
@@ -188,7 +188,7 @@ uwsgi \
   --wsgi-file hello_<framework>.py --callable app
 ```
 
-# Benchmark Results (hello world)
+## Benchmark Results (hello world)
 
 ```
            apistar   bottle    falcon     flask      hug      sanic    
@@ -232,7 +232,7 @@ I attempted tweaks involving the following settings but still failed to succeed 
 
 I'm absolutely happy to take suggestions on what I should tweak to get uWSGI to work but from this point in the article, I'll be excluding it from further tests.
 
-# Benchmark Results (data manipulation / algorithm)
+## Benchmark Results (data manipulation / algorithm)
 
 We've developed a codebase at work which uses a reasonably large set of data to make a determination.  This is one of the endpoints that we are exposing in the API we're building.
 
@@ -242,7 +242,7 @@ Please note that this endpoint creates a JSON response and I had to increase wkr
 
 In all results below, I have included the min - max requests served per 10 second period.
 
-## Results (Errors)
+### Results (Errors)
 
 In all the tests below, at least one socket error was encountered.
 
@@ -254,7 +254,7 @@ gevent     332 - 475  337 - 491  278 - 483  271 - 472
 gunicorn                                    300 - 454
 ```
 
-## Results (No Errors)
+### Results (No Errors)
 
 The following produced no errors at all.
 
@@ -267,13 +267,13 @@ meinheld   465 - 494  461 - 490  461 - 498  450 - 478  461 - 488     n/a
 sanic         n/a        n/a        n/a        n/a        n/a     385 - 495
 ```
 
-## Thoughts
+### Thoughts
 
 I was amazed at how consistent and solid Meinheld was in all my tests.  It had the least variance and never failed.  The framework here made less of a difference as our bottleneck was now the algorithm being worked through on each request.
 
 As such, I'm only going to proceed testing Gunicorn, Meinheld and Sanic servers from this point forward to make my life easier :)
 
-# Conclusion
+## Conclusion
 
 Apart from Flask, all frameworks I tested were neck in neck throughout.  There are various benchmarks showing that Flask isn't performant and sadly that was the case here too.
 

@@ -11,7 +11,7 @@ With Apple Music being released just the other day, I wanted to throw my 2
 cents in about the main players, Google Play Music All Access (such a long
 name), Spotify and Apple Music.
 
-# Google Play Music All Access
+## Google Play Music All Access
 
 In my personal opinion (and I completely respect that this a subjective
 matter), Google Play Music All Access lacks the polish of the other two
@@ -37,7 +37,7 @@ The music selection seemed rather decent to me but these limitations were a
 good reason to rule out Google Play Music All Access.  I primarily listen to
 music on my desktop and so this was a rather big deal.
 
-# Spotify vs Apple Music
+## Spotify vs Apple Music
 
 I'll start by saying that both these services are awesome and I don't think you
 can go wrong with either (unless you're currently an Android user, in which
