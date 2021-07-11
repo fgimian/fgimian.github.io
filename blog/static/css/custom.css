@@ -166,7 +166,7 @@ hr.small {
 
   .pager li a:hover,
   .pager li a:focus {
-    color: #fff;
+    color: #fff !important;
     background: #0065a1;
     border: 1px solid #006581;
   }
