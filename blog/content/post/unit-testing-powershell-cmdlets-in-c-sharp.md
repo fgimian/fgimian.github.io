@@ -290,7 +290,7 @@ And what if the cmdlet throws a non-terminating error?
 
 ```c#
 [Fact]
-public void Invoke_WithRepeats_ShouldRepeatPhraseTheCorrectNumberOfTimes()
+public void Invoke_WithInvalidRepeats_ShouldError()
 {
     // Arrange
     var runtime = new MockCommandRuntime<string>();
