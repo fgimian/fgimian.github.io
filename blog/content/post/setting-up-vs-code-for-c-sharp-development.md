@@ -67,8 +67,9 @@ Now for configuration, I'd recommend the following additions to your existing co
     // Configure ruler markers to assist with detecting long lines
     "editor.rulers": [100],
 
-    // Automatically format your code as you type
+    // Automatically format your code as you type and save
     "editor.formatOnType": true,
+    "editor.formatOnSave": true,
 
     // Ensure that whitespace is cleaned up when saving
     "files.trimTrailingWhitespace": true,
@@ -76,7 +77,10 @@ Now for configuration, I'd recommend the following additions to your existing co
     "files.trimFinalNewlines": true,
 
     // Enable Roslyn Analyzers which check your code for issues
-    "omnisharp.enableRoslynAnalyzers": true
+    "omnisharp.enableRoslynAnalyzers": true,
+
+    // Automatically sort imports upon save
+    "omnisharp.organizeImportsOnFormat": true
 }
 ```
 
@@ -178,8 +182,6 @@ various limitations compared to the IDEs mentioned above:
 * **Linting Exclusions**: Unfortunately, adding an exclusion for a linting error is not one click
   away as it is in Visual Studio.  Doing this manually is IMHO not so straightforward either, so
   I typically just open Visual Studio to do this at the moment.
-* **Organising Imports**: I haven't yet found a way to automatically organise imports
-  alphabetically on save as I would with isort when coding Python.
 
 I'd be happy to be corrected if anyone is aware of a way to accomplish some of these items above.
 
