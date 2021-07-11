@@ -6,15 +6,16 @@ date: 2021-07-10T20:41:08+10:00
 
 Oh hello there, I haven't seen you in a while! :)
 
-So while Python is still my main language at work, I continued to search for a new language that I
-would use for hobby projects.  I've been back on Windows for several years and done more Go and a
-lot of PowerShell too.  At the end of the day, while I appreciate Go's strengths, it's really not
-the end game for me.  Crystal is lovely and has hit 1.0 but is still extremely far from maturity.
+So while Python is still my main language at work, I have continued to search for a new language
+that I would use for hobby projects.  I've been back on Windows for several years and done more Go
+and a lot of PowerShell too.  At the end of the day, while I appreciate Go's strengths, it's really
+not the end game for me.  Crystal is lovely and has now hit 1.0 but is still extremely far from
+maturity.
 
 Some recent openings in our IoT department were requesting C# skills which I got really excited
 about for some reason, and off I went to see what all the fuss was about.  Well, all I can say is,
 I get it!  I really wish I had paid attention to the developments since .NET Core, as the language
-is now completely cross-platform, evolving constantly and one absolutely incredible language for
+is now completely cross-platform, evolving constantly and an absolutely incredible language for
 developing a very wide variety of apps.
 
 The main IDEs C# developers use are [Microsoft's Visual Studio](https://visualstudio.microsoft.com/)
@@ -23,24 +24,26 @@ feel very far from my comfort zone in Visual Studio and find it very laggy in us
 better but is a paid product which I can't justify while not using the language professionally.
 
 So I went back to my daily driver for Python development, Visual Studio Code.  Being a Microsoft
-product, C# is indeed supported rather well in this editor but I didn't find a lot of step by step
-guides that one can follow to get started with it, so hopefully my hardships will save someone
-else the same challenges I had when starting out.
+product, C# is supported rather well in this editor but I didn't find a lot of step by step guides
+that one can follow to get started with it, so hopefully my hardships will save someone else the
+same challenges I had when starting out.
 
 ## Installing .NET
 
 I will admit that the various versions of .NET are a bit confusing, but here's all you need to know:
 
-* **.NET Framework** is the older closed source, Windows only release, skip this one!
+* **.NET Framework** is the older closed source, Windows only release; skip this one!
 * **.NET Core 3.1** is the open source, cross-platform LTS release which is still used widely and
   it supports C# 8.0.
 * **.NET 5.0** is the current open source, cross-platform release which offers all the extra
-  goodies in C# 9.0
+  goodies in C# 9.0.
 
-You'll need to start by downloading the relevant release for your OS (I'll be using Windows) from
+You'll need to start by downloading the relevant release for your OS from
 [Microsoft's Download .NET page](https://dotnet.microsoft.com/download).
 
 Once installed, you'll now have a new command available at your terminal called `dotnet`.
+
+The remaining instructions will assume you're on Windows and in a PowerShell terminal, but they can easily be tweaked silghtly to work on Linux and macOS.
 
 ## Installing Visual Studio Code & Extensions
 
@@ -51,17 +54,17 @@ to install the following extensions:
 * **Visual Studio IntelliCode**: AI-powered coding assistance while you code.
 * **.NET Core Test Explorer**: Makes it easy to see all your tests and run them.
 * **Cake** or **NUKE Support**: These are two excellent build systems available for C# so you'll
-  need to check them out on their respective websites to see which you like most.  I personally
-  choose Cake due to its simpler setup and rich legacy.
-* **Nuget Package Manager**: This just makes it easier to install dependencies
-  (known as Nuget packages) for your project.  You can do the same thing at the CLI too, so this
+  need to check them out on their respective websites to see which you like most.  I may cover
+  these tools in a future post.
+* **NuGet Package Manager**: This just makes it easier to install dependencies
+  (known as NuGet packages) for your project.  You can do the same thing at the CLI too, so this
   may be something you don't use depending on your workflow.
 
 Now for configuration, I'd recommend the following additions to your existing config:
 
 ```js
 {
-    // Configure ruler markers
+    // Configure ruler markers to assist with detecting long lines
     "editor.rulers": [100],
 
     // Automatically format your code as you type
@@ -116,7 +119,7 @@ dotnet add ProjectLibrary.Tests reference ProjectLibrary/ProjectLibrary.csproj
 So let's summarise what we've done here:
 
 * **Create a Solution**: A solution (*.sln) file is one which brings together multiple projects
-  that you create into a single unified entity.
+  into a single unified entity.
 * **Create Several Projects**: We can create any number of projects in a solution.  Usually
   you would have a project for your library and a separate project for your tests of that library.
   Similarly, your CLI will typically be a separate project also.  Of course, you may create as
@@ -158,8 +161,8 @@ numbers to add a breakpoint, and hit F5 to start debugging.
 
 ## What We Haven't Covered Here
 
-In the interest of keeping this post concise, I have not gone into detail on unit test coverage
-or linting configuration.  These are more in-depth topics that deserve their own post.
+In the interest of keeping this post concise, I have not gone into detail on build tools, unit test
+coverage or linting configuration.  These are more in-depth topics that deserve their own post.
 
 ## Some Limitations of VS Code
 
@@ -170,12 +173,19 @@ various limitations compared to the IDEs mentioned above:
   Studio for things like desktop and mobile app development.
 * **EditorConfig Generation**: Visual Studio offers a very rich way to create an
   [.editorconfig](https://editorconfig.org/) which sets both linting and styling rules for your
-  code.  Some of these features are not supported in VS Code and I haven't found any way to
-  create this file other than manually in VS Code.
+  code.  Some of these features are not supported in and to my knowledge, this file must be created
+  and configured manually in VS Code.
 * **Linting Exclusions**: Unfortunately, adding an exclusion for a linting error is not one click
   away as it is in Visual Studio.  Doing this manually is IMHO not so straightforward either, so
   I typically just open Visual Studio to do this at the moment.
 * **Organising Imports**: I haven't yet found a way to automatically organise imports
-  alphabetically as I would with isort when coding Python.
+  alphabetically on save as I would with isort when coding Python.
 
 I'd be happy to be corrected if anyone is aware of a way to accomplish some of these items above.
+
+## Any Further Suggestions?
+
+Can you suggest any further essential extensions for C# development in Visual Studio Code?  Do you
+know of a way to overcome any of the limitations above?
+
+Please comment below with your suggestions, I'd love to read them!
