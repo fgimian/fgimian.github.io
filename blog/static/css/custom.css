@@ -203,6 +203,13 @@ pre, code {
   font-size: 0.9em;
 }
 
+/* Improve alignment of line numbers */
+.lnt {
+  display: block;
+  width: 1.5em;
+  text-align: right;
+}
+
 @media (prefers-color-scheme: dark) {
   /* Code blocks and inline code */
   pre,
