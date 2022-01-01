@@ -36,13 +36,13 @@ function Deploy()
     # Create a new Git repository and add content
     git init
     git remote add origin "$git_remote"
-    git checkout --orphan master
+    git checkout --orphan main
     git add .
     $datestamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss K'
     git commit -m "Site updated at ${datestamp}"
 
-    # Deploy code to the master branch
-    git push --force origin master
+    # Deploy code to the main branch
+    git push --force origin main
 
     # Clean up the deploy directory
     Pop-Location

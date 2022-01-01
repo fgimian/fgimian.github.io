@@ -1,6 +1,6 @@
 # Fotsies Technology Blog
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/fgimian/fgimian.github.io/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/fgimian/fgimian.github.io/blob/main/LICENSE)
 
 ![Fotsies Technology Blog](https://raw.githubusercontent.com/fgimian/fgimian.github.io/source/images/fotsies-technology-blog-logo.png)
 
