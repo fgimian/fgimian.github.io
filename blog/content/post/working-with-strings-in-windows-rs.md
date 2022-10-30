@@ -37,10 +37,10 @@ let text = text.to_string();
 assert_eq!("Hello there mate! 😊\0Hidden text", &text);
 ```
 
-If you require a `HSTRING` slice (i.e. `&HSTRING`) which is created at compile-time, you may also use the `w!` macro to create one:
+If you require a `HSTRING` slice (i.e. `&HSTRING`) which is created at compile-time, you may also use the `h!` macro to create one:
 
 ```rust
-let text = w!("Hello there mate! 😊");
+let text = h!("Hello there mate! 😊");
 let text = text.to_string();
 assert_eq!("Hello there mate! 😊", &text);
 ```
@@ -129,6 +129,14 @@ assert!(U16CString::from_str(text).is_err());
 In terms of memory usage, the `U16CString` and the boxed slice approach shown above should be most efficient (taking 24 bytes less than a `HSTRING`).  Personally I recommend using the [widestring](https://crates.io/crates/widestring) crate and `U16CString` as it is both safer and more memory efficient than the conversion from a `HSTRING` which is offered by windows-rs.
 
 One handy aspect of `HSTRING` is the fact that it'll automatically be converted into a PCWSTR when passed as a function parameter; and thus you'll need to weigh up whether that convenience is worth it for your use case.
+
+If you require a `PCWSTR` backed by a slice which is created at compile-time, you may also use the `w!` macro to create one:
+
+```rust
+let text = w!("Hello there mate! 😊");
+let text = unsafe { text.to_string() }.unwrap();
+assert_eq!("Hello there mate! 😊", &text);
+```
 
 ## PWSTR: Pointer to a mutable wide (UTF-16) nul-terminated string
 
