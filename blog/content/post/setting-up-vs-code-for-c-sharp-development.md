@@ -7,10 +7,8 @@ date: 2021-07-10T20:41:08+10:00
 Oh hello there, I haven't seen you in a while! :)
 
 So while Python is still my main language at work, I have continued to search for a new language
-that I would use for hobby projects.  I've been back on Windows for several years and done more Go
-and a lot of PowerShell too.  At the end of the day, while I appreciate Go's strengths, it's really
-not the end game for me.  Crystal is lovely and has now hit 1.0 but is still extremely far from
-maturity.
+that I would use for hobby projects.  I've been back on Windows for several years and done a lot of
+PowerShell since then.
 
 Some recent openings in our IoT department were requesting C# skills which I got really excited
 about for some reason, and off I went to see what all the fuss was about.  Well, all I can say is,

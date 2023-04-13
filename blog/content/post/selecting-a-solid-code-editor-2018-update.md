@@ -93,7 +93,7 @@ Please note however that JetBrains IDEs are not all-rounders and do need a good 
 
 ### Editor
 
-My personal preference is to use a more well-rounded and versatile editor which offers some IDE features but covers more languages adequately.  I tend to work in a variety of languages such as Bash, Python, Terraform, YAML, Markdown, Ruby and now Crystal, so having that versatility is very important to me.
+My personal preference is to use a more well-rounded and versatile editor which offers some IDE features but covers more languages adequately.  I tend to work in a variety of languages such as Bash, Python, Terraform, YAML, Markdown and Ruby, so having that versatility is very important to me.
 
 My top choices are as follows:
 
