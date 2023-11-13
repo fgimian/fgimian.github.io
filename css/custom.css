@@ -1,0 +1,226 @@
+/* --- General --- */
+
+body {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+}
+
+h1 {
+  margin-top: 0.3em !important;
+  margin-bottom: 0.5em;
+  font-size: 3em !important;
+}
+
+hr.small {
+  max-width: 200px !important;
+  border-width: 1px !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* Post background */
+  body {
+    background: #001a36;
+    color: #bbb;
+  }
+
+  /* Links in posts */
+  p a {
+    color: #117711;
+  }
+
+  p a:focus,
+  p a:hover {
+    color: #006581 !important;
+  }
+
+  /* Other links (including those in post previews) */
+  a {
+    color: #22aa22 !important;
+  }
+
+  a:hover,
+  a:focus {
+    color: #006581 !important;
+    text-decoration: none;
+  }
+
+  /* Block quotes */
+  blockquote {
+    border-left: 5px solid #444;
+    color: #808080;
+  }
+
+  /* Horizontal rule in single page mode */
+  hr.small {
+    border-color: #888;
+  }
+
+  /* Selected text and images */
+  ::selection,
+  ::-moz-selection {
+    color: white;
+    background: #004541;
+  }
+
+  img::selection,
+  img::-moz-selection {
+    color: white;
+    background: #fff;
+  }
+}
+
+/* --- Navbar --- */
+
+@media (prefers-color-scheme: dark) {
+  /* Navbar strip */
+  .navbar-custom {
+    background: #440;
+    border-bottom: 1px solid #333;
+  }
+
+  /* Navbar link items and heading */
+  .navbar-custom .navbar-brand,
+  .navbar-custom .nav li a {
+    color: #ccc;
+  }
+
+  .navbar-custom .navbar-brand:hover,
+  .navbar-custom .navbar-brand:focus ,
+  .navbar-custom .nav li a:hover,
+  .navbar-custom .nav li a:focus {
+    color: #006581;
+  }
+}
+
+/* --- Footer --- */
+
+@media (prefers-color-scheme: dark) {
+  /* Footer strip */
+  footer {
+    background: #111;
+    border-top: 1px #222 solid;
+  }
+
+  /* Footer links */
+  footer a {
+    color: #117711;
+  }
+
+  footer a:focus,
+  footer a:hover {
+    color: #006581 !important;
+  }
+}
+
+/* --- Post preview --- */
+
+.post-preview a {
+  font-weight: normal !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* Post preview line separators */
+  .post-preview {
+    border-bottom: 1px solid #555;
+  }
+
+  /* Post preview links (e.g. Post Title, Read More) */
+  .post-preview a {
+    color: #117711;
+  }
+
+  .post-preview a:focus,
+  .post-preview a:hover {
+    color: #006581;
+  }
+
+  /* Main headings */
+  .post-preview .post-title {
+    color: #ccc;
+  }
+
+  /* Post preview metadata (e.g. date) */
+  .post-preview .post-meta,
+  .post-heading .post-meta {
+    color: #808080;
+  }
+}
+
+/* --- Pager --- */
+
+@media (prefers-color-scheme: dark) {
+  /* Buttons (e.g. PREVIOUS POST, NEXT POST .etc) */
+  .pager li a {
+    background: #444;
+    border: 1px solid #444;
+    color: #ccc;
+  }
+
+  .pager li a:hover,
+  .pager li a:focus {
+    color: #fff !important;
+    background: #0065a1;
+    border: 1px solid #006581;
+  }
+}
+
+/* --- Tables --- */
+
+/* Table border */
+table tr,
+table tr th,
+table tr td {
+  border: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* Table rows (odd and even respectively) */
+  table tr {
+    background-color: #002b36;
+  }
+
+  table tr:nth-child(2n) {
+    background-color: #103040;
+  }
+
+  /* Table heading row */
+  table tr th {
+    background-color: #103b56;
+    color: #ccc;
+  }
+}
+
+/* --- Code blocks --- */
+pre, code {
+  font-size: 0.9em;
+}
+
+/* Improve alignment of line numbers */
+.lnt {
+  display: block;
+  width: 1.5em;
+  text-align: right;
+}
+
+/* Remove border around code blocks */
+pre,
+code {
+  border: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* Code blocks and inline code */
+  pre,
+  code {
+    background: #002836;
+    color: #aaa;
+  }
+}

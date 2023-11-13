@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Setting Up VS Code for C# Development - Fotsies Technology Blog</title>
+  <meta name="description" content="Oh hello there, I haven&rsquo;t seen you in a while! :)
+So while Python is still my main language at work, I have continued to search for a new language that I would use for hobby projects. I&rsquo;ve been back on Windows for several years and done a lot of PowerShell since then.
+Some recent openings in our IoT department were requesting C# skills which I got really excited about for some reason, and off I went to see what all the fuss was about.">
+  <meta name="author" content="Fotis Gimian"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "Fotsies Technology Blog",
+    
+    "url": "https:\/\/fgimian.github.io\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/fgimian.github.io\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/fgimian.github.io\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/fgimian.github.io\/setting-up-vs-code-for-c-sharp-development\/",
+          "name": "Setting up vs code for c# development"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "Fotis Gimian"
+  },
+  "headline": "Setting Up VS Code for C# Development",
+  "description" : "Oh hello there, I haven\u0026rsquo;t seen you in a while! :)\nSo while Python is still my main language at work, I have continued to search for a new language that I would use for hobby projects. I\u0026rsquo;ve been back on Windows for several years and done a lot of PowerShell since then.\nSome recent openings in our IoT department were requesting C# skills which I got really excited about for some reason, and off I went to see what all the fuss was about.",
+  "inLanguage" : "en",
+  "wordCount":  1346 ,
+  "datePublished" : "2021-07-10T20:41:08",
+  "dateModified" : "2021-07-10T20:41:08",
+  "image" : "https:\/\/fgimian.github.io\/img\/fotis.jpg",
+  "keywords" : [ "" ],
+  "mainEntityOfPage" : "https:\/\/fgimian.github.io\/setting-up-vs-code-for-c-sharp-development\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/fgimian.github.io\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/fgimian.github.io\/img\/fotis.jpg",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="Setting Up VS Code for C# Development" />
+<meta property="og:description" content="Oh hello there, I haven&rsquo;t seen you in a while! :)
+So while Python is still my main language at work, I have continued to search for a new language that I would use for hobby projects. I&rsquo;ve been back on Windows for several years and done a lot of PowerShell since then.
+Some recent openings in our IoT department were requesting C# skills which I got really excited about for some reason, and off I went to see what all the fuss was about.">
+<meta property="og:image" content="https://fgimian.github.io/img/fotis.jpg" />
+<meta property="og:url" content="https://fgimian.github.io/setting-up-vs-code-for-c-sharp-development/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Fotsies Technology Blog" />
+
+  <meta name="twitter:title" content="Setting Up VS Code for C# Development" />
+  <meta name="twitter:description" content="Oh hello there, I haven&rsquo;t seen you in a while! :)
+So while Python is still my main language at work, I have continued to search for a new language that I would use for hobby projects. I&rsquo;ve …">
+  <meta name="twitter:image" content="https://fgimian.github.io/img/fotis.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@fgimian" />
+  <meta name="twitter:creator" content="@fgimian" />
+  <meta name="generator" content="Hugo 0.120.4">
+  <link rel="alternate" href="https://fgimian.github.io/index.xml" type="application/rss+xml" title="Fotsies Technology Blog"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://fgimian.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="https://fgimian.github.io/css/syntax.css" /><link rel="stylesheet" href="https://fgimian.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous"><link rel="stylesheet" href="https://fgimian.github.io/css/custom.css" />
+
+
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="Fotsies Technology Blog" href="https://fgimian.github.io/">
+            <img class="avatar-img" src="https://fgimian.github.io/img/fotis.jpg" alt="Fotsies Technology Blog" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>Setting Up VS Code for C# Development</h1>
+              
+              
+              
+              
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on July 10, 2021
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;7&nbsp;minutes
+  
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Fotis Gimian
+    
+  
+  
+</span>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>Oh hello there, I haven&rsquo;t seen you in a while! :)</p>
+<p>So while Python is still my main language at work, I have continued to search for a new language
+that I would use for hobby projects.  I&rsquo;ve been back on Windows for several years and done a lot of
+PowerShell since then.</p>
+<p>Some recent openings in our IoT department were requesting C# skills which I got really excited
+about for some reason, and off I went to see what all the fuss was about.  Well, all I can say is,
+I get it!  I really wish I had paid attention to the developments since .NET Core, as the language
+is now completely cross-platform, evolving constantly and an absolutely incredible language for
+developing a very wide variety of apps.</p>
+<p>The main IDEs C# developers use are <a href="https://visualstudio.microsoft.com/">Microsoft&rsquo;s Visual Studio</a>
+or <a href="https://www.jetbrains.com/rider/">JetBrains Rider</a> both which are excellent.  However, I do
+feel very far from my comfort zone in Visual Studio and find it very laggy in use.  Rider is much
+better but is a paid product which I can&rsquo;t justify while not using the language professionally.</p>
+<p>So I went back to my daily driver for Python development, Visual Studio Code.  Being a Microsoft
+product, C# is supported rather well in this editor but I didn&rsquo;t find a lot of step by step guides
+that one can follow to get started with it, so hopefully my hardships will save someone else the
+same challenges I had when starting out.</p>
+<h2 id="installing-net">Installing .NET</h2>
+<p>I will admit that the various versions of .NET are a bit confusing, but here&rsquo;s all you need to know:</p>
+<ul>
+<li><strong>.NET Framework</strong> is the older closed source, Windows only release; skip this one!</li>
+<li><strong>.NET Core 3.1</strong> is the open source, cross-platform LTS release which is still used widely and
+it supports C# 8.0.</li>
+<li><strong>.NET 5.0</strong> is the current open source, cross-platform release which offers all the extra
+goodies in C# 9.0.</li>
+</ul>
+<p>You&rsquo;ll need to start by downloading the relevant release for your OS from
+<a href="https://dotnet.microsoft.com/download">Microsoft&rsquo;s Download .NET page</a>.</p>
+<p>Once installed, you&rsquo;ll now have a new command available at your terminal called <code>dotnet</code>.</p>
+<p>The remaining instructions will assume you&rsquo;re on Windows and in a PowerShell terminal, but they can easily be tweaked silghtly to work on Linux and macOS.</p>
+<h2 id="installing-visual-studio-code--extensions">Installing Visual Studio Code &amp; Extensions</h2>
+<p>After downloading and installing <a href="https://code.visualstudio.com/">Visual Studio Code</a>, you&rsquo;ll want
+to install the following extensions:</p>
+<ul>
+<li><strong>C#</strong>: The main C# language support which uses OmniSharp to provide IDE-like editing features.</li>
+<li><strong>Visual Studio IntelliCode</strong>: AI-powered coding assistance while you code.</li>
+<li><strong>.NET Core Test Explorer</strong>: Makes it easy to see all your tests and run them.</li>
+<li><strong>Cake</strong> or <strong>NUKE Support</strong>: These are two excellent build systems available for C# so you&rsquo;ll
+need to check them out on their respective websites to see which you like most.  I may cover
+these tools in a future post.</li>
+<li><strong>NuGet Package Manager</strong>: This just makes it easier to install dependencies
+(known as NuGet packages) for your project.  You can do the same thing at the CLI too, so this
+may be something you don&rsquo;t use depending on your workflow.</li>
+</ul>
+<p>Now for configuration, I&rsquo;d recommend the following additions to your existing config:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Configure ruler markers to assist with detecting long lines
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="s2">&#34;editor.rulers&#34;</span><span class="o">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Automatically format your code as you type and save
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="s2">&#34;editor.formatOnType&#34;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;editor.formatOnSave&#34;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Ensure that whitespace is cleaned up when saving
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="s2">&#34;files.trimTrailingWhitespace&#34;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;files.insertFinalNewline&#34;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;files.trimFinalNewlines&#34;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Enable Roslyn Analyzers which check your code for issues
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="s2">&#34;omnisharp.enableRoslynAnalyzers&#34;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Automatically sort imports upon save
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="s2">&#34;omnisharp.organizeImportsOnFormat&#34;</span><span class="o">:</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Please note that I have left coverage reporting out of this post as it deserves its own which I&rsquo;ll
+post in the future.</p>
+<h2 id="creating-your-project">Creating Your Project</h2>
+<p>Creating your project must be done at a terminal; we&rsquo;ll be using PowerShell:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="c"># Create and open a project directory</span>
+</span></span><span class="line"><span class="cl"><span class="n">mkdir</span> <span class="n">ProjectName</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd </span><span class="n">ProjectName</span>
+</span></span><span class="line"><span class="cl"><span class="n">code</span> <span class="p">.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># Create a new solution</span>
+</span></span><span class="line"><span class="cl"><span class="n">dotnet</span> <span class="n">new</span> <span class="n">sln</span> <span class="n">-n</span> <span class="n">ProjectName</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># Create a gitignore file for the solution</span>
+</span></span><span class="line"><span class="cl"><span class="n">dotnet</span> <span class="n">new</span> <span class="n">gitignore</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># Create various C# projects</span>
+</span></span><span class="line"><span class="cl"><span class="c"># (classlib seems to default to netstandard2.0 so it&#39;s best that we are explicit)</span>
+</span></span><span class="line"><span class="cl"><span class="c"># You may use -f net5.0 if you wish to work against .NET 5.0</span>
+</span></span><span class="line"><span class="cl"><span class="n">dotnet</span> <span class="n">new</span> <span class="n">console</span> <span class="n">-n</span> <span class="n">ProjectCLI</span> <span class="o">-f</span> <span class="n">netcoreapp3</span><span class="p">.</span><span class="py">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">dotnet</span> <span class="n">new</span> <span class="n">classlib</span> <span class="n">-n</span> <span class="n">ProjectLibrary</span> <span class="o">-f</span> <span class="n">netcoreapp3</span><span class="p">.</span><span class="py">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">dotnet</span> <span class="n">new</span> <span class="n">xunit</span> <span class="n">-n</span> <span class="n">ProjectLibrary</span><span class="p">.</span><span class="py">Tests</span> <span class="o">-f</span> <span class="n">netcoreapp3</span><span class="p">.</span><span class="py">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># Add projects to the solution</span>
+</span></span><span class="line"><span class="cl"><span class="n">dotnet</span> <span class="n">sln</span> <span class="n">ProjectName</span><span class="p">.</span><span class="py">sln</span> <span class="n">add</span> <span class="p">(</span><span class="nb">ls </span><span class="p">*\\*.</span><span class="n">csproj</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># Add a reference for the library to the CLI project</span>
+</span></span><span class="line"><span class="cl"><span class="n">dotnet</span> <span class="n">add</span> <span class="n">ProjectCLI</span> <span class="n">reference</span> <span class="n">ProjectLibrary</span><span class="p">/</span><span class="n">ProjectLibrary</span><span class="p">.</span><span class="py">csproj</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># Add a reference for the library to the test project</span>
+</span></span><span class="line"><span class="cl"><span class="n">dotnet</span> <span class="n">add</span> <span class="n">ProjectLibrary</span><span class="p">.</span><span class="py">Tests</span> <span class="n">reference</span> <span class="n">ProjectLibrary</span><span class="p">/</span><span class="n">ProjectLibrary</span><span class="p">.</span><span class="py">csproj</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>So let&rsquo;s summarise what we&rsquo;ve done here:</p>
+<ul>
+<li><strong>Create a Solution</strong>: A solution (*.sln) file is one which brings together multiple projects
+into a single unified entity.</li>
+<li><strong>Create Several Projects</strong>: We can create any number of projects in a solution.  Usually
+you would have a project for your library and a separate project for your tests of that library.
+Similarly, your CLI will typically be a separate project also.  Of course, you may create as
+many projects as you like if you have many libraries that you wish to separate.</li>
+<li><strong>Add Projects to Solution</strong>: We must explicitly add each project to the solution so that the
+solution knows about them.</li>
+<li><strong>Add Project References</strong>: In order for one project to use another, you must add a reference
+to the project you wish to use in the project which will be using it.</li>
+</ul>
+<h2 id="building--testing-projects">Building &amp; Testing Projects</h2>
+<p>Personally, I do all my builds at the CLI.  There is a mechanism built into VS Code to do this but
+it ultimately just runs the command you specify so I just run it myself.</p>
+<p>Here are some useful commands you&rsquo;ll need:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="c"># Build all projects using the default debug configuration</span>
+</span></span><span class="line"><span class="cl"><span class="n">dotnet</span> <span class="n">build</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># Build all projects using a release configuration</span>
+</span></span><span class="line"><span class="cl"><span class="n">dotnet</span> <span class="n">build</span> <span class="n">-c</span> <span class="n">Release</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># Build a project ignoring previously built artefacts</span>
+</span></span><span class="line"><span class="cl"><span class="n">dotnet</span> <span class="n">build</span> <span class="p">-</span><span class="n">-no-incremental</span> <span class="p">-</span><span class="n">-force</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># Build and run the CLI</span>
+</span></span><span class="line"><span class="cl"><span class="n">dotnet</span> <span class="n">run</span> <span class="n">-p</span> <span class="n">ProjectCLI</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># Run the tests</span>
+</span></span><span class="line"><span class="cl"><span class="n">dotnet</span> <span class="n">test</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># Run the tests with more detailed output (this is my preferred default)</span>
+</span></span><span class="line"><span class="cl"><span class="n">dotnet</span> <span class="n">test</span> <span class="n">-v</span> <span class="n">normal</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Debugging is fully supported in Visual Studio Code.  You may simply click the ruler near the line
+numbers to add a breakpoint, and hit F5 to start debugging.</p>
+<h2 id="what-we-havent-covered-here">What We Haven&rsquo;t Covered Here</h2>
+<p>In the interest of keeping this post concise, I have not gone into detail on build tools, unit test
+coverage or linting configuration.  These are more in-depth topics that deserve their own post.</p>
+<h2 id="some-limitations-of-vs-code">Some Limitations of VS Code</h2>
+<p>Overall, I have found VS Code to be an excellent C# development environment, but it naturally has
+various limitations compared to the IDEs mentioned above:</p>
+<ul>
+<li><strong>Project Types</strong>: Visual Studio Code won&rsquo;t offer you the sort of tools provided with Visual
+Studio for things like desktop and mobile app development.</li>
+<li><strong>EditorConfig Generation</strong>: Visual Studio offers a very rich way to create an
+<a href="https://editorconfig.org/">.editorconfig</a> which sets both linting and styling rules for your
+code.  Some of these features are not supported in and to my knowledge, this file must be created
+and configured manually in VS Code.</li>
+<li><strong>Linting Exclusions</strong>: Unfortunately, adding an exclusion for a linting error is not one click
+away as it is in Visual Studio.  Doing this manually is IMHO not so straightforward either, so
+I typically just open Visual Studio to do this at the moment.</li>
+</ul>
+<p>I&rsquo;d be happy to be corrected if anyone is aware of a way to accomplish some of these items above.</p>
+<h2 id="any-further-suggestions">Any Further Suggestions?</h2>
+<p>Can you suggest any further essential extensions for C# development in Visual Studio Code?  Do you
+know of a way to overcome any of the limitations above?</p>
+<p>Please comment below with your suggestions, I&rsquo;d love to read them!</p>
+
+
+        
+
+        
+
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://fgimian.github.io/blog/2018/06/05/python-api-framework-benchmarks/" data-toggle="tooltip" data-placement="top" title="Python API Framework Benchmarks">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://fgimian.github.io/coverage-reporting-for-c-sharp-projects/" data-toggle="tooltip" data-placement="top" title="Coverage Reporting for C# Projects">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+        
+          
+          <div class="disqus-comments">
+            <div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fgimian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+          </div>
+          
+        
+        
+      
+
+    </div>
+  </div>
+</div>
+
+      
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://github.com/fgimian" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/fgimian" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/in/fotis-gimian-a5420053" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://stackoverflow.com/1905666/fotis-gimian" title="StackOverflow">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              Fotis Gimian
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2022
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.120.4</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="https://fgimian.github.io/js/main.js"></script><script> renderMathInElement(document.body); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://fgimian.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+
+
+
+    
+  </body>
+</html>
+

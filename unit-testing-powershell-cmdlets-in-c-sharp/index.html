@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Unit Testing Powershell Cmdlets in C# - Fotsies Technology Blog</title>
+  <meta name="description" content="So you&rsquo;re venturing into PowerShell cmdlet development in C# are you? Good for you! But how will you unit test those little buggers?
+Some people write their unit tests in PowerShell using Pester which seems less ideal to me. At that point, you are left in an awkward position when it comes to mocking because all your mockable interfaces will be in C#, so it&rsquo;ll be too late to replace them.">
+  <meta name="author" content="Fotis Gimian"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "Fotsies Technology Blog",
+    
+    "url": "https:\/\/fgimian.github.io\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/fgimian.github.io\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/fgimian.github.io\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/fgimian.github.io\/unit-testing-powershell-cmdlets-in-c-sharp\/",
+          "name": "Unit testing powershell cmdlets in c#"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "Fotis Gimian"
+  },
+  "headline": "Unit Testing Powershell Cmdlets in C#",
+  "description" : "So you\u0026rsquo;re venturing into PowerShell cmdlet development in C# are you? Good for you! But how will you unit test those little buggers?\nSome people write their unit tests in PowerShell using Pester which seems less ideal to me. At that point, you are left in an awkward position when it comes to mocking because all your mockable interfaces will be in C#, so it\u0026rsquo;ll be too late to replace them.",
+  "inLanguage" : "en",
+  "wordCount":  1390 ,
+  "datePublished" : "2021-07-11T15:33:05",
+  "dateModified" : "2021-07-11T15:33:05",
+  "image" : "https:\/\/fgimian.github.io\/img\/fotis.jpg",
+  "keywords" : [ "" ],
+  "mainEntityOfPage" : "https:\/\/fgimian.github.io\/unit-testing-powershell-cmdlets-in-c-sharp\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/fgimian.github.io\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/fgimian.github.io\/img\/fotis.jpg",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="Unit Testing Powershell Cmdlets in C#" />
+<meta property="og:description" content="So you&rsquo;re venturing into PowerShell cmdlet development in C# are you? Good for you! But how will you unit test those little buggers?
+Some people write their unit tests in PowerShell using Pester which seems less ideal to me. At that point, you are left in an awkward position when it comes to mocking because all your mockable interfaces will be in C#, so it&rsquo;ll be too late to replace them.">
+<meta property="og:image" content="https://fgimian.github.io/img/fotis.jpg" />
+<meta property="og:url" content="https://fgimian.github.io/unit-testing-powershell-cmdlets-in-c-sharp/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Fotsies Technology Blog" />
+
+  <meta name="twitter:title" content="Unit Testing Powershell Cmdlets in C#" />
+  <meta name="twitter:description" content="So you&rsquo;re venturing into PowerShell cmdlet development in C# are you? Good for you! But how will you unit test those little buggers?
+Some people write their unit tests in PowerShell using Pester …">
+  <meta name="twitter:image" content="https://fgimian.github.io/img/fotis.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@fgimian" />
+  <meta name="twitter:creator" content="@fgimian" />
+  <meta name="generator" content="Hugo 0.120.4">
+  <link rel="alternate" href="https://fgimian.github.io/index.xml" type="application/rss+xml" title="Fotsies Technology Blog"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://fgimian.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="https://fgimian.github.io/css/syntax.css" /><link rel="stylesheet" href="https://fgimian.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous"><link rel="stylesheet" href="https://fgimian.github.io/css/custom.css" />
+
+
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="Fotsies Technology Blog" href="https://fgimian.github.io/">
+            <img class="avatar-img" src="https://fgimian.github.io/img/fotis.jpg" alt="Fotsies Technology Blog" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>Unit Testing Powershell Cmdlets in C#</h1>
+              
+              
+              
+              
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on July 11, 2021
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;7&nbsp;minutes
+  
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Fotis Gimian
+    
+  
+  
+</span>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>So you&rsquo;re venturing into PowerShell cmdlet development in C# are you?  Good for you!  But how will
+you unit test those little buggers?</p>
+<p>Some people write their unit tests in PowerShell using <a href="https://github.com/pester/Pester">Pester</a>
+which seems less ideal to me.  At that point, you are left in an awkward position when it comes to
+mocking because all your mockable interfaces will be in C#, so it&rsquo;ll be too late to replace them.
+Also it takes you away from the ecosystem you are used to; XUnit, NSubstitute (or Moq) and your
+beloved C# of course.</p>
+<h2 id="the-common-solution">The Common Solution</h2>
+<p>Many people take <a href="https://blog.danskingdom.com/Create-and-test-PowerShell-Core-cmdlets-in-CSharp/">Daniel Schroeder&rsquo;s documented approach</a>
+and write a unit test that looks something like this:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c#" data-lang="c#"><span class="line"><span class="cl"><span class="c1">// Ensure you have imported LINQ for this to work</span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="nn">System.Linq</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="na">
+</span></span></span><span class="line"><span class="cl"><span class="na">[Fact]</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">void</span> <span class="n">Invoke_WithRepeats_ShouldRepeatPhraseTheCorrectNumberOfTimes</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Arrange</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">var</span> <span class="n">cmdlet</span> <span class="p">=</span> <span class="k">new</span> <span class="n">GetRepeatedPhraseCmdlet</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Phrase</span> <span class="p">=</span> <span class="s">&#34;A test phrase.&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">NumberOfTimesToRepeatPhrase</span> <span class="p">=</span> <span class="m">3</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Act</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">var</span> <span class="n">results</span> <span class="p">=</span> <span class="n">cmdlet</span><span class="p">.</span><span class="n">Invoke</span><span class="p">().</span><span class="n">OfType</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;().</span><span class="n">ToList</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Assert</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Assert</span><span class="p">.</span><span class="n">Single</span><span class="p">(</span><span class="n">results</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Assert</span><span class="p">.</span><span class="n">Equal</span><span class="p">(</span><span class="s">&#34;A test phrase.A test phrase.A test phrase.&#34;</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="m">0</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>This is very neat and seems to work well on the surface, but it&rsquo;s actually not a great solution
+when you start dealing with non-terminating errors and trying to measure your code coverage.</p>
+<p>Let&rsquo;s get stuck into the details!</p>
+<h2 id="how-cmdlets-actually-work">How Cmdlets Actually Work</h2>
+<p>Let&rsquo;s start by looking at how <code>Invoke</code> actually works in the
+<a href="https://github.com/PowerShell/PowerShell/blob/master/src/System.Management.Automation/engine/cmdlet.cs">abstract Cmdlet class</a>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c#" data-lang="c#"><span class="line"><span class="cl"><span class="kd">public</span> <span class="n">IEnumerable</span> <span class="n">Invoke</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">using</span> <span class="p">(</span><span class="n">PSTransactionManager</span><span class="p">.</span><span class="n">GetEngineProtectionScope</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">List</span><span class="p">&lt;</span><span class="kt">object</span><span class="p">&gt;</span> <span class="n">data</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">GetResults</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">data</span><span class="p">.</span><span class="n">Count</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">yield</span> <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">internal</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">object</span><span class="p">&gt;</span> <span class="n">GetResults</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">var</span> <span class="n">result</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">object</span><span class="p">&gt;();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">commandRuntime</span> <span class="p">==</span> <span class="kc">null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="p">.</span><span class="n">CommandRuntime</span> <span class="p">=</span> <span class="k">new</span> <span class="n">DefaultCommandRuntime</span><span class="p">(</span><span class="n">result</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">BeginProcessing</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">ProcessRecord</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">EndProcessing</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Note</strong>: I have removed some unnecessary lines and re-arranged the methods for clarity.</p>
+<p>So let&rsquo;s break this down:</p>
+<ul>
+<li><code>Invoke</code> simply calls <code>GetResults</code> and returns an iterator of all the items returned by it</li>
+<li><code>GetResults</code> creates a default runtime if one isn&rsquo;t provided and passes an empty list of objects
+into its constructor (the purpose of this is so that the command runtime can fill that list up
+with all objects returned by the cmdlet)</li>
+<li><code>GetResults</code> then calls the three processing methods for executing each stage of the cmdlet</li>
+</ul>
+<p>Our cmdlet will primarily call three methods to display output; <code>WriteObject</code>, <code>WriteWarning</code> and
+<code>WriteError</code> so let&rsquo;s check out what they do (within the same Cmdlet abstract class);</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c#" data-lang="c#"><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">void</span> <span class="n">WriteObject</span><span class="p">(</span><span class="kt">object</span> <span class="n">sendToPipeline</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">using</span> <span class="p">(</span><span class="n">PSTransactionManager</span><span class="p">.</span><span class="n">GetEngineProtectionScope</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">commandRuntime</span><span class="p">.</span><span class="n">WriteObject</span><span class="p">(</span><span class="n">sendToPipeline</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">void</span> <span class="n">WriteWarning</span><span class="p">(</span><span class="kt">string</span> <span class="n">text</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">using</span> <span class="p">(</span><span class="n">PSTransactionManager</span><span class="p">.</span><span class="n">GetEngineProtectionScope</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">commandRuntime</span><span class="p">.</span><span class="n">WriteWarning</span><span class="p">(</span><span class="n">text</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">void</span> <span class="n">WriteError</span><span class="p">(</span><span class="n">ErrorRecord</span> <span class="n">errorRecord</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">using</span> <span class="p">(</span><span class="n">PSTransactionManager</span><span class="p">.</span><span class="n">GetEngineProtectionScope</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">commandRuntime</span><span class="p">.</span><span class="n">WriteError</span><span class="p">(</span><span class="n">errorRecord</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Note</strong>: Once again, I&rsquo;ve removed null checks which won&rsquo;t even fail in this case.</p>
+<p>So these methods simply call the related method in the command runtime.  This command runtime sure
+is looking important hey?</p>
+<p>OK!  So let&rsquo;s now look at the <code>DefaultCommandRuntime</code> and see what these respective methods do:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c#" data-lang="c#"><span class="line"><span class="cl"><span class="kd">internal</span> <span class="k">class</span> <span class="nc">DefaultCommandRuntime</span> <span class="p">:</span> <span class="n">ICommandRuntime2</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="k">readonly</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">object</span><span class="p">&gt;</span> <span class="n">_output</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">DefaultCommandRuntime</span><span class="p">(</span><span class="n">List</span><span class="p">&lt;</span><span class="kt">object</span><span class="p">&gt;</span> <span class="n">outputList</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_output</span> <span class="p">=</span> <span class="n">outputList</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">WriteObject</span><span class="p">(</span><span class="kt">object</span> <span class="n">sendToPipeline</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_output</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">sendToPipeline</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">WriteWarning</span><span class="p">(</span><span class="kt">string</span> <span class="n">text</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">WriteError</span><span class="p">(</span><span class="n">ErrorRecord</span> <span class="n">errorRecord</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">errorRecord</span><span class="p">.</span><span class="n">Exception</span> <span class="p">!=</span> <span class="kc">null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="n">errorRecord</span><span class="p">.</span><span class="n">Exception</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">InvalidOperationException</span><span class="p">(</span><span class="n">errorRecord</span><span class="p">.</span><span class="n">ToString</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>So really there&rsquo;s nothing that complex going on here:</p>
+<ul>
+<li><code>DefaultCommandRuntime</code> will fill the <code>result</code> list declared in <code>GetResults</code> with any objects
+that are written via <code>WriteObject</code></li>
+<li>It will do nothing when <code>WriteWarning</code> is called</li>
+<li>It will throw an exception when <code>WriteError</code> is called</li>
+</ul>
+<p>Now why is this all a problem?</p>
+<ol>
+<li>
+<p>We will always need to iterate over the results to run <code>Invoke</code> even if we are not expecting
+any at all.  This can be done in many ways, but all of those ways are a bit ugly:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c#" data-lang="c#"><span class="line"><span class="cl"><span class="c1">// Capture the results using a generic object type and store them in a throwaway variable</span>
+</span></span><span class="line"><span class="cl"><span class="kt">var</span> <span class="n">_</span> <span class="p">=</span> <span class="n">cmdlet</span><span class="p">.</span><span class="n">Invoke</span><span class="p">().</span><span class="n">OfType</span><span class="p">&lt;</span><span class="kt">object</span><span class="p">&gt;().</span><span class="n">ToList</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Loop over all results using a throwaway variable for each item</span>
+</span></span><span class="line"><span class="cl"><span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">_</span> <span class="k">in</span> <span class="n">cmdlet</span><span class="p">.</span><span class="n">Invoke</span><span class="p">())</span> <span class="p">{}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>We won&rsquo;t be able to validate any of warnings as they are not captured at all.</p>
+</li>
+<li>
+<p>And most importantly, if a non-terminating error is written using <code>WriteError</code> in your cmdlet,
+an exception will be raised and all other results (created with <code>WriteObject</code>) will be lost.</p>
+<p>Further to this, <a href="https://github.com/coverlet-coverage/coverlet">Coverlet</a> and
+<a href="https://github.com/OpenCover/opencover">OpenCover</a> won&rsquo;t detect the closing braces in your call
+to <code>WriteError</code> as covered because the exception is thrown in <code>WriteError</code> itself, not your
+code.</p>
+<p>See <a href="https://github.com/coverlet-coverage/coverlet/issues/1183">this issue</a> for more information.</p>
+</li>
+</ol>
+<h2 id="the-solution">The Solution</h2>
+<p>Before I share the solution, I have to give full credit to
+<a href="https://github.com/atheken">Andrew Theken</a> for his
+<a href="https://github.com/atheken/nuget/blob/master/test/PowerShellCmdlets.Test/MockCommandRuntime.cs">MockCommandRuntime implementation</a>
+that heavily inspired my simplified implementation.</p>
+<p>First, we can completely avoid the use of the iterator in our unit tests by simply creating our
+own base class with a method that simply calls the processing methods:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c#" data-lang="c#"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">abstract</span> <span class="k">class</span> <span class="nc">OurCmdlet</span> <span class="p">:</span> <span class="n">Cmdlet</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">Execute</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">BeginProcessing</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ProcessRecord</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">EndProcessing</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>From this point forward, we will call <code>Execute</code> in our tests instead of <code>Invoke</code>.  But now, we need
+to create our own command runtime that will capture output, errors and warnings without throwing
+exceptions.</p>
+<p>Due to the fact that output can be any object, we&rsquo;ll make this a generic class so that the calling
+test can specify the type it wants to receive for output.</p>
+<p>Sadly we can&rsquo;t inherit from <code>DefaultCommandRuntime</code> as it is <code>internal</code>, however we&rsquo;ll
+<a href="https://github.com/PowerShell/PowerShell/blob/master/src/System.Management.Automation/engine/DefaultCommandRuntime.cs">use it</a>
+as our starting point.</p>
+<p>I will only show the attributes and methods that differ from this implementation below for clarity.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c#" data-lang="c#"><span class="line"><span class="cl"><span class="c1">// Ensure you have imported LINQ for this to work</span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="nn">System.Linq</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">MockCommandRuntime</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="p">:</span> <span class="n">ICommandRuntime</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">Output</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">_output</span><span class="p">.</span><span class="n">Cast</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;().</span><span class="n">ToList</span><span class="p">();</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">ErrorRecord</span><span class="p">&gt;</span> <span class="n">Errors</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span> <span class="n">Warnings</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="k">readonly</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">object</span><span class="p">&gt;</span> <span class="n">_output</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">MockCommandRuntime</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_output</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">object</span><span class="p">&gt;();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Errors</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">ErrorRecord</span><span class="p">&gt;();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Warnings</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">WriteError</span><span class="p">(</span><span class="n">ErrorRecord</span> <span class="n">errorRecord</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Errors</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">errorRecord</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">WriteWarning</span><span class="p">(</span><span class="kt">string</span> <span class="n">text</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Warnings</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">text</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Simple right?  So now we simply capture our errors and warnings and help ourselves out by casting
+the output to the template type requested when the <code>MockCommandRuntime</code> is created in tests.</p>
+<p>Furthermore, the attributes that capture all forms of output are marked as <code>public</code> so they are
+accessible to the test.</p>
+<h2 id="writing-a-unit-test-using-mockcommandruntime">Writing a Unit Test Using MockCommandRuntime</h2>
+<p>Now, as long as our cmdlet inherits from <code>OurCmdlet</code>, our unit test will look something like this:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c#" data-lang="c#"><span class="line"><span class="cl"><span class="na">[Fact]</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">void</span> <span class="n">Invoke_WithRepeats_ShouldRepeatPhraseTheCorrectNumberOfTimes</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Arrange</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">var</span> <span class="n">runtime</span> <span class="p">=</span> <span class="k">new</span> <span class="n">MockCommandRuntime</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;();</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">var</span> <span class="n">cmdlet</span> <span class="p">=</span> <span class="k">new</span> <span class="n">GetRepeatedPhraseCmdlet</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">CommandRuntime</span> <span class="p">=</span> <span class="n">runtime</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Phrase</span> <span class="p">=</span> <span class="s">&#34;A test phrase.&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">NumberOfTimesToRepeatPhrase</span> <span class="p">=</span> <span class="m">3</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Act</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cmdlet</span><span class="p">.</span><span class="n">Execute</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Assert</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Assert</span><span class="p">.</span><span class="n">Single</span><span class="p">(</span><span class="n">runtime</span><span class="p">.</span><span class="n">Output</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Assert</span><span class="p">.</span><span class="n">Equal</span><span class="p">(</span><span class="s">&#34;A test phrase.A test phrase.A test phrase.&#34;</span><span class="p">,</span> <span class="n">runtime</span><span class="p">.</span><span class="n">Output</span><span class="p">[</span><span class="m">0</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>And what if the cmdlet throws a non-terminating error?</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c#" data-lang="c#"><span class="line"><span class="cl"><span class="na">[Fact]</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">void</span> <span class="n">Invoke_WithInvalidRepeats_ShouldError</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Arrange</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">var</span> <span class="n">runtime</span> <span class="p">=</span> <span class="k">new</span> <span class="n">MockCommandRuntime</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;();</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">var</span> <span class="n">cmdlet</span> <span class="p">=</span> <span class="k">new</span> <span class="n">GetRepeatedPhraseCmdlet</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">CommandRuntime</span> <span class="p">=</span> <span class="n">runtime</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Phrase</span> <span class="p">=</span> <span class="s">&#34;A test phrase.&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">NumberOfTimesToRepeatPhrase</span> <span class="p">=</span> <span class="p">-</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Act</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cmdlet</span><span class="p">.</span><span class="n">Execute</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Assert</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Assert</span><span class="p">.</span><span class="n">Single</span><span class="p">(</span><span class="n">runtime</span><span class="p">.</span><span class="n">Errors</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">var</span> <span class="n">exception</span> <span class="p">=</span> <span class="n">runtime</span><span class="p">.</span><span class="n">Errors</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">Exception</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Assert</span><span class="p">.</span><span class="n">IsType</span><span class="p">&lt;</span><span class="n">ArgumentException</span><span class="p">&gt;(</span><span class="n">exception</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Assert</span><span class="p">.</span><span class="n">Equal</span><span class="p">(</span><span class="s">&#34;Invalid number of times specified.&#34;</span><span class="p">,</span> <span class="n">exception</span><span class="p">.</span><span class="n">Message</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Coverage reporting will work perfectly too and you will also be able to check any combination of
+<code>Output</code>, <code>Warnings</code> and <code>Erorrs</code> if your cmdlet intends to return some objects, write some
+warnings and write some non-terminating errors too.</p>
+<h2 id="go-forth-and-test">Go Forth and Test</h2>
+<p>So there you go!  You may now put aside your Pester library and enjoy writing tests with your
+favourite C# test and mocking framework!</p>
+
+
+        
+
+        
+
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://fgimian.github.io/coverage-reporting-for-c-sharp-projects/" data-toggle="tooltip" data-placement="top" title="Coverage Reporting for C# Projects">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://fgimian.github.io/blog/2022/10/23/working-with-strings-in-windows-rs/" data-toggle="tooltip" data-placement="top" title="Working With Strings in windows-rs">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+        
+          
+          <div class="disqus-comments">
+            <div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fgimian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+          </div>
+          
+        
+        
+      
+
+    </div>
+  </div>
+</div>
+
+      
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://github.com/fgimian" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/fgimian" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/in/fotis-gimian-a5420053" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://stackoverflow.com/1905666/fotis-gimian" title="StackOverflow">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              Fotis Gimian
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2022
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.120.4</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="https://fgimian.github.io/js/main.js"></script><script> renderMathInElement(document.body); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://fgimian.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+
+
+
+    
+  </body>
+</html>
+

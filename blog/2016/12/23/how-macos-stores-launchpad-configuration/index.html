@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>How macOS Stores Launchpad Configuration - Fotsies Technology Blog</title>
+  <meta name="description" content="Launchpad in macOS is definitely one of the most cumbersome apps to setup, although it can be pretty nice to have setup as it provides a little more organisation than adding your Applications folder to the Dock.
+The problem up until this point was understanding how it works so that we can build automation tools around it. However, this changes today as we explore the way Launchpad works under tho hood :)">
+  <meta name="author" content="Fotis Gimian"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "Fotsies Technology Blog",
+    
+    "url": "https:\/\/fgimian.github.io\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/fgimian.github.io\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/fgimian.github.io\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/fgimian.github.io\/blog\/2016\/12\/23\/how-macos-stores-launchpad-configuration\/",
+          "name": "How MAC os stores launchpad configuration"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "Fotis Gimian"
+  },
+  "headline": "How macOS Stores Launchpad Configuration",
+  "description" : "Launchpad in macOS is definitely one of the most cumbersome apps to setup, although it can be pretty nice to have setup as it provides a little more organisation than adding your Applications folder to the Dock.\nThe problem up until this point was understanding how it works so that we can build automation tools around it. However, this changes today as we explore the way Launchpad works under tho hood :)",
+  "inLanguage" : "en",
+  "wordCount":  2291 ,
+  "datePublished" : "2016-12-23T13:52:54",
+  "dateModified" : "2016-12-23T13:52:54",
+  "image" : "https:\/\/fgimian.github.io\/img\/fotis.jpg",
+  "keywords" : [ "" ],
+  "mainEntityOfPage" : "https:\/\/fgimian.github.io\/blog\/2016\/12\/23\/how-macos-stores-launchpad-configuration\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/fgimian.github.io\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/fgimian.github.io\/img\/fotis.jpg",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="How macOS Stores Launchpad Configuration" />
+<meta property="og:description" content="Launchpad in macOS is definitely one of the most cumbersome apps to setup, although it can be pretty nice to have setup as it provides a little more organisation than adding your Applications folder to the Dock.
+The problem up until this point was understanding how it works so that we can build automation tools around it. However, this changes today as we explore the way Launchpad works under tho hood :)">
+<meta property="og:image" content="https://fgimian.github.io/img/fotis.jpg" />
+<meta property="og:url" content="https://fgimian.github.io/blog/2016/12/23/how-macos-stores-launchpad-configuration/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Fotsies Technology Blog" />
+
+  <meta name="twitter:title" content="How macOS Stores Launchpad Configuration" />
+  <meta name="twitter:description" content="Launchpad in macOS is definitely one of the most cumbersome apps to setup, although it can be pretty nice to have setup as it provides a little more organisation than adding your Applications folder …">
+  <meta name="twitter:image" content="https://fgimian.github.io/img/fotis.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@fgimian" />
+  <meta name="twitter:creator" content="@fgimian" />
+  <meta name="generator" content="Hugo 0.120.4">
+  <link rel="alternate" href="https://fgimian.github.io/index.xml" type="application/rss+xml" title="Fotsies Technology Blog"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://fgimian.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="https://fgimian.github.io/css/syntax.css" /><link rel="stylesheet" href="https://fgimian.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous"><link rel="stylesheet" href="https://fgimian.github.io/css/custom.css" />
+
+
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="Fotsies Technology Blog" href="https://fgimian.github.io/">
+            <img class="avatar-img" src="https://fgimian.github.io/img/fotis.jpg" alt="Fotsies Technology Blog" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>How macOS Stores Launchpad Configuration</h1>
+              
+              
+              
+              
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on December 23, 2016
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;11&nbsp;minutes
+  
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Fotis Gimian
+    
+  
+  
+</span>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>Launchpad in macOS is definitely one of the most cumbersome apps to setup,
+although it can be pretty nice to have setup as it provides a little more
+organisation than adding your Applications folder to the Dock.</p>
+<p>The problem up until this point was understanding how it works so that we can
+build automation tools around it.  However, this changes today as we explore
+the way Launchpad works under tho hood :)</p>
+<h2 id="connecting-to-the-launchpad-sqlite-database">Connecting to the Launchpad SQLite Database</h2>
+<p>Launchpad stores all of its data in an SQLite database which you can reach as
+follows:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> <span class="k">$(</span>getconf DARWIN_USER_DIR<span class="k">)</span>/com.apple.dock.launchpad/db
+</span></span><span class="line"><span class="cl">sqlite3 --column --header db
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>You may check out the entire database schema using the schema command:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="p">.</span><span class="k">schema</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="launchpad-data-structure">Launchpad Data Structure</h2>
+<p>The structure of Launchpad data is as follows:</p>
+<pre tabindex="0"><code>├── Launchpad (Apps) Root
+│   ├── Holding Page
+│   ├── Page 1
+│   │   ├── App 1
+│   │   ├── App 2
+│   │   ├── Folder Root
+│   │   │   │── Folder Page 1
+│   │   │   │   │── App 3
+│   │   │   │   └── App 4
+│   │   │   └── Folder Page 2
+│   │   │       ├── App 5
+│   │   │       └── App 6
+│   │   └── App 7
+│   ├── Page 2
+│   └── ...
+└── Dashboard (Widgets) Root
+    ├── Holding Page
+    ├── Page 1
+    │   ├── Widget 1
+    │   ├── Widget 2
+    │   ├── Folder Root
+    │   │   │── Folder Page 1
+    │   │   │   │── Widget 3
+    │   │   │   └── Widget 4
+    │   │   └── Folder Page 1
+    │   │       ├── Widget 5
+    │   │       └── Widget 6
+    │   └── Widget 7
+    ├── Page 2
+    └── ...
+</code></pre><h2 id="useful-tables">Useful Tables</h2>
+<p>The <strong>dbinfo</strong> table provides the root id for each type of Launchpad data.</p>
+<ul>
+<li><strong>launchpad_root</strong> is the root id for the main Launchpad apps pages</li>
+<li><strong>dashboard_root</strong> is the root id for the Dashboard widget pages<br>
+(accessible by clicking the + icon in Dashboard)</li>
+<li><strong>launchpad_version_root</strong>: is the root id for Launchpad version metadata<br>
+(this is of least importance to us)</li>
+</ul>
+<p>We then move onto the tables containing data about each type of object in Launchpad:</p>
+<ul>
+<li><strong>groups</strong>: contains all available root objects, pages and folders for both
+Launchpad and Dashboard.</li>
+<li><strong>apps</strong>: contains all apps available for Launchpad</li>
+<li><strong>downloading_apps</strong>: contains all apps currently being downloaded for
+Launchpad</li>
+<li><strong>widgets</strong>: contains all widgets available for Dashboard</li>
+</ul>
+<p>Finally, the <strong>items</strong> table references these 3 tables and contains ordering
+and parent assocations.</p>
+<h2 id="walkthrough">Walkthrough</h2>
+<p><strong>dbinfo</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">sqlite</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">dbinfo</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%_root%&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">key</span><span class="w">                             </span><span class="n">value</span><span class="w">     
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">------------------------------  ----------
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">launchpad_root</span><span class="w">                  </span><span class="mi">1</span><span class="w">         
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">dashboard_root</span><span class="w">                  </span><span class="mi">3</span><span class="w">         
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">launchpad_version_root</span><span class="w">          </span><span class="mi">5</span><span class="w">       
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>apps</strong>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">sqlite</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">item_id</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">apps</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">item_id</span><span class="w">     </span><span class="n">title</span><span class="w">                                   
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">----------  ----------------------------------------
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mi">9</span><span class="w">           </span><span class="mi">1</span><span class="n">Password</span><span class="w"> </span><span class="mi">6</span><span class="w">                             
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">11</span><span class="w">          </span><span class="n">Ableton</span><span class="w"> </span><span class="n">Live</span><span class="w"> </span><span class="mi">9</span><span class="w"> </span><span class="n">Suite</span><span class="w">                    
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">17</span><span class="w">          </span><span class="n">Affinity</span><span class="w"> </span><span class="n">Designer</span><span class="w">                       
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">22</span><span class="w">          </span><span class="n">Affinity</span><span class="w"> </span><span class="n">Photo</span><span class="w">                          
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">24</span><span class="w">          </span><span class="n">Android</span><span class="w"> </span><span class="n">File</span><span class="w"> </span><span class="n">Transfer</span><span class="w">                   
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">...</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>widgets</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">sqlite</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">item_id</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">widgets</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">item_id</span><span class="w">     </span><span class="n">title</span><span class="w">                                   
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">----------  ----------------------------------------
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mi">7</span><span class="w">           </span><span class="n">Calculator</span><span class="w">                              
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">8</span><span class="w">           </span><span class="n">Calendar</span><span class="w">                                
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">10</span><span class="w">          </span><span class="n">Contacts</span><span class="w">                                
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">12</span><span class="w">          </span><span class="k">Dictionary</span><span class="w">                              
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">13</span><span class="w">          </span><span class="n">ESPN</span><span class="w">                                    
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">...</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>groups</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">sqlite</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">item_id</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">groups</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">item_id</span><span class="w">     </span><span class="n">title</span><span class="w">                                   
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">----------  ----------------------------------------
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mi">1</span><span class="w">                                                   
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">2</span><span class="w">                                                   
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">3</span><span class="w">                                                   
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">4</span><span class="w">                                                   
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">5</span><span class="w">                                                   
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">6</span><span class="w">                                                   
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">128</span><span class="w">                                                 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">129</span><span class="w">         </span><span class="n">Other</span><span class="w">                                   
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">130</span><span class="w">                                                 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">134</span><span class="w">                                                 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">135</span><span class="w">                                                 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">136</span><span class="w">                                                 
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>OK, so dbinfo, apps and widgets are clear, but the groups not so much.  We know
+that groups 1, 3 and 5 are root groups (as shown by the dbinfo table), and 129
+looks like a folder, but we still don&rsquo;t know what the rest are just yet.</p>
+<p>Now, we&rsquo;re about to look at the <strong>items</strong> table which ties all of this
+information together.  Before we take a look at items, it&rsquo;s important that
+some concepts are explained:</p>
+<ul>
+<li><strong>rowid primary / foreign keys</strong>: The items table contains a <strong>rowid</strong>
+attribute which is its primary key.  However, it is also a foreign key to
+the apps, widgets and groups tables.  What this means is that ids are unique
+across all of these three tables.  So for example, if an app has an id of
+11, then it is impossible for a widget or group to also use this id.</li>
+<li><strong>type</strong>: Due to the fact that the rowid may reference one of 3 tables, the
+items table uses a field called <strong>type</strong> which specifies what type of object
+the respective item references.</li>
+</ul>
+<p>The types are as follows:</p>
+<ul>
+<li><strong>groups table</strong>
+<ul>
+<li><strong>1</strong>: root</li>
+<li><strong>2</strong>: folder root</li>
+<li><strong>3</strong>: page or folder page</li>
+</ul>
+</li>
+<li><strong>apps table</strong>
+<ul>
+<li><strong>4</strong>: app</li>
+</ul>
+</li>
+<li><strong>downloading_apps table</strong>:
+<ul>
+<li><strong>5</strong>: downloading app</li>
+</ul>
+</li>
+<li><strong>widgets table</strong>:
+<ul>
+<li><strong>6</strong>: widget</li>
+</ul>
+</li>
+</ul>
+<p>Knowing all these things, let&rsquo;s now take a look at all groups in the items
+table:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">sqlite</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">rowid</span><span class="p">,</span><span class="w"> </span><span class="n">uuid</span><span class="p">,</span><span class="w"> </span><span class="k">type</span><span class="p">,</span><span class="w"> </span><span class="n">parent_id</span><span class="p">,</span><span class="w"> </span><span class="n">ordering</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">items</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">parent_id</span><span class="p">,</span><span class="w"> </span><span class="n">ordering</span><span class="p">,</span><span class="w"> </span><span class="n">rowid</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">rowid</span><span class="w">    </span><span class="n">uuid</span><span class="w">                                   </span><span class="k">type</span><span class="w">    </span><span class="n">parent_id</span><span class="w">  </span><span class="n">ordering</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-------  -------------------------------------  ------  ---------  --------
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mi">1</span><span class="w">        </span><span class="n">ROOTPAGE</span><span class="w">                               </span><span class="mi">1</span><span class="w">       </span><span class="mi">0</span><span class="w">          </span><span class="mi">0</span><span class="w">       
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">3</span><span class="w">        </span><span class="n">ROOTPAGE_DB</span><span class="w">                            </span><span class="mi">1</span><span class="w">       </span><span class="mi">0</span><span class="w">          </span><span class="mi">0</span><span class="w">       
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">5</span><span class="w">        </span><span class="n">ROOTPAGE_VERS</span><span class="w">                          </span><span class="mi">1</span><span class="w">       </span><span class="mi">0</span><span class="w">          </span><span class="mi">0</span><span class="w">       
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">2</span><span class="w">        </span><span class="n">HOLDINGPAGE</span><span class="w">                            </span><span class="mi">3</span><span class="w">       </span><span class="mi">1</span><span class="w">          </span><span class="mi">0</span><span class="w">       
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">128</span><span class="w">      </span><span class="mi">9</span><span class="n">B95AB89</span><span class="o">-</span><span class="mi">78</span><span class="n">C9</span><span class="o">-</span><span class="mi">409</span><span class="n">A</span><span class="o">-</span><span class="n">A5EE</span><span class="o">-</span><span class="n">B017F90294EE</span><span class="w">   </span><span class="mi">3</span><span class="w">       </span><span class="mi">1</span><span class="w">          </span><span class="mi">1</span><span class="w">       
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">134</span><span class="w">      </span><span class="n">A63E0500</span><span class="o">-</span><span class="n">C4FA</span><span class="o">-</span><span class="mi">4</span><span class="n">D12</span><span class="o">-</span><span class="n">B55B</span><span class="o">-</span><span class="mi">2</span><span class="n">A39B579359E</span><span class="w">   </span><span class="mi">3</span><span class="w">       </span><span class="mi">1</span><span class="w">          </span><span class="mi">2</span><span class="w">       
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">135</span><span class="w">      </span><span class="n">CEB3A866</span><span class="o">-</span><span class="mi">8</span><span class="n">DD0</span><span class="o">-</span><span class="mi">4</span><span class="n">B8E</span><span class="o">-</span><span class="n">A842</span><span class="o">-</span><span class="mi">8</span><span class="n">E7AB95D42DF</span><span class="w">   </span><span class="mi">3</span><span class="w">       </span><span class="mi">1</span><span class="w">          </span><span class="mi">3</span><span class="w">       
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">4</span><span class="w">        </span><span class="n">HOLDINGPAGE_DB</span><span class="w">                         </span><span class="mi">3</span><span class="w">       </span><span class="mi">3</span><span class="w">          </span><span class="mi">0</span><span class="w">       
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">136</span><span class="w">      </span><span class="mi">6</span><span class="n">D94ABA2</span><span class="o">-</span><span class="n">E715</span><span class="o">-</span><span class="mi">440</span><span class="n">E</span><span class="o">-</span><span class="n">AF41</span><span class="o">-</span><span class="n">A2870EDDF19F</span><span class="w">   </span><span class="mi">3</span><span class="w">       </span><span class="mi">3</span><span class="w">          </span><span class="mi">1</span><span class="w">       
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">6</span><span class="w">        </span><span class="n">HOLDINGPAGE_VERS</span><span class="w">                       </span><span class="mi">3</span><span class="w">       </span><span class="mi">5</span><span class="w">          </span><span class="mi">0</span><span class="w">       
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">129</span><span class="w">      </span><span class="mi">1518232</span><span class="k">C</span><span class="o">-</span><span class="n">A329</span><span class="o">-</span><span class="mi">4</span><span class="n">CB3</span><span class="o">-</span><span class="mi">849</span><span class="n">E</span><span class="o">-</span><span class="mi">42</span><span class="n">FF30800331</span><span class="w">   </span><span class="mi">2</span><span class="w">       </span><span class="mi">128</span><span class="w">        </span><span class="mi">18</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">130</span><span class="w">      </span><span class="mi">0</span><span class="n">F9BE4BE</span><span class="o">-</span><span class="n">F73E</span><span class="o">-</span><span class="mi">4</span><span class="n">DF6</span><span class="o">-</span><span class="n">A3A7</span><span class="o">-</span><span class="mi">864</span><span class="n">E4A64971F</span><span class="w">   </span><span class="mi">3</span><span class="w">       </span><span class="mi">129</span><span class="w">        </span><span class="mi">0</span><span class="w">       
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Note</strong>: DB refers to Dashboard and VERS refers to Version.</p>
+<p>OK, so let&rsquo;s attempt to break this down.  We start with our root objects (as
+also referenced in the dbinfo table):</p>
+<pre tabindex="0"><code>rowid    uuid                                   type    parent_id  ordering
+-------  -------------------------------------  ------  ---------  --------
+1        ROOTPAGE                               1       0          0       
+3        ROOTPAGE_DB                            1       0          0       
+5        ROOTPAGE_VERS                          1       0          0       
+</code></pre><p>So let&rsquo;s start with the root id 1 (Launchpad) and check out all the pages which have a parent_id referencing it:</p>
+<pre tabindex="0"><code>rowid    uuid                                   type    parent_id  ordering
+-------  -------------------------------------  ------  ---------  --------
+2        HOLDINGPAGE                            3       1          0       
+128      9B95AB89-78C9-409A-A5EE-B017F90294EE   3       1          1       
+134      A63E0500-C4FA-4D12-B55B-2A39B579359E   3       1          2       
+135      CEB3A866-8DD0-4B8E-A842-8E7AB95D42DF   3       1          3       
+</code></pre><p>Here, we have the holding page first, and 3 pages with ids of 128, 134 and 135
+respectively.  Please also note that unlike apps and widgets, the ordering of
+the actual page content starts at 1 due to the holding page occupying ordering
+of 0.</p>
+<p>Similarly, let&rsquo;s check out root id 3 (Dashboard) and all pages having it as
+as a parent_id:</p>
+<pre tabindex="0"><code>rowid    uuid                                   type    parent_id  ordering
+-------  -------------------------------------  ------  ---------  --------
+4        HOLDINGPAGE_DB                         3       3          0       
+136      6D94ABA2-E715-440E-AF41-A2870EDDF19F   3       3          1       
+</code></pre><p>Once again, a holding page and a single page with an id of 136.</p>
+<p>We next check out the Launchpad version root of 5 which just contains a
+holding page:</p>
+<pre tabindex="0"><code>rowid    uuid                                   type    parent_id  ordering
+-------  -------------------------------------  ------  ---------  --------
+6        HOLDINGPAGE_VERS                       3       5          0       
+</code></pre><p>And finally, we check out the <strong>Other</strong> folder:</p>
+<pre tabindex="0"><code>rowid    uuid                                   type    parent_id  ordering
+-------  -------------------------------------  ------  ---------  --------
+129      1518232C-A329-4CB3-849E-42FF30800331   2       128        18      
+130      0F9BE4BE-F73E-4DF6-A3A7-864E4A64971F   3       129        0       
+</code></pre><p>Here, the folder root has an id of 129 and is present on the page with an id
+of 128 (i.e. page 1).  As seen earlier when examining the groups table,
+the folder name is contained on the folder root object.</p>
+<p>The first page of the folder has an id of 130.</p>
+<p>Now let&rsquo;s check out the item relating to one of our apps 1Password, which had
+an id of 9 as seen above in the apps table:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">sqlite</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">rowid</span><span class="p">,</span><span class="w"> </span><span class="n">uuid</span><span class="p">,</span><span class="w"> </span><span class="k">type</span><span class="p">,</span><span class="w"> </span><span class="n">parent_id</span><span class="p">,</span><span class="w"> </span><span class="n">ordering</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">items</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">...</span><span class="o">&gt;</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">rowid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">rowid</span><span class="w">    </span><span class="n">uuid</span><span class="w">                                   </span><span class="k">type</span><span class="w">    </span><span class="n">parent_id</span><span class="w">  </span><span class="n">ordering</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-------  -------------------------------------  ------  ---------  --------
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mi">9</span><span class="w">        </span><span class="mi">26</span><span class="n">CFDC5B</span><span class="o">-</span><span class="n">F420</span><span class="o">-</span><span class="mi">4</span><span class="n">FFC</span><span class="o">-</span><span class="n">A034</span><span class="o">-</span><span class="n">AA0A897B7A3A</span><span class="w">   </span><span class="mi">4</span><span class="w">       </span><span class="mi">134</span><span class="w">        </span><span class="mi">0</span><span class="w">       
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>So this item has a parent_id of 134 (which is on 2).  The ordering is set to 0
+which implies that it is the first item on page 2 (which indeed is the case
+when examining Launchpad).</p>
+<p>Another bigger query you can run to see all items and their associations
+is as follows:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="p">.</span><span class="n">width</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="mi">30</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SELECT</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="n">rowid</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="n">parent_id</span><span class="p">,</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="n">ordering</span><span class="p">,</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="k">type</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="n">apps</span><span class="p">.</span><span class="n">title</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">app_title</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="n">widgets</span><span class="p">.</span><span class="n">title</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">widget_title</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="n">groups</span><span class="p">.</span><span class="n">title</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">group_title</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">FROM</span><span class="w"> </span><span class="n">items</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">apps</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">apps</span><span class="p">.</span><span class="n">item_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="n">rowid</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">widgets</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">widgets</span><span class="p">.</span><span class="n">item_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="n">rowid</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">groups</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">groups</span><span class="p">.</span><span class="n">item_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="n">rowid</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">WHERE</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="n">uuid</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ROOTPAGE&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;HOLDINGPAGE&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                         </span><span class="s1">&#39;ROOTPAGE_DB&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;HOLDINGPAGE_DB&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                         </span><span class="s1">&#39;ROOTPAGE_VERS&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;HOLDINGPAGE_VERS&#39;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="n">parent_id</span><span class="p">,</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="n">ordering</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>This will show you each item along with the related app, widget or group
+title.  The item type indicates which field will contain a title.</p>
+<h2 id="triggers">Triggers</h2>
+<p>The SQLite database contains various triggers which set the ordering of
+of items when an item is added, updated or deleted.</p>
+<p>This for example allows you to insert rows into the items table with
+specifying the ordering and have the database automatically set ordering of the
+item to be the last on that page.</p>
+<p>You may disable this trigger by setting a key called
+<strong>ignore_items_update_triggers</strong> in the dbinfo table as follows:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">UPDATE</span><span class="w"> </span><span class="n">dbinfo</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SET</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">WHERE</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ignore_items_update_triggers&#39;</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>You may enable it again by setting the value to 0:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">UPDATE</span><span class="w"> </span><span class="n">dbinfo</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SET</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">WHERE</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ignore_items_update_triggers&#39;</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>Please find below the most important triggers and some comments about
+how they work:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="c1">-- Action: An item has been inserted to the items table.
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- Processing: Sets the ordering to the maximum ordering + 1 on the page
+</span></span></span><span class="line"><span class="cl"><span class="c1">--             or folder where the item was added.
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- Notes: You can&#39;t insert an item at an ordering of 0 (i.e. first item on
+</span></span></span><span class="line"><span class="cl"><span class="c1">--        a page), it appears that you must move it to a new page (i.e.
+</span></span></span><span class="line"><span class="cl"><span class="c1">--        via an update) to do that.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="n">insert_item</span><span class="w"> </span><span class="k">AFTER</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">items</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">WHEN</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">dbinfo</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ignore_items_update_triggers&#39;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">BEGIN</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">dbinfo</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ignore_items_update_triggers&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">items</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">SET</span><span class="w"> </span><span class="n">ordering</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">ifnull</span><span class="p">(</span><span class="k">MAX</span><span class="p">(</span><span class="n">ordering</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">items</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">parent_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">.</span><span class="n">parent_id</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ROWID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">.</span><span class="n">rowid</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">dbinfo</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ignore_items_update_triggers&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">END</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- Action: An item has been moved to the right.
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- Processing: Sets the ordering of all items between the original and new
+</span></span></span><span class="line"><span class="cl"><span class="c1">--             position of the item to move left by 1.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="n">update_items_order</span><span class="w"> </span><span class="k">BEFORE</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">OF</span><span class="w"> </span><span class="n">ordering</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">items</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">WHEN</span><span class="w"> </span><span class="k">new</span><span class="p">.</span><span class="n">ordering</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="k">old</span><span class="p">.</span><span class="n">ordering</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">AND</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">dbinfo</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ignore_items_update_triggers&#39;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">BEGIN</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">dbinfo</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ignore_items_update_triggers&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">items</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">SET</span><span class="w"> </span><span class="n">ordering</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ordering</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">parent_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">old</span><span class="p">.</span><span class="n">parent_id</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">ordering</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="k">old</span><span class="p">.</span><span class="n">ordering</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">new</span><span class="p">.</span><span class="n">ordering</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">dbinfo</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ignore_items_update_triggers&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">END</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- Action: An item has been moved to the left.
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- Processing: Sets the ordering of all items between the original and new
+</span></span></span><span class="line"><span class="cl"><span class="c1">--             position of the item to move right by 1.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="n">update_items_order_backwards</span><span class="w"> </span><span class="k">BEFORE</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">OF</span><span class="w"> </span><span class="n">ordering</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">items</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">WHEN</span><span class="w"> </span><span class="k">new</span><span class="p">.</span><span class="n">ordering</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="k">old</span><span class="p">.</span><span class="n">ordering</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">AND</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">dbinfo</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ignore_items_update_triggers&#39;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">BEGIN</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">dbinfo</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ignore_items_update_triggers&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">items</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">SET</span><span class="w"> </span><span class="n">ordering</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ordering</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">parent_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">old</span><span class="p">.</span><span class="n">parent_id</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">ordering</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="k">new</span><span class="p">.</span><span class="n">ordering</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">old</span><span class="p">.</span><span class="n">ordering</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">dbinfo</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ignore_items_update_triggers&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">END</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- Action: An item has been moved to a different page or folder.
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- Processing: Sets the ordering to the maximum ordering + 1 on the page
+</span></span></span><span class="line"><span class="cl"><span class="c1">--             where the item was moved.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="n">update_item_parent</span><span class="w"> </span><span class="k">AFTER</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">OF</span><span class="w"> </span><span class="n">parent_id</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">items</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">WHEN</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">dbinfo</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ignore_items_update_triggers&#39;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">BEGIN</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">dbinfo</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ignore_items_update_triggers&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">items</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">SET</span><span class="w"> </span><span class="n">ordering</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">ifnull</span><span class="p">(</span><span class="k">MAX</span><span class="p">(</span><span class="n">ordering</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">items</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">parent_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">.</span><span class="n">parent_id</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">ROWID</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">old</span><span class="p">.</span><span class="n">rowid</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ROWID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">old</span><span class="p">.</span><span class="n">rowid</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">items</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">SET</span><span class="w"> </span><span class="n">ordering</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ordering</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">parent_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">old</span><span class="p">.</span><span class="n">parent_id</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">ordering</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="k">old</span><span class="p">.</span><span class="n">ordering</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">dbinfo</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ignore_items_update_triggers&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">END</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- Action: An item has been deleted.
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- Processing: Deletes any related app, group, widget or dowloading app with
+</span></span></span><span class="line"><span class="cl"><span class="c1">--             the item of the item.  The trigger then moves all items after
+</span></span></span><span class="line"><span class="cl"><span class="c1">--             the deleted item left by 1.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="n">item_deleted</span><span class="w"> </span><span class="k">AFTER</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">items</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">BEGIN</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">apps</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">rowid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">old</span><span class="p">.</span><span class="n">rowid</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">groups</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">item_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">old</span><span class="p">.</span><span class="n">rowid</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">widgets</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">rowid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">old</span><span class="p">.</span><span class="n">rowid</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">downloading_apps</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">item_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">old</span><span class="p">.</span><span class="n">rowid</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">dbinfo</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ignore_items_update_triggers&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">items</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">SET</span><span class="w"> </span><span class="n">ordering</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ordering</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">WHERE</span><span class="w"> </span><span class="k">old</span><span class="p">.</span><span class="n">parent_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parent_id</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">ordering</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="k">old</span><span class="p">.</span><span class="n">ordering</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">dbinfo</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ignore_items_update_triggers&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">END</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="closing-words">Closing Words</h2>
+<p>I am currently working on a little Python script which will allow you to
+build your Launchpad via a YAML file using my findings.</p>
+<p>One of the trickiest things to deal with are the triggers and seeing as how
+no trigger really allows ordering to be set to 0, I think that any automation
+tools should disable triggers while building these tables.</p>
+<p>Further to this, it is important to take care when deleting items as this also
+deletes the respective entry from the apps (or widgets) tables which is likely
+undesirable.</p>
+<p>Hope this was helpful and Merry Christmas everyone! :)</p>
+
+
+        
+
+        
+
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://fgimian.github.io/blog/2016/06/13/what-does-high-resolution-audio-really-mean/" data-toggle="tooltip" data-placement="top" title="What Does High Resolution Audio Really Mean?">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://fgimian.github.io/blog/2018/05/17/choosing-a-fast-python-api-framework/" data-toggle="tooltip" data-placement="top" title="Choosing a Fast Python API Framework">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+        
+          
+          <div class="disqus-comments">
+            <div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fgimian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+          </div>
+          
+        
+        
+      
+
+    </div>
+  </div>
+</div>
+
+      
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://github.com/fgimian" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/fgimian" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/in/fotis-gimian-a5420053" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://stackoverflow.com/1905666/fotis-gimian" title="StackOverflow">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              Fotis Gimian
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2022
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.120.4</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="https://fgimian.github.io/js/main.js"></script><script> renderMathInElement(document.body); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://fgimian.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+
+
+
+    
+  </body>
+</html>
+

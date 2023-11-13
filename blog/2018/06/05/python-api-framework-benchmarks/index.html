@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Python API Framework Benchmarks - Fotsies Technology Blog</title>
+  <meta name="description" content="With the multitude of awesome Python web frameworks out there today, I thought it would be a fun exercise to perform my own benchmarking against them and several popular WSGI servers.
+Disclaimer: I&rsquo;m aware that this test doesn&rsquo;t offer multiple real-life use-cases and may not be a great representation of real-world performance. However, I still thought it would be fun to share the results.
+Test Environment Two servers were created in AWS with the following details:">
+  <meta name="author" content="Fotis Gimian"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "Fotsies Technology Blog",
+    
+    "url": "https:\/\/fgimian.github.io\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/fgimian.github.io\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/fgimian.github.io\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/fgimian.github.io\/blog\/2018\/06\/05\/python-api-framework-benchmarks\/",
+          "name": "Python API framework benchmarks"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "Fotis Gimian"
+  },
+  "headline": "Python API Framework Benchmarks",
+  "description" : "With the multitude of awesome Python web frameworks out there today, I thought it would be a fun exercise to perform my own benchmarking against them and several popular WSGI servers.\nDisclaimer: I\u0026rsquo;m aware that this test doesn\u0026rsquo;t offer multiple real-life use-cases and may not be a great representation of real-world performance. However, I still thought it would be fun to share the results.\nTest Environment Two servers were created in AWS with the following details:",
+  "inLanguage" : "en",
+  "wordCount":  1149 ,
+  "datePublished" : "2018-06-05T21:25:26",
+  "dateModified" : "2018-06-05T21:25:26",
+  "image" : "https:\/\/fgimian.github.io\/img\/fotis.jpg",
+  "keywords" : [ "" ],
+  "mainEntityOfPage" : "https:\/\/fgimian.github.io\/blog\/2018\/06\/05\/python-api-framework-benchmarks\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/fgimian.github.io\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/fgimian.github.io\/img\/fotis.jpg",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="Python API Framework Benchmarks" />
+<meta property="og:description" content="With the multitude of awesome Python web frameworks out there today, I thought it would be a fun exercise to perform my own benchmarking against them and several popular WSGI servers.
+Disclaimer: I&rsquo;m aware that this test doesn&rsquo;t offer multiple real-life use-cases and may not be a great representation of real-world performance. However, I still thought it would be fun to share the results.
+Test Environment Two servers were created in AWS with the following details:">
+<meta property="og:image" content="https://fgimian.github.io/img/fotis.jpg" />
+<meta property="og:url" content="https://fgimian.github.io/blog/2018/06/05/python-api-framework-benchmarks/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Fotsies Technology Blog" />
+
+  <meta name="twitter:title" content="Python API Framework Benchmarks" />
+  <meta name="twitter:description" content="With the multitude of awesome Python web frameworks out there today, I thought it would be a fun exercise to perform my own benchmarking against them and several popular WSGI servers.
+Disclaimer: …">
+  <meta name="twitter:image" content="https://fgimian.github.io/img/fotis.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@fgimian" />
+  <meta name="twitter:creator" content="@fgimian" />
+  <meta name="generator" content="Hugo 0.120.4">
+  <link rel="alternate" href="https://fgimian.github.io/index.xml" type="application/rss+xml" title="Fotsies Technology Blog"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://fgimian.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="https://fgimian.github.io/css/syntax.css" /><link rel="stylesheet" href="https://fgimian.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous"><link rel="stylesheet" href="https://fgimian.github.io/css/custom.css" />
+
+
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="Fotsies Technology Blog" href="https://fgimian.github.io/">
+            <img class="avatar-img" src="https://fgimian.github.io/img/fotis.jpg" alt="Fotsies Technology Blog" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>Python API Framework Benchmarks</h1>
+              
+              
+              
+              
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on June 5, 2018
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;6&nbsp;minutes
+  
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Fotis Gimian
+    
+  
+  
+</span>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>With the multitude of awesome Python web frameworks out there today, I thought it would be a fun exercise to perform my own benchmarking against them and several popular WSGI servers.</p>
+<p><strong>Disclaimer</strong>: I&rsquo;m aware that this test doesn&rsquo;t offer multiple real-life use-cases and may not be a great representation of real-world performance.  However, I still thought it would be fun to share the results.</p>
+<h2 id="test-environment">Test Environment</h2>
+<p>Two servers were created in AWS with the following details:</p>
+<p><strong>AMI</strong>: CentOS 7 (x86_64) - with Updates HVM<br>
+<strong>Type</strong>: t2.2xlarge<br>
+<strong>vCPUs</strong>: 8<br>
+<strong>Memory (GiB)</strong>: 32</p>
+<p>One of these servers will run the WSGI server and app while the other will use <a href="https://github.com/wg/wrk">wrk</a> to perform load testing.</p>
+<p>The WSGI server was setup as follows:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Install Python 3.6 and useful dependencies for installing packages</span>
+</span></span><span class="line"><span class="cl">sudo yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+</span></span><span class="line"><span class="cl">sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
+</span></span><span class="line"><span class="cl">sudo yum -y install gcc libev-devel python36u python36u-devel
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Create a virtualenv</span>
+</span></span><span class="line"><span class="cl">python3.6 -m venv ~/venv
+</span></span><span class="line"><span class="cl"><span class="nb">source</span> ~/venv/bin/activate
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Install WSGI servers we&#39;re going to use for testing</span>
+</span></span><span class="line"><span class="cl">pip install eventlet gevent gunicorn meinheld uwsgi
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Install frameworks we&#39;re going to use for testing</span>
+</span></span><span class="line"><span class="cl">pip install apistar bottle falcon flask hug sanic
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>The wrk server was setup as follows:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Install requirements for building wrk</span>
+</span></span><span class="line"><span class="cl">sudo yum -y install git gcc
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Build wrk</span>
+</span></span><span class="line"><span class="cl">git clone https://github.com/wg/wrk.git wrk
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> wrk
+</span></span><span class="line"><span class="cl">make
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Install the executable</span>
+</span></span><span class="line"><span class="cl">sudo mv wrk /usr/bin
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Add the local IP address of the WSGI server to /etc/hosts</span>
+</span></span><span class="line"><span class="cl">sudo bash -c <span class="s1">&#39;echo &#34;172.31.4.0  wsgi&#34; &gt;&gt; /etc/hosts&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Clean up</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> ..
+</span></span><span class="line"><span class="cl">rm -rf wrk
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="hello-world-benchmarks">Hello World Benchmarks</h2>
+<h3 id="code">Code</h3>
+<h4 id="api-star">API Star</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">apistar</span> <span class="kn">import</span> <span class="n">App</span><span class="p">,</span> <span class="n">Route</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">hello</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="s1">&#39;Hello World!&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">app</span> <span class="o">=</span> <span class="n">App</span><span class="p">(</span><span class="n">routes</span><span class="o">=</span><span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">handler</span><span class="o">=</span><span class="n">hello</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">])</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="bottle">Bottle</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">bottle</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@bottle.get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="s1">&#39;Hello World!&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">app</span> <span class="o">=</span> <span class="n">bottle</span><span class="o">.</span><span class="n">default_app</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="falcon">Falcon</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">falcon</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">HelloResource</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">on_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">,</span> <span class="n">resp</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="s1">&#39;Hello World!&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">app</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">API</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">app</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">HelloResource</span><span class="p">())</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="flask">Flask</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="s1">&#39;Hello World!&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="hug">hug</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">hug</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@hug.get</span><span class="p">(</span><span class="s2">&#34;/&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="s1">&#39;Hello World!&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">app</span> <span class="o">=</span> <span class="n">__hug_wsgi__</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="sanic">Sanic</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">sanic</span> <span class="kn">import</span> <span class="n">Sanic</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">sanic.response</span> <span class="kn">import</span> <span class="n">text</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">app</span> <span class="o">=</span> <span class="n">Sanic</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">async</span> <span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">text</span><span class="p">(</span><span class="s1">&#39;Hello World!&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8000</span><span class="p">,</span> <span class="n">access_log</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="commands">Commands</h3>
+<h4 id="wrk">wrk</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wrk --duration 10s --threads <span class="m">1</span> --connections <span class="m">200</span> http://wsgi:8000
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Note that 5 - 6 runs were conducted and the most requests/sec from any iteration were recorded.  I also note below if results varied wildly to set appropriate expectations.</p>
+<h4 id="wsgi-servers">WSGI Servers</h4>
+<p><strong>Note</strong>: I&rsquo;m using Sanic&rsquo;s inbuilt <code>run</code> function instead of its Gunicorn workers as there&rsquo;s <a href="https://github.com/channelcat/sanic/issues/1143">no way to disable to access logging otherwise</a>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Eventlet workers</span>
+</span></span><span class="line"><span class="cl">gunicorn <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --workers <span class="m">17</span> --worker-class<span class="o">=</span>eventlet <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --bind 0.0.0.0:8000 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  hello_&lt;framework&gt;:app
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># gevent workers</span>
+</span></span><span class="line"><span class="cl">gunicorn <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --workers <span class="m">17</span> --worker-class<span class="o">=</span>gevent <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --bind 0.0.0.0:8000 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  hello_&lt;framework&gt;:app
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># gunicorn (pure)</span>
+</span></span><span class="line"><span class="cl">gunicorn <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --workers <span class="m">17</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --bind 0.0.0.0:8000 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  hello_&lt;framework&gt;:app
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Meinheld workers</span>
+</span></span><span class="line"><span class="cl">gunicorn <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --workers <span class="m">17</span> --worker-class<span class="o">=</span>meinheld.gmeinheld.MeinheldWorker <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --bind 0.0.0.0:8000 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  hello_&lt;framework&gt;:app
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># wsgi</span>
+</span></span><span class="line"><span class="cl">uwsgi <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --workers <span class="m">17</span> --enable-threads <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --http 0.0.0.0:8000 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --disable-logging <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --wsgi-file hello_&lt;framework&gt;.py --callable app
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="benchmark-results-hello-world">Benchmark Results (hello world)</h2>
+<pre tabindex="0"><code>           apistar   bottle    falcon     flask      hug      sanic    
+--------- --------- --------- --------- --------- --------- --------- 
+eventlet     19.34k    18.86k    19.94k    13.53k    17.36k       n/a
+gevent       19.28k    18.86k    19.95k    13.51k    17.55k       n/a
+gunicorn     12.56k    12.91k    13.28k    11.93k    12.67k       n/a
+meinheld     69.70k    68.80k    70.62k    35.51k    70.96k       n/a
+uwsgi        errors    errors    errors    errors    errors       n/a
+sanic           n/a       n/a       n/a       n/a       n/a    68.02k
+</code></pre><p>Clearly I&rsquo;m missing something important on uWSGI as I was seeing socket errors against all frameworks while testing with it:</p>
+<p>e.g.</p>
+<pre tabindex="0"><code>Running 10s test @ http://wsgi:8000
+  1 threads and 200 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    11.18ms   45.49ms   1.39s    99.46%
+    Req/Sec     3.49k     3.99k    8.71k    64.10%
+  14403 requests in 10.02s, 1.25MB read
+  Socket errors: connect 0, read 14403, write 0, timeout 62
+Requests/sec:   1437.38
+Transfer/sec:    127.74KB
+</code></pre><p>I attempted tweaks involving the following settings but still failed to succeed with uWSGI:</p>
+<ul>
+<li><code>--buffer-size</code></li>
+<li><code>--harakiri</code></li>
+<li><code>--http-keepalive</code></li>
+<li><code>--limit-post</code></li>
+<li><code>--master</code></li>
+<li><code>--max-requests</code></li>
+<li><code>--max-requests</code></li>
+<li><code>--no-orphans</code></li>
+<li><code>--so-keepalive</code></li>
+<li><code>--vacuum</code></li>
+</ul>
+<p>I&rsquo;m absolutely happy to take suggestions on what I should tweak to get uWSGI to work but from this point in the article, I&rsquo;ll be excluding it from further tests.</p>
+<h2 id="benchmark-results-data-manipulation--algorithm">Benchmark Results (data manipulation / algorithm)</h2>
+<p>We&rsquo;ve developed a codebase at work which uses a reasonably large set of data to make a determination.  This is one of the endpoints that we are exposing in the API we&rsquo;re building.</p>
+<p>Clearly, due to the fact that the code is owned by my company, I can&rsquo;t share it here; but wanted to benchmark it against all the frameworks to see if the difference stays relative.</p>
+<p>Please note that this endpoint creates a JSON response and I had to increase wkr&rsquo;s timeout to 10 seconds to avoid timeout errors with <code>--timeout 10</code>.</p>
+<p>In all results below, I have included the min - max requests served per 10 second period.</p>
+<h3 id="results-errors">Results (Errors)</h3>
+<p>In all the tests below, at least one socket error was encountered.</p>
+<pre tabindex="0"><code>            apistar    bottle     falcon      flask       hug       sanic    
+---------  ---------  ---------  ---------  ---------  ---------  --------- 
+eventlet   209 - 485  205 - 488  219 - 492  272 - 481  336 - 484
+gevent     332 - 475  337 - 491  278 - 483  271 - 472
+gunicorn                                    300 - 454
+</code></pre><h3 id="results-no-errors">Results (No Errors)</h3>
+<p>The following produced no errors at all.</p>
+<pre tabindex="0"><code>            apistar     bottle     falcon     flask      hug        sanic    
+---------  ---------  ---------  ---------  ---------  ---------  --------- 
+gevent                                                 202 - 483     n/a
+gunicorn   462 - 472  348 - 471  385 - 468             291 - 461     n/a
+meinheld   465 - 494  461 - 490  461 - 498  450 - 478  461 - 488     n/a
+sanic         n/a        n/a        n/a        n/a        n/a     385 - 495
+</code></pre><h3 id="thoughts">Thoughts</h3>
+<p>I was amazed at how consistent and solid Meinheld was in all my tests.  It had the least variance and never failed.  The framework here made less of a difference as our bottleneck was now the algorithm being worked through on each request.</p>
+<p>As such, I&rsquo;m only going to proceed testing Gunicorn, Meinheld and Sanic servers from this point forward to make my life easier :)</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Apart from Flask, all frameworks I tested were neck in neck throughout.  There are various benchmarks showing that Flask isn&rsquo;t performant and sadly that was the case here too.</p>
+<p>Meinheld definitely stood out as the fastest WSGI server and its easy integration with Gunicorn makes it easy to integrate into existing deployments.</p>
+
+
+        
+
+        
+
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://fgimian.github.io/blog/2018/06/05/selecting-a-solid-code-editor-in-2018/" data-toggle="tooltip" data-placement="top" title="Selecting a Solid Code Editor in 2018">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://fgimian.github.io/setting-up-vs-code-for-c-sharp-development/" data-toggle="tooltip" data-placement="top" title="Setting Up VS Code for C# Development">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+        
+          
+          <div class="disqus-comments">
+            <div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fgimian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+          </div>
+          
+        
+        
+      
+
+    </div>
+  </div>
+</div>
+
+      
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://github.com/fgimian" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/fgimian" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/in/fotis-gimian-a5420053" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://stackoverflow.com/1905666/fotis-gimian" title="StackOverflow">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              Fotis Gimian
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2022
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.120.4</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="https://fgimian.github.io/js/main.js"></script><script> renderMathInElement(document.body); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://fgimian.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+
+
+
+    
+  </body>
+</html>
+

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>A Simple PlistBuddy Tutorial - Fotsies Technology Blog</title>
+  <meta name="description" content="Good ol&rsquo; plist files. They are at the core of OS X for storing application settings and they work really well.
+If you have ever automated part of your OS X build or changed some cool hidden feature, you have probably used the defaults command to do so. The defaults command is great and is still recommended for simple things, but if you want to edit complex plist structures like arrays, dicts and nested structures, you&rsquo;ll inevitably come across PlistBuddy.">
+  <meta name="author" content="Fotis Gimian"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "Fotsies Technology Blog",
+    
+    "url": "https:\/\/fgimian.github.io\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/fgimian.github.io\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/fgimian.github.io\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/fgimian.github.io\/blog\/2015\/06\/27\/a-simple-plistbuddy-tutorial\/",
+          "name": "A simple plist buddy tutorial"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "Fotis Gimian"
+  },
+  "headline": "A Simple PlistBuddy Tutorial",
+  "description" : "Good ol\u0026rsquo; plist files. They are at the core of OS X for storing application settings and they work really well.\nIf you have ever automated part of your OS X build or changed some cool hidden feature, you have probably used the defaults command to do so. The defaults command is great and is still recommended for simple things, but if you want to edit complex plist structures like arrays, dicts and nested structures, you\u0026rsquo;ll inevitably come across PlistBuddy.",
+  "inLanguage" : "en",
+  "wordCount":  755 ,
+  "datePublished" : "2015-06-27T20:41:00",
+  "dateModified" : "2015-06-27T20:41:00",
+  "image" : "https:\/\/fgimian.github.io\/img\/fotis.jpg",
+  "keywords" : [ "" ],
+  "mainEntityOfPage" : "https:\/\/fgimian.github.io\/blog\/2015\/06\/27\/a-simple-plistbuddy-tutorial\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/fgimian.github.io\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/fgimian.github.io\/img\/fotis.jpg",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="A Simple PlistBuddy Tutorial" />
+<meta property="og:description" content="Good ol&rsquo; plist files. They are at the core of OS X for storing application settings and they work really well.
+If you have ever automated part of your OS X build or changed some cool hidden feature, you have probably used the defaults command to do so. The defaults command is great and is still recommended for simple things, but if you want to edit complex plist structures like arrays, dicts and nested structures, you&rsquo;ll inevitably come across PlistBuddy.">
+<meta property="og:image" content="https://fgimian.github.io/img/fotis.jpg" />
+<meta property="og:url" content="https://fgimian.github.io/blog/2015/06/27/a-simple-plistbuddy-tutorial/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Fotsies Technology Blog" />
+
+  <meta name="twitter:title" content="A Simple PlistBuddy Tutorial" />
+  <meta name="twitter:description" content="Good ol&rsquo; plist files. They are at the core of OS X for storing application settings and they work really well.
+If you have ever automated part of your OS X build or changed some cool hidden …">
+  <meta name="twitter:image" content="https://fgimian.github.io/img/fotis.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@fgimian" />
+  <meta name="twitter:creator" content="@fgimian" />
+  <meta name="generator" content="Hugo 0.120.4">
+  <link rel="alternate" href="https://fgimian.github.io/index.xml" type="application/rss+xml" title="Fotsies Technology Blog"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://fgimian.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="https://fgimian.github.io/css/syntax.css" /><link rel="stylesheet" href="https://fgimian.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous"><link rel="stylesheet" href="https://fgimian.github.io/css/custom.css" />
+
+
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="Fotsies Technology Blog" href="https://fgimian.github.io/">
+            <img class="avatar-img" src="https://fgimian.github.io/img/fotis.jpg" alt="Fotsies Technology Blog" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>A Simple PlistBuddy Tutorial</h1>
+              
+              
+              
+              
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on June 27, 2015
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;4&nbsp;minutes
+  
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Fotis Gimian
+    
+  
+  
+</span>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>Good ol&rsquo; plist files.  They are at the core of OS X for storing application
+settings and they work really well.</p>
+<p>If you have ever automated part of your OS X build or changed some cool hidden
+feature, you have probably used the <strong>defaults</strong> command to do so.  The
+defaults command is great and is still recommended for simple things, but if
+you want to edit complex plist structures like arrays, dicts and nested
+structures, you&rsquo;ll inevitably come across PlistBuddy.</p>
+<p>The tool is extremely simple to use and powerful, but due to the lack of
+tutorials and guides, I thought I&rsquo;d write one in my own words.</p>
+<p>Start by installing rlwrap to get readline support:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">brew install rlwrap
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>And now start Plistbuddy wrapped in readline glory:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rlwrap /usr/libexec/PlistBuddy testing.plist
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>This creates a fresh plist file with a dict as its top-level structure.  At any
+point, you may type <code>Print</code> to view the entire structure:</p>
+<pre tabindex="0"><code>Command: Print
+Dict {
+}
+</code></pre><p>Let&rsquo;s create a regular item at the top level:</p>
+<pre tabindex="0"><code>Command: Add :Version string 1.0
+Command: Print
+Dict {
+    Version = 1.0
+}
+</code></pre><p>And now change it&rsquo;s value:</p>
+<pre tabindex="0"><code>Command: Set :Version 1.1
+Command: Print
+Dict {
+    Version = 1.1
+}
+</code></pre><p>Next up, we&rsquo;ll create an array and push a few items onto it:</p>
+<pre tabindex="0"><code>Command: Add :Applications array
+Command: Add :Applications: string app1
+Command: Add :Applications: string app2
+Command: Add :Applications: string app3
+Command: Print
+Dict {
+    Version = 1.1
+    Applications = Array {
+        app1
+        app2
+        app3
+    }
+}
+</code></pre><p>We may also add items to the beginning of the array by inserting at index 0:</p>
+<pre tabindex="0"><code>Command: Add :Applications:0 string app0a
+Command: Add :Applications:0 string app0b
+Command: Add :Applications:0 string app0c
+Command: Print
+Dict {
+    Version = 1.1
+    Applications = Array {
+        app0c
+        app0b
+        app0a
+        app1
+        app2
+        app3
+    }
+}
+</code></pre><p>And now, we&rsquo;ll delete an entry:</p>
+<pre tabindex="0"><code>Command: Delete :Applications
+Command: Print
+Dict {
+    Version = 1.1
+}
+</code></pre><p>Now let&rsquo;s create a more complex data structure:</p>
+<pre tabindex="0"><code>Command: Add :BrainCells integer 5
+Command: Add &#34;:Favourite Random Number&#34; real 3.9234
+Command: Add :Intelligent bool false
+Command: Add :Today date &#34;Sat Jun 27 18:51:00 AEST 2015&#34;
+Command: Add :Person dict
+Command: Add :Person:Name string &#34;Fotis Gimian&#34;
+Command: Add :Person:Occupation string &#34;Geek&#34;
+Command: Add :Person:Likes array
+Command: Add :Person:Likes: string Potatoes
+Command: Add :Person:Likes: string Apple
+Command: Add :Person:Likes: string Bouncing
+Command: Print
+Dict {
+    Favourite Random Number = 3.923400
+    Version = 1.1
+    Person = Dict {
+        Likes = Array {
+            Potatoes
+            Apple
+            Bouncing
+        }
+        Name = Fotis Gimian
+        Occupation = Geek
+    }
+    Intelligent = false
+    BrainCells = 5
+    Today = Sat Jun 27 18:51:00 AEST 2015
+}
+</code></pre><p>Now let me be a little evil and replace my Apple like with Microsoft:</p>
+<pre tabindex="0"><code>Command: Set :Person:Likes:1 Microsoft
+Command: Print
+Dict {
+    Favourite Random Number = 3.923400
+    Version = 1.1
+    Person = Dict {
+        Likes = Array {
+            Potatoes
+            Microsoft
+            Bouncing
+        }
+        Name = Fotis Gimian
+        Occupation = Geek
+    }
+    Intelligent = false
+    BrainCells = 5
+    Today = Sat Jun 27 18:51:00 AEST 2015
+}
+</code></pre><p>We may also print a subset of a structure by using colons to move further in:</p>
+<pre tabindex="0"><code>Command: Print :Person:Likes
+Array {
+    Potatoes
+    Microsoft
+    Bouncing
+}
+</code></pre><p>You may use an index to move into an array:</p>
+<pre tabindex="0"><code>Command: Print :Person:Likes:1
+Microsoft
+</code></pre><p>And naturally, you can delete items at any level using colons to get inside:</p>
+<pre tabindex="0"><code>Command: Delete :Person:Likes
+Command: Print
+Dict {
+    Favourite Random Number = 3.923400
+    Version = 1.1
+    Person = Dict {
+        Name = Fotis Gimian
+        Occupation = Geek
+    }
+    Intelligent = false
+    BrainCells = 5
+    Today = Sat Jun 27 18:51:00 AEST 2015
+}
+</code></pre><p>You may save all your hard work when done:</p>
+<pre tabindex="0"><code>Command: Save
+Saving...
+Command: Exit
+</code></pre><p>These commands may be invoked from the CLI directly using the -c option:</p>
+<pre tabindex="0"><code>➔ /usr/libexec/PlistBuddy -c &#34;Print&#34; testing.plist
+Dict {
+    Person = Dict {
+        Name = Fotis Gimian
+        Occupation = Geek
+    }
+    Intelligent = false
+    BrainCells = 5
+    Version = 1.1
+    Today = Sat Jun 27 18:51:00 AEST 2015
+    Favourite Random Number = 3.923400
+}
+</code></pre><p>If you would like to modify plist files provided by applications, you&rsquo;ll need
+to provide PlistBuddy the full path name to the file (unlike the defaults
+command):</p>
+<pre tabindex="0"><code>➔ /usr/libexec/PlistBuddy -c &#34;Print :magnification&#34; ~/Library/Preferences/com.apple.dock.plist
+true
+➔ /usr/libexec/PlistBuddy -c &#34;Set :magnification bool false&#34; ~/Library/Preferences/com.apple.dock.plist
+➔ /usr/libexec/PlistBuddy -c &#34;Print :magnification&#34; ~/Library/Preferences/com.apple.dock.plist
+false
+</code></pre><p>Oh and a little tip (after you stretched for that shift key on each command).
+The commands (i.e. Print, Set, Add and so on) are case insensitive, so you can
+just type them in lowercase.</p>
+<p>Hope this helps someone out there.  Have a good one! :)</p>
+
+
+        
+
+        
+
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://fgimian.github.io/blog/2015/06/06/selecting-a-solid-code-editor/" data-toggle="tooltip" data-placement="top" title="Selecting a Solid Code Editor">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://fgimian.github.io/blog/2016/03/12/installing-windows-10-on-a-mac-without-bootcamp/" data-toggle="tooltip" data-placement="top" title="Installing Windows 10 on a Mac without Bootcamp">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+        
+          
+          <div class="disqus-comments">
+            <div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fgimian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+          </div>
+          
+        
+        
+      
+
+    </div>
+  </div>
+</div>
+
+      
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://github.com/fgimian" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/fgimian" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/in/fotis-gimian-a5420053" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://stackoverflow.com/1905666/fotis-gimian" title="StackOverflow">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              Fotis Gimian
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2022
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://fgimian.github.io/">Fotsies Technology Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.120.4</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="https://fgimian.github.io/js/main.js"></script><script> renderMathInElement(document.body); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://fgimian.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+
+
+
+    
+  </body>
+</html>
+
